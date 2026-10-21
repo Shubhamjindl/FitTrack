@@ -258,6 +258,6 @@ npm run test:api
 
 ## 👤 Author
 
-Shubham Jindal, with Ankush Kumar and Anshu Kumar — B.E. CSE, Chandigarh University.
+**Shubham Jindal** — B.E. CSE, Chandigarh University.
 
 Licensed under MIT.
