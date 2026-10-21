@@ -1,0 +1,807 @@
+/* ==========================================================================
+   FitTrack - Modern Fitness & Workout Tracker Styles
+   Theme: Clean Light Theme (White background, light gray sections, green buttons,
+   pastel statistic cards, rounded corners, subtle shadows)
+   ========================================================================== */
+
+:root {
+  --primary-green: #10b981;
+  --primary-green-hover: #059669;
+  --primary-green-dark: #047857;
+  --primary-green-light: #ecfdf5;
+  --primary-green-subtle: #d1fae5;
+  
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-section: #f1f5f9;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --border-light: #f1f5f9;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+}
+
+[data-theme="dark"] {
+  --primary-green-light: rgba(16, 185, 129, 0.15);
+  --primary-green-subtle: rgba(16, 185, 129, 0.25);
+  
+  --bg-main: #121214;
+  --bg-card: #18181b;
+  --bg-section: #27272a;
+  
+  --text-primary: #f4f4f5;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --border-color: #27272a;
+  --border-light: #3f3f46;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.7);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Base resets & typography */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.text-primary-custom {
+  color: var(--text-primary) !important;
+}
+
+.bg-main {
+  background-color: var(--bg-main) !important;
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* Theme Toggle Button */
+.btn-theme-toggle {
+  background-color: var(--bg-section);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-theme-toggle:hover {
+  background-color: var(--primary-green-light);
+  color: var(--primary-green);
+  border-color: var(--primary-green);
+  transform: rotate(15deg);
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Primary Green Button Styling */
+.btn-primary-green {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  padding: 0.6rem 1.25rem;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary-green:hover {
+  background-color: var(--primary-green-hover);
+  border-color: var(--primary-green-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.btn-primary-green:active {
+  transform: translateY(0);
+  background-color: var(--primary-green-dark);
+}
+
+.btn-outline-green {
+  background-color: transparent;
+  border: 1.5px solid var(--primary-green);
+  color: var(--primary-green);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1.2rem;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-outline-green:hover {
+  background-color: var(--primary-green);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-subtle-green {
+  background-color: var(--primary-green-subtle);
+  color: var(--primary-green-dark);
+  border: none;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1.2rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-subtle-green:hover {
+  background-color: #a7f3d0;
+  color: #064e3b;
+}
+
+/* Card Styling */
+.card-fittrack {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-fittrack-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Pastel Statistic Cards */
+.card-pastel-mint {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-lg);
+  color: #065f46;
+}
+.card-pastel-mint .stat-icon-badge {
+  background-color: #ffffff;
+  color: #059669;
+}
+
+.card-pastel-blue {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  border-radius: var(--radius-lg);
+  color: #0369a1;
+}
+.card-pastel-blue .stat-icon-badge {
+  background-color: #ffffff;
+  color: #0284c7;
+}
+
+.card-pastel-purple {
+  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+  border: 1px solid #ddd6fe;
+  border-radius: var(--radius-lg);
+  color: #6d28d9;
+}
+.card-pastel-purple .stat-icon-badge {
+  background-color: #ffffff;
+  color: #7c3aed;
+}
+
+.card-pastel-amber {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-lg);
+  color: #b45309;
+}
+.card-pastel-amber .stat-icon-badge {
+  background-color: #ffffff;
+  color: #d97706;
+}
+
+.stat-icon-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Type Badges */
+.badge-type {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.badge-type-Strength {
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.badge-type-Cardio {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.badge-type-HIIT {
+  background-color: #fff1f2;
+  color: #e11d48;
+  border: 1px solid #fecdd3;
+}
+
+.badge-type-Yoga {
+  background-color: #faf5ff;
+  color: #9333ea;
+  border: 1px solid #e9d5ff;
+}
+
+.badge-type-Running {
+  background-color: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #fed7aa;
+}
+
+.badge-type-Cycling {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.badge-type-Bodyweight {
+  background-color: #f8fafc;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.badge-type-Other {
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+/* Stat Pill Component */
+.stat-pill {
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-section);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Exercise Chip Component */
+.exercise-chip {
+  font-size: 0.76rem;
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  background-color: var(--bg-section);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  max-width: 100%;
+}
+
+.exercise-chip-more {
+  color: var(--text-muted);
+}
+
+/* Small Primary Green Button */
+.btn-primary-green-sm {
+  background-color: var(--primary-green);
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.825rem;
+  border-radius: var(--radius-md);
+  padding: 0.45rem 0.95rem;
+  border: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.btn-primary-green-sm:hover {
+  background-color: var(--primary-green-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
+  color: #ffffff !important;
+}
+
+/* Action Icon Buttons */
+.btn-action-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-section);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.15s ease;
+}
+
+.btn-action-icon:hover {
+  background-color: var(--primary-green-light);
+  color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+.btn-action-icon-danger:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.text-emerald {
+  color: #10b981 !important;
+}
+
+.text-sky {
+  color: #0284c7 !important;
+}
+
+
+/* Navigation bar */
+.fittrack-navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.fittrack-navbar .nav-link {
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-md);
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.fittrack-navbar .nav-link:hover {
+  color: var(--primary-green-dark);
+  background-color: var(--primary-green-light);
+}
+
+.fittrack-navbar .nav-link.active {
+  color: var(--primary-green-dark);
+  background-color: var(--primary-green-subtle);
+  font-weight: 600;
+}
+
+/* User avatar pill */
+.user-avatar-pill {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Form styling */
+.form-control, .form-select {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background-color: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  outline: none;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+/* Light-gray section background */
+.bg-light-section {
+  background-color: var(--bg-section);
+  border-radius: var(--radius-lg);
+}
+
+/* Exercise item card */
+.exercise-row-card {
+  background-color: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  transition: border-color 0.15s ease;
+}
+
+.exercise-row-card:hover {
+  border-color: #cbd5e1;
+}
+
+/* Footer */
+.fittrack-footer {
+  background-color: #ffffff;
+  border-top: 1px solid var(--border-color);
+  padding: 2rem 0;
+  margin-top: 3rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Dark Mode Component Overrides
+   ========================================================================== */
+[data-theme="dark"] .text-dark,
+[data-theme="dark"] .text-body {
+  color: #f4f4f5 !important;
+}
+
+[data-theme="dark"] .text-muted {
+  color: #a1a1aa !important;
+}
+
+[data-theme="dark"] .text-secondary {
+  color: #d4d4d8 !important;
+}
+
+[data-theme="dark"] .bg-light,
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .bg-light-section {
+  background-color: var(--bg-section) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .form-label,
+[data-theme="dark"] .form-text {
+  color: #d4d4d8 !important;
+}
+
+[data-theme="dark"] .fittrack-navbar {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .fittrack-navbar .nav-link {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .fittrack-navbar .nav-link:hover {
+  color: #6ee7b7;
+  background-color: var(--primary-green-light);
+}
+
+[data-theme="dark"] .fittrack-navbar .nav-link.active {
+  color: #6ee7b7;
+  background-color: var(--primary-green-subtle);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .input-group-text {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .form-control::placeholder {
+  color: #71717a;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--primary-green);
+}
+
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-body,
+[data-theme="dark"] .modal-footer {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Custom Modal Close Button */
+.btn-close-custom {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-section);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.btn-close-custom:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border-color: #ef4444;
+  transform: scale(1.05);
+}
+
+
+[data-theme="dark"] .exercise-row-card {
+  background-color: var(--bg-section);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .fittrack-footer {
+  background-color: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .card-pastel-mint {
+  background: linear-gradient(135deg, #132e22 0%, #0c1f17 100%);
+  border: 1px solid #059669;
+  color: #a7f3d0;
+}
+[data-theme="dark"] .card-pastel-mint .stat-icon-badge {
+  background-color: #065f46;
+  color: #6ee7b7;
+}
+
+[data-theme="dark"] .card-pastel-blue {
+  background: linear-gradient(135deg, #13273e 0%, #0d1a29 100%);
+  border: 1px solid #0284c7;
+  color: #bae6fd;
+}
+[data-theme="dark"] .card-pastel-blue .stat-icon-badge {
+  background-color: #0369a1;
+  color: #7dd3fc;
+}
+
+[data-theme="dark"] .card-pastel-purple {
+  background: linear-gradient(135deg, #26173a 0%, #170d24 100%);
+  border: 1px solid #7c3aed;
+  color: #ddd6fe;
+}
+[data-theme="dark"] .card-pastel-purple .stat-icon-badge {
+  background-color: #6d28d9;
+  color: #c4b5fd;
+}
+
+[data-theme="dark"] .card-pastel-amber {
+  background: linear-gradient(135deg, #33200a 0%, #211405 100%);
+  border: 1px solid #d97706;
+  color: #fde68a;
+}
+[data-theme="dark"] .card-pastel-amber .stat-icon-badge {
+  background-color: #b45309;
+  color: #fcd34d;
+}
+
+[data-theme="dark"] .table {
+  color: var(--text-primary);
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--text-primary);
+  --bs-table-border-color: var(--border-color);
+}
+
+[data-theme="dark"] .table th,
+[data-theme="dark"] .table td {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .recharts-default-tooltip {
+  background-color: #18181b !important;
+  border-color: #3f3f46 !important;
+  color: #f4f4f5 !important;
+}
+
+[data-theme="dark"] .recharts-text {
+  fill: #a1a1aa !important;
+}
+
+[data-theme="dark"] .card-fittrack {
+  background-color: #1a1a1e;
+  border: 1px solid #2e2e36;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .card-fittrack-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  border-color: #3f3f4c;
+}
+
+[data-theme="dark"] .badge-type-Strength {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+[data-theme="dark"] .badge-type-Cardio {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+}
+
+[data-theme="dark"] .badge-type-HIIT {
+  background-color: rgba(244, 63, 94, 0.2);
+  color: #fb7185;
+  border: 1px solid rgba(251, 113, 133, 0.4);
+}
+
+[data-theme="dark"] .badge-type-Yoga {
+  background-color: rgba(139, 92, 246, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(192, 132, 252, 0.4);
+}
+
+[data-theme="dark"] .badge-type-Running {
+  background-color: rgba(249, 115, 22, 0.2);
+  color: #fb923c;
+  border: 1px solid rgba(251, 146, 60, 0.4);
+}
+
+[data-theme="dark"] .badge-type-Cycling {
+  background-color: rgba(20, 184, 166, 0.2);
+  color: #2dd4bf;
+  border: 1px solid rgba(45, 212, 191, 0.4);
+}
+
+[data-theme="dark"] .badge-type-Bodyweight,
+[data-theme="dark"] .badge-type-Other {
+  background-color: rgba(148, 163, 184, 0.2);
+  color: #cbd5e1;
+  border: 1px solid rgba(203, 213, 225, 0.3);
+}
+
+[data-theme="dark"] .stat-pill {
+  background-color: #27272a;
+  color: #e4e4e7;
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .exercise-chip {
+  background-color: #27272a;
+  color: #f4f4f5;
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .exercise-chip-more {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .text-sky {
+  color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .text-emerald {
+  color: #34d399 !important;
+}
+
+[data-theme="dark"] .btn-action-icon {
+  background-color: #27272a;
+  color: #e4e4e7;
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .btn-action-icon:hover {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border-color: #34d399;
+}
+
+[data-theme="dark"] .btn-action-icon-danger:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border-color: #f87171;
+}
+
+
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+

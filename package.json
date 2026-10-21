@@ -1,0 +1,24 @@
+{
+  "name": "fittrack-mern-app",
+  "version": "1.0.0",
+  "description": "FitTrack - MERN Workout & Fitness Tracker",
+  "scripts": {
+    "server": "npm run start --prefix server",
+    "server:dev": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "client:build": "npm run build --prefix client",
+    "seed": "node server/seed.js",
+    "test:api": "node server/test-api.js"
+  },
+  "keywords": [
+    "mern",
+    "fitness-tracker",
+    "workout",
+    "react",
+    "express",
+    "mongodb",
+    "recharts"
+  ],
+  "author": "Shubham Jindal",
+  "license": "MIT"
+}
