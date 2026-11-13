@@ -1,5 +1,7 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 const AuthContext = createContext(null);
 
 const parseJsonResponse = async (response) => {
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }) => {
     const savedUser = localStorage.getItem('fittrack_user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
+
   const [token, setToken] = useState(() => localStorage.getItem('fittrack_token'));
   const [loading, setLoading] = useState(true);
 
@@ -51,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const response = await fetch('/api/auth/me', {
+        const response = await fetch(`${API_URL}/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -76,7 +79,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -92,7 +95,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
-    const response = await fetch('/api/auth/register', {
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
@@ -115,7 +118,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateProfile = async (name) => {
-    const response = await fetch('/api/auth/profile', {
+    const response = await fetch(`${API_URL}/auth/profile`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -132,7 +135,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const changePassword = async (currentPassword, newPassword) => {
-    const response = await fetch('/api/auth/password', {
+    const response = await fetch(`${API_URL}/auth/password`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -162,9 +165,10 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
+
   return context;
 };
-
