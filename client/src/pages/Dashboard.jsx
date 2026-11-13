@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -24,6 +25,8 @@ import {
   ChevronRightIcon,
 } from '../components/Icons';
 
+const API_URL = import.meta.env.VITE_API_URL || '/api';
+
 const Dashboard = () => {
   const { user, token } = useAuth();
   const [stats, setStats] = useState(null);
@@ -38,7 +41,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch('/api/dashboard', {
+      const res = await fetch(`${API_URL}/dashboard`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -65,7 +68,7 @@ const Dashboard = () => {
   const handleDeleteWorkout = async () => {
     if (!workoutToDelete) return;
     try {
-      const res = await fetch(`/api/workouts/${workoutToDelete._id}`, {
+      const res = await fetch(`${API_URL}/workouts/${workoutToDelete._id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -104,9 +107,6 @@ const Dashboard = () => {
     }
     return null;
   };
-
-
-
 
   if (loading) {
     return (
@@ -243,7 +243,6 @@ const Dashboard = () => {
                     animationDuration={0}
                     wrapperStyle={{ outline: 'none', pointerEvents: 'none' }}
                   />
-
 
                   <Bar
                     dataKey="duration"

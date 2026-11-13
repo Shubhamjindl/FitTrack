@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -11,6 +12,8 @@ import {
   DumbbellIcon,
   TrophyIcon,
 } from '../components/Icons';
+
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const Profile = () => {
   const { user, token, updateProfile, changePassword } = useAuth();
@@ -42,7 +45,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         setLoadingStats(true);
-        const res = await fetch('/api/profile', {
+        const res = await fetch(`${API_URL}/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -59,7 +62,11 @@ const Profile = () => {
       }
     };
 
-    fetchProfile();
+    if (token) {
+      fetchProfile();
+    } else {
+      setLoadingStats(false);
+    }
   }, [token]);
 
   // Handle Name Update

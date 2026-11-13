@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import WorkoutCard from '../components/WorkoutCard';
@@ -12,6 +13,9 @@ import {
   CloseIcon,
   DumbbellIcon,
 } from '../components/Icons';
+
+// API base URL: local Vite proxy or deployed Render backend
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const WORKOUT_TYPES = [
   'All',
@@ -49,6 +53,7 @@ const Workouts = () => {
       // Build query string
       let sortField = 'date';
       let sortOrder = 'desc';
+
       if (sortBy === 'date-asc') {
         sortField = 'date';
         sortOrder = 'asc';
@@ -83,7 +88,7 @@ const Workouts = () => {
         params.append('startDate', d.toISOString());
       }
 
-      const res = await fetch(`/api/workouts?${params.toString()}`, {
+      const res = await fetch(`${API_URL}/workouts?${params.toString()}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -130,8 +135,9 @@ const Workouts = () => {
 
   const handleDeleteWorkout = async () => {
     if (!workoutToDelete) return;
+
     try {
-      const res = await fetch(`/api/workouts/${workoutToDelete._id}`, {
+      const res = await fetch(`${API_URL}/workouts/${workoutToDelete._id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -151,7 +157,11 @@ const Workouts = () => {
     }
   };
 
-  const hasActiveFilters = searchTerm !== '' || selectedType !== 'All' || timeRange !== 'all' || sortBy !== 'date-desc';
+  const hasActiveFilters =
+    searchTerm !== '' ||
+    selectedType !== 'All' ||
+    timeRange !== 'all' ||
+    sortBy !== 'date-desc';
 
   return (
     <div className="container py-4 animate-fade-in">
@@ -315,7 +325,12 @@ const Workouts = () => {
         <div className="card card-fittrack p-5 text-center">
           <div
             className="d-inline-flex p-3 rounded-circle bg-light text-muted mx-auto mb-3"
-            style={{ width: 64, height: 64, alignItems: 'center', justifyContent: 'center' }}
+            style={{
+              width: 64,
+              height: 64,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
             <DumbbellIcon size={32} />
           </div>

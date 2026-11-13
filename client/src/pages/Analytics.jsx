@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   ResponsiveContainer,
@@ -24,6 +25,8 @@ import {
   TrophyIcon,
   DumbbellIcon,
 } from '../components/Icons';
+
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Pastel & vibrant palette for Pie Chart
 const TYPE_COLORS = {
@@ -53,7 +56,7 @@ const Analytics = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch('/api/analytics', {
+      const res = await fetch(`${API_URL}/analytics`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -87,11 +90,14 @@ const Analytics = () => {
     setSelectedExercise(exerciseName);
     try {
       setLoadingEx(true);
-      const res = await fetch(`/api/analytics?exercise=${encodeURIComponent(exerciseName)}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `${API_URL}/analytics?exercise=${encodeURIComponent(exerciseName)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (res.ok) {
         const json = await res.json();
@@ -138,9 +144,6 @@ const Analytics = () => {
     }
     return null;
   };
-
-
-
 
   if (loading) {
     return (
@@ -433,8 +436,6 @@ const Analytics = () => {
                         animationDuration={0}
                         wrapperStyle={{ outline: 'none', pointerEvents: 'none' }}
                       />
-
-
 
                       <Legend
                         verticalAlign="bottom"

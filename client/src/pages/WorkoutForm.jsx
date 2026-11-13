@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -9,6 +10,9 @@ import {
   CalendarIcon,
   CheckIcon,
 } from '../components/Icons';
+
+// API base URL: local Vite proxy or deployed Render backend
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const WORKOUT_TYPES = [
   'Strength',
@@ -48,7 +52,7 @@ const WorkoutForm = () => {
     const fetchWorkout = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/workouts/${id}`, {
+        const res = await fetch(`${API_URL}/workouts/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -155,7 +159,9 @@ const WorkoutForm = () => {
 
     try {
       setSubmitting(true);
-      const url = isEditMode ? `/api/workouts/${id}` : '/api/workouts';
+      const url = isEditMode
+        ? `${API_URL}/workouts/${id}`
+        : `${API_URL}/workouts`;
       const method = isEditMode ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -349,7 +355,10 @@ const WorkoutForm = () => {
             ) : (
               <div className="d-flex flex-column gap-3 mb-3">
                 {exercises.map((ex, index) => {
-                  const subVolume = (Number(ex.sets) || 0) * (Number(ex.reps) || 0) * (Number(ex.weight) || 0);
+                  const subVolume =
+                    (Number(ex.sets) || 0) *
+                    (Number(ex.reps) || 0) *
+                    (Number(ex.weight) || 0);
 
                   return (
                     <div key={index} className="exercise-row-card">
@@ -430,7 +439,10 @@ const WorkoutForm = () => {
                       {/* Subtotal volume indicator */}
                       {subVolume > 0 && (
                         <div className="mt-2 text-end small text-muted font-monospace">
-                          Subtotal Volume: <span className="fw-semibold text-dark">{subVolume.toLocaleString()} kg</span>
+                          Subtotal Volume:{' '}
+                          <span className="fw-semibold text-dark">
+                            {subVolume.toLocaleString()} kg
+                          </span>
                         </div>
                       )}
                     </div>
