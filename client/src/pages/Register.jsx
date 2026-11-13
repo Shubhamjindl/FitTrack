@@ -55,7 +55,7 @@ const Register = () => {
             >
               <DumbbellIcon size={32} />
             </div>
-            <h2 className="fw-bold text-dark mb-1">Join FitTrack</h2>
+            <h2 className="fw-bold text-dark mb-1">Join UpToFit</h2>
             <p className="text-muted small">Create an account to start logging and analyzing workouts</p>
           </div>
 

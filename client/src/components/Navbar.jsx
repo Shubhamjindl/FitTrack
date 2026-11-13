@@ -42,7 +42,7 @@ const Navbar = () => {
             <DumbbellIcon size={22} />
           </div>
           <span style={{ letterSpacing: '-0.5px' }}>
-            Fit<span style={{ color: 'var(--primary-green)' }}>Track</span>
+            UpTo<span style={{ color: 'var(--primary-green)' }}>Fit</span>
           </span>
         </Link>
 

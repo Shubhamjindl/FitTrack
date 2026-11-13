@@ -13,7 +13,7 @@ const Footer = () => {
             <DumbbellIcon size={16} />
           </div>
           <span className="fw-bold text-dark">
-            Fit<span style={{ color: 'var(--primary-green)' }}>Track</span>
+            UpTo<span style={{ color: 'var(--primary-green)' }}>Fit</span>
           </span>
           <span className="text-muted">| Modern MERN Fitness & Workout Tracker</span>
         </div>
