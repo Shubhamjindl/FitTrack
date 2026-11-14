@@ -353,11 +353,11 @@ const Workouts = () => {
             </div>
 
             {/* Bar Chart with numbers on top of bars */}
-            <div style={{ width: '100%', height: 145 }}>
+            <div style={{ width: '100%', height: 168 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={historyOverviewData}
-                  margin={{ top: 20, right: 8, left: -22, bottom: 4 }}
+                  margin={{ top: 18, right: 12, left: 0, bottom: 0 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.12)" />
                   <XAxis
@@ -369,6 +369,7 @@ const Workouts = () => {
                     dy={3}
                   />
                   <YAxis
+                    width={26}
                     domain={[0, 8]}
                     ticks={[0, 2, 4, 6, 8]}
                     stroke="#94a3b8"
@@ -394,7 +395,7 @@ const Workouts = () => {
                     dataKey="sessions"
                     fill="#10b981"
                     radius={[4, 4, 0, 0]}
-                    maxBarSize={24}
+                    maxBarSize={34}
                   >
                     <LabelList
                       dataKey="sessions"
@@ -412,7 +413,7 @@ const Workouts = () => {
 
           {/* Footer clean: Weekly Avg only */}
           <div
-            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center"
+            className="smaller text-muted pt-2.5 mt-2.5 border-top d-flex align-items-center"
             style={{ fontSize: '0.8rem', borderColor: 'rgba(255, 255, 255, 0.08)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
@@ -453,8 +454,8 @@ const Workouts = () => {
 
           {/* Clean Center Content: Bold Green 7 and White days + circular flame emblem */}
           <div className="my-auto py-2">
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-baseline gap-1.5">
+            <div className="d-flex align-items-center justify-content-center" style={{ gap: '2.25rem' }}>
+              <div className="d-flex align-items-baseline" style={{ gap: '0.45rem' }}>
                 <span
                   className="fw-bolder"
                   style={{ fontSize: '2.8rem', lineHeight: 1, color: '#10b981', letterSpacing: '-1.5px' }}
@@ -490,7 +491,7 @@ const Workouts = () => {
 
       {/* Filter & Search Bar Card */}
       <div className="card card-fittrack p-3 mb-4">
-        <div className="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2.5">
+        <div className="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center" style={{ gap: '0.75rem' }}>
           {/* Search Input */}
           <div className="flex-grow-1">
             <form onSubmit={handleSearchSubmit}>
@@ -683,7 +684,7 @@ const Workouts = () => {
             </div>
 
             {/* Mobile View: Touch-Friendly Compact Cards */}
-            <div className="d-md-none d-flex flex-column gap-2.5">
+            <div className="d-md-none d-flex flex-column" style={{ gap: '0.75rem' }}>
               {workouts.map((workout) => (
                 <RecentWorkoutCard
                   key={workout._id}

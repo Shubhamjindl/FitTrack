@@ -129,15 +129,15 @@ const Dashboard = () => {
       </div>
 
       {/* Motivational Hero Banner */}
-      <div className="hero-card-v2 p-4 p-md-4.5 mb-4">
+      <div className="hero-card-v2 p-4 mb-4">
         <div className="hero-content">
           <h2 className="hero-title fw-bold text-dark mb-2">
             Stay Consistent. <span className="text-emerald">Get Stronger.</span>
           </h2>
-          <p className="hero-subtitle mb-3.5">
+          <p className="hero-subtitle mb-3">
             Log your workouts, track your progress, and build a healthier, stronger you.
           </p>
-          <div className="d-flex flex-wrap align-items-center gap-2.5">
+          <div className="d-flex flex-wrap align-items-center" style={{ gap: '0.85rem' }}>
             <Link to="/workouts/new" className="btn-hero-primary d-inline-flex align-items-center" style={{ gap: '0.5rem' }}>
               <PlusIcon size={17} />
               <span>Log Workout</span>
@@ -221,17 +221,17 @@ const Dashboard = () => {
       </div>
 
       {/* Weekly Activity & Fitness Snapshot Section */}
-      <div className="row g-3.5 mb-4 pb-1">
+      <div className="row g-4 mb-4 pb-1">
         {/* Weekly Activity Bar Chart */}
         <div className="col-12 col-lg-8">
-          <div className="card card-fittrack p-3.5 p-md-4 h-100">
+          <div className="card card-fittrack p-4 h-100">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <div className="d-flex align-items-center gap-2">
                 <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
                   <BarChartIcon size={18} />
                 </div>
                 <div>
-                  <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                  <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                     Weekly Activity
                   </h5>
                   <p className="text-muted smaller mb-0">
@@ -285,7 +285,7 @@ const Dashboard = () => {
 
         {/* Fitness Snapshot Card */}
         <div className="col-12 col-lg-4">
-          <div className="card card-fittrack fitness-snapshot-card p-3.5 p-md-4 h-100 d-flex flex-column justify-content-between">
+          <div className="card card-fittrack fitness-snapshot-card p-4 h-100 d-flex flex-column justify-content-between">
             {/* Decorative Sparkline Wave */}
             <svg className="snapshot-sparkline-bg" viewBox="0 0 140 80" fill="none">
               <path
@@ -307,7 +307,7 @@ const Dashboard = () => {
                 <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
                   <TargetIcon size={18} />
                 </div>
-                <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                   Fitness Snapshot
                 </h5>
               </div>
@@ -318,7 +318,7 @@ const Dashboard = () => {
                   <LayersIcon size={20} />
                 </div>
                 <div>
-                  <div className="fw-bold text-dark mb-0" style={{ fontSize: '1.2rem', lineHeight: 1.15 }}>
+                  <div className="fw-semibold text-white mb-0" style={{ fontSize: '1.2rem', lineHeight: 1.15, fontWeight: 600 }}>
                     {(stats?.totalVolume || 0).toLocaleString()} <span className="smaller fw-normal text-muted">kg</span>
                   </div>
                   <div className="smaller text-muted">Total Volume Moved</div>
@@ -331,7 +331,7 @@ const Dashboard = () => {
                   <ClockIcon size={20} />
                 </div>
                 <div>
-                  <div className="fw-bold text-dark mb-0" style={{ fontSize: '1.2rem', lineHeight: 1.15 }}>
+                  <div className="fw-semibold text-white mb-0" style={{ fontSize: '1.2rem', lineHeight: 1.15, fontWeight: 600 }}>
                     {avgDuration} <span className="smaller fw-normal text-muted">min / workout</span>
                   </div>
                   <div className="smaller text-muted">Average Session</div>
@@ -355,7 +355,8 @@ const Dashboard = () => {
             <div className="pt-2">
               <Link
                 to="/analytics"
-                className="btn btn-subtle-green w-100 justify-content-center d-flex align-items-center gap-1.5"
+                className="btn btn-subtle-green w-100 justify-content-center d-flex align-items-center"
+                style={{ gap: '0.5rem' }}
               >
                 <span>View Full Analytics</span>
                 <ChevronRightIcon size={16} />

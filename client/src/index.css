@@ -221,7 +221,18 @@ a {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card-fittrack:hover {
+  transform: translateY(-2px);
+  border-color: #10b981;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="dark"] .card-fittrack:hover {
+  border-color: #10b981;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
 }
 
 .card-fittrack-hover:hover {
@@ -1314,17 +1325,47 @@ a {
   border-color: var(--primary-green);
 }
 
-/* Stat Cards V2 - Static, Clean, No Hover Jumps */
+/* Stat Cards V2 - Responsive Hover Highlighting (matching Recent Workout Cards) */
 .stat-card-v2 {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 14px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.stat-card-v2:hover {
+  transform: translateY(-2px);
+  border-color: #10b981;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.07);
 }
 
 [data-theme="dark"] .stat-card-v2 {
   background-color: #15181e;
   border-color: #262a33;
+}
+
+[data-theme="dark"] .stat-card-v2:hover {
+  border-color: #10b981;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+/* Overview Cards Grid Hover Highlighting */
+.overview-cards-grid .card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.overview-cards-grid .card:hover {
+  transform: translateY(-2px);
+  border-color: #10b981 !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="dark"] .overview-cards-grid .card:hover {
+  border-color: #10b981 !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
 }
 
 /* Fitness Snapshot Card */
@@ -1815,9 +1856,15 @@ a {
   color: var(--text-muted);
 }
 
-
-
-
-
-
+/* Decimal spacing & gutter utility fallbacks */
+.gap-1\.5 { gap: 0.375rem !important; }
+.gap-2\.5 { gap: 0.625rem !important; }
+.gap-3\.5 { gap: 0.875rem !important; }
+.gap-4\.5 { gap: 1.125rem !important; }
+.g-1\.5 { --bs-gutter-x: 0.375rem; --bs-gutter-y: 0.375rem; }
+.g-2\.5 { --bs-gutter-x: 0.625rem; --bs-gutter-y: 0.625rem; }
+.g-3\.5 { --bs-gutter-x: 0.875rem; --bs-gutter-y: 0.875rem; }
+.p-3\.5 { padding: 0.875rem !important; }
+.p-4\.5 { padding: 1.125rem !important; }
+.mb-3\.5 { margin-bottom: 0.875rem !important; }
 
