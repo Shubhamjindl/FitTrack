@@ -26,7 +26,10 @@ import {
   ZapIcon,
   TrophyIcon,
   BarChartIcon,
-  ChevronDownIcon,
+  TargetIcon,
+  CrosshairIcon,
+  TrendingUpIcon,
+  ActivityIcon,
 } from '../components/Icons';
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
@@ -187,17 +190,17 @@ const Workouts = () => {
   ];
 
   return (
-    <div className="container py-3.5 animate-fade-in">
+    <div className="container py-4 animate-fade-in">
       {/* Title Header */}
-      <div className="mb-3.5">
-        <h1 className="fw-bold text-dark mb-1 h3">Workout History</h1>
+      <div className="mb-4">
+        <h1 className="fw-bold text-white mb-1 h3">Workout History</h1>
         <p className="text-muted mb-0 small">
           Browse, search, and review all your logged workout sessions
         </p>
       </div>
 
       {/* Top 4 Stat Cards */}
-      <div className="row g-3 mb-3.5">
+      <div className="row g-4 mb-4">
         <div className="col-12 col-sm-6 col-lg-3">
           <StatCard
             title="Total Workouts"
@@ -241,179 +244,246 @@ const Workouts = () => {
         </div>
       </div>
 
-      {/* 3 Overview Cards Set Horizontally: Frequently Trained (col-lg-5) -> History Overview (col-lg-4) -> Training Streak (col-lg-3) */}
-      <div className="row g-3 g-xl-4 mb-4">
-        {/* Card 1: Frequently Trained (Enlarged) */}
-        <div className="col-12 col-lg-5">
-          <div className="card card-fittrack p-3.5 h-100 d-flex flex-column justify-content-between">
-            <div>
-              <div className="d-flex align-items-center justify-content-between mb-3">
-                <div className="d-flex align-items-center gap-2">
-                  <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
-                    <DumbbellIcon size={16} />
-                  </div>
-                  <h6 className="fw-bold text-dark mb-0" style={{ fontSize: '0.92rem' }}>
-                    Frequently Trained
-                  </h6>
+      {/* 3 Overview Cards Set Horizontally: Frequently Trained (~43%) -> History Overview (~35%) -> Training Streak (~22%) */}
+      <div className="overview-cards-grid">
+        {/* Card 1: Frequently Trained */}
+        <div
+          className="card card-fittrack h-100 d-flex flex-column justify-content-between"
+          style={{ padding: '1.25rem 1.4rem' }}
+        >
+          <div>
+            <div className="d-flex align-items-center justify-content-between mb-3">
+              <div className="d-flex align-items-center gap-2">
+                <div
+                  className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center"
+                  style={{ width: 32, height: 32 }}
+                >
+                  <DumbbellIcon size={16} />
                 </div>
-                <span className="badge bg-light text-muted border px-2 py-0.5 smaller fw-medium">
-                  5 Focus Areas
+                <h6 className="fw-bold text-white mb-0" style={{ fontSize: '0.95rem' }}>
+                  Frequently Trained
+                </h6>
+              </div>
+              <span
+                className="badge rounded-pill border border-secondary border-opacity-30 text-muted px-2.5 py-1 smaller fw-medium bg-transparent"
+                style={{ fontSize: '0.75rem' }}
+              >
+                5 Focus Areas
+              </span>
+            </div>
+
+            {/* Generously Spaced Muscle Rows: All bars same original green color */}
+            <div className="d-flex flex-column gap-3 my-auto py-1">
+              {muscleFocus.map((m) => (
+                <div key={m.name} className="d-flex align-items-center justify-content-between gap-3">
+                  <span className="fw-semibold text-white smaller" style={{ minWidth: 72, fontSize: '0.84rem' }}>
+                    {m.name}
+                  </span>
+                  <div
+                    className="flex-grow-1 mx-3"
+                    style={{
+                      height: 8,
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      borderRadius: 9999,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: `${m.barPercent}%`,
+                        height: '100%',
+                        backgroundColor: '#10b981',
+                        borderRadius: 9999,
+                        transition: 'width 0.4s ease',
+                      }}
+                    />
+                  </div>
+                  <span className="text-muted smaller fw-medium text-end" style={{ minWidth: 72, fontSize: '0.84rem' }}>
+                    <strong className="text-white">{m.sessions}</strong> {m.sessions === 1 ? 'session' : 'sessions'}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Footer with white and bold Primary Focus matching History Overview style */}
+          <div
+            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center justify-content-between"
+            style={{ fontSize: '0.8rem', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+          >
+            <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
+              <CrosshairIcon size={14} className="text-muted flex-shrink-0" />
+              <span>
+                <span className="text-muted">Primary Focus:&nbsp;</span>
+                <strong className="text-white fw-bold">Legs & Chest</strong>
+              </span>
+            </span>
+            <span className="text-emerald fw-semibold d-inline-flex align-items-center text-nowrap" style={{ gap: '0.45rem' }}>
+              <CalendarIcon size={13} className="text-emerald flex-shrink-0" />
+              <span>9 Sessions</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Card 2: History Overview (Wider) */}
+        <div
+          className="card card-fittrack h-100 d-flex flex-column justify-content-between"
+          style={{ padding: '1.25rem 1.4rem' }}
+        >
+          <div>
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <div className="d-flex align-items-center gap-2 min-w-0">
+                <div
+                  className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
+                  style={{ width: 30, height: 30 }}
+                >
+                  <BarChartIcon size={15} />
+                </div>
+                <h6 className="fw-bold text-white mb-0 text-nowrap" style={{ fontSize: '0.92rem' }}>
+                  History Overview
+                </h6>
+              </div>
+              {/* Clean static badge without chevron */}
+              <span
+                className="badge rounded-pill border border-secondary border-opacity-30 text-muted px-2.5 py-0.5 smaller fw-medium bg-transparent text-nowrap flex-shrink-0"
+                style={{ fontSize: '0.72rem' }}
+              >
+                Last 4 Weeks
+              </span>
+            </div>
+
+            {/* Bar Chart with numbers on top of bars */}
+            <div style={{ width: '100%', height: 145 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={historyOverviewData}
+                  margin={{ top: 20, right: 8, left: -22, bottom: 4 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.12)" />
+                  <XAxis
+                    dataKey="week"
+                    stroke="#94a3b8"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={{ stroke: 'rgba(148, 163, 184, 0.2)' }}
+                    dy={3}
+                  />
+                  <YAxis
+                    domain={[0, 8]}
+                    ticks={[0, 2, 4, 6, 8]}
+                    stroke="#94a3b8"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={{ stroke: 'rgba(148, 163, 184, 0.2)' }}
+                  />
+                  <Tooltip
+                    cursor={{ fill: 'rgba(16, 185, 129, 0.06)' }}
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        return (
+                          <div className="p-2 rounded-2 shadow-sm bg-dark text-white smaller border">
+                            <span className="fw-bold">{payload[0].payload.week}</span>: {payload[0].value}{' '}
+                            {payload[0].value === 1 ? 'workout' : 'workouts'}
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                  <Bar
+                    dataKey="sessions"
+                    fill="#10b981"
+                    radius={[4, 4, 0, 0]}
+                    maxBarSize={24}
+                  >
+                    <LabelList
+                      dataKey="sessions"
+                      position="top"
+                      fill="#ffffff"
+                      fontSize={11}
+                      fontWeight={700}
+                      offset={5}
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Footer clean: Weekly Avg only */}
+          <div
+            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center"
+            style={{ fontSize: '0.8rem', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+          >
+            <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
+              <TrendingUpIcon size={13} className="text-muted flex-shrink-0" />
+              <span>
+                <span className="text-muted">Weekly Avg:&nbsp;</span>
+                <strong className="text-white fw-bold">2.8 workouts</strong>
+              </span>
+            </span>
+          </div>
+        </div>
+
+        {/* Card 3: Training Streak (Compact) */}
+        <div
+          className="card card-fittrack h-100 d-flex flex-column justify-content-between"
+          style={{ padding: '1.25rem 1.15rem' }}
+        >
+          {/* Header */}
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="d-flex align-items-center min-w-0" style={{ gap: '0.5rem' }}>
+              <div
+                className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
+                style={{ width: 28, height: 28 }}
+              >
+                <FlameIcon size={15} />
+              </div>
+              <span className="fw-bold text-white mb-0 text-nowrap" style={{ fontSize: '0.88rem' }}>
+                Training Streak
+              </span>
+            </div>
+            <span
+              className="badge rounded-pill bg-emerald-subtle text-emerald px-2 py-0.5 fw-semibold smaller flex-shrink-0"
+              style={{ fontSize: '0.72rem' }}
+            >
+              Active
+            </span>
+          </div>
+
+          {/* Clean Center Content: Bold Green 7 and White days + circular flame emblem */}
+          <div className="my-auto py-2">
+            <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-baseline gap-1.5">
+                <span
+                  className="fw-bolder"
+                  style={{ fontSize: '2.8rem', lineHeight: 1, color: '#10b981', letterSpacing: '-1.5px' }}
+                >
+                  7
+                </span>
+                <span className="text-white fw-semibold" style={{ fontSize: '1.15rem' }}>
+                  days
                 </span>
               </div>
 
-              {/* Generously Spaced Muscle Rows: Name on left, wide bar in middle, sessions on right */}
-              <div className="d-flex flex-column gap-2.5 my-auto py-1">
-                {muscleFocus.map((m) => (
-                  <div key={m.name} className="d-flex align-items-center justify-content-between gap-3">
-                    <span className="fw-semibold text-dark smaller" style={{ minWidth: 72 }}>
-                      {m.name}
-                    </span>
-                    <div className="flex-grow-1 mx-2 muscle-bar-track" style={{ height: 8 }}>
-                      <div
-                        className="muscle-bar-fill"
-                        style={{ width: `${m.barPercent}%`, backgroundColor: '#10b981' }}
-                      />
-                    </div>
-                    <span className="text-muted smaller fw-medium text-end" style={{ minWidth: 72 }}>
-                      <strong className="text-dark">{m.sessions}</strong> {m.sessions === 1 ? 'session' : 'sessions'}
-                    </span>
-                  </div>
-                ))}
+              <div className="streak-circle-badge flex-shrink-0" style={{ width: 44, height: 44 }}>
+                <FlameIcon size={20} />
               </div>
-            </div>
-
-            <div className="smaller text-muted pt-2.5 mt-auto border-top d-flex align-items-center justify-content-between">
-              <span>Primary Focus: <strong className="text-dark">Legs & Chest</strong></span>
-              <span className="text-emerald fw-semibold">9 Sessions</span>
             </div>
           </div>
-        </div>
 
-        {/* Card 2: History Overview (Reduced width) */}
-        <div className="col-12 col-lg-4">
-          <div className="card card-fittrack p-3.5 h-100 d-flex flex-column justify-content-between">
-            <div>
-              <div className="d-flex align-items-center justify-content-between mb-2">
-                <div className="d-flex align-items-center gap-2">
-                  <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
-                    <BarChartIcon size={16} />
-                  </div>
-                  <h6 className="fw-bold text-dark mb-0" style={{ fontSize: '0.92rem' }}>
-                    History Overview
-                  </h6>
-                </div>
-                <div className="badge bg-light text-dark border px-2 py-0.5 smaller fw-medium d-inline-flex align-items-center gap-1">
-                  <span>Last 4 Weeks</span>
-                  <ChevronDownIcon size={11} className="text-muted" />
-                </div>
-              </div>
-
-              {/* Bar Chart with numbers on top of bars */}
-              <div style={{ width: '100%', height: 145 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={historyOverviewData}
-                    margin={{ top: 20, right: 10, left: -25, bottom: 0 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
-                    <XAxis
-                      dataKey="week"
-                      stroke="#94a3b8"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={{ stroke: 'rgba(148, 163, 184, 0.2)' }}
-                    />
-                    <YAxis
-                      domain={[0, 8]}
-                      ticks={[0, 2, 4, 6, 8]}
-                      stroke="#94a3b8"
-                      fontSize={10}
-                      tickLine={false}
-                      axisLine={{ stroke: 'rgba(148, 163, 184, 0.2)' }}
-                    />
-                    <Tooltip
-                      cursor={{ fill: 'rgba(16, 185, 129, 0.06)' }}
-                      content={({ active, payload }) => {
-                        if (active && payload && payload.length) {
-                          return (
-                            <div className="p-2 rounded-2 shadow-sm bg-dark text-white smaller border">
-                              <span className="fw-bold">{payload[0].payload.week}</span>: {payload[0].value}{' '}
-                              {payload[0].value === 1 ? 'workout' : 'workouts'}
-                            </div>
-                          );
-                        }
-                        return null;
-                      }}
-                    />
-                    <Bar
-                      dataKey="sessions"
-                      fill="#10b981"
-                      radius={[4, 4, 0, 0]}
-                      maxBarSize={28}
-                    >
-                      <LabelList
-                        dataKey="sessions"
-                        position="top"
-                        fill="#10b981"
-                        fontSize={11}
-                        fontWeight={700}
-                        offset={6}
-                      />
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            <div className="smaller text-muted pt-2.5 mt-auto border-top d-flex align-items-center justify-content-between">
-              <span>Weekly Avg: <strong className="text-dark">2.8 workouts</strong></span>
-              <span className="text-emerald fw-semibold">+33%</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 3: Training Streak (Spacious & Uncluttered from inside) */}
-        <div className="col-12 col-lg-3">
-          <div className="card card-fittrack p-3.5 h-100 d-flex flex-column justify-content-between">
-            {/* Header */}
-            <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-1.5">
-                <div className="p-1.5 rounded-2 bg-amber-subtle text-amber d-flex align-items-center justify-content-center">
-                  <FlameIcon size={16} />
-                </div>
-                <span className="fw-bold text-dark small">Training Streak</span>
-              </div>
-              <span className="badge rounded-pill bg-emerald-subtle text-emerald px-2 py-0.5 fw-semibold smaller">
-                Active
+          {/* Footer without Top 5% and without pipe */}
+          <div
+            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center"
+            style={{ fontSize: '0.8rem', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+          >
+            <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
+              <TrophyIcon size={13} className="text-muted flex-shrink-0" />
+              <span>
+                <span className="text-muted">Best:&nbsp;</span>
+                <strong className="text-white fw-bold">14 days</strong>
               </span>
-            </div>
-
-            {/* Clean Center Content: Big bold number & circular flame badge */}
-            <div className="my-auto py-3">
-              <div className="d-flex align-items-center justify-content-between">
-                <div>
-                  <div className="fw-bolder text-dark" style={{ fontSize: '2.5rem', lineHeight: 1 }}>
-                    7 <span className="text-muted fw-normal" style={{ fontSize: '1.1rem' }}>days</span>
-                  </div>
-                  <div className="smaller text-muted mt-2" style={{ fontSize: '0.82rem' }}>
-                    Consecutive streak
-                  </div>
-                </div>
-
-                <div className="streak-circle-badge flex-shrink-0" style={{ width: 50, height: 50 }}>
-                  <FlameIcon size={24} />
-                </div>
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="smaller text-muted pt-2.5 mt-auto border-top d-flex align-items-center justify-content-between">
-              <span className="d-inline-flex align-items-center gap-1">
-                <TrophyIcon size={12} className="text-amber" />
-                Best: <strong className="text-dark">14 days</strong>
-              </span>
-              <span className="text-emerald fw-semibold">Top 5%</span>
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -489,22 +559,22 @@ const Workouts = () => {
 
           {/* Action: + Log Workout */}
           <div>
-            <Link to="/workouts/new" className="btn btn-primary-green btn-sm px-3 text-nowrap d-flex align-items-center gap-1.5">
+            <Link to="/workouts/new" className="btn btn-primary-green btn-sm px-3 text-nowrap d-flex align-items-center" style={{ gap: '0.5rem' }}>
               <PlusIcon size={16} />
-              <span>+ Log Workout</span>
+              <span>Log Workout</span>
             </Link>
           </div>
         </div>
       </div>
 
       {/* Workout Sessions Table (Full Width - Clean & Spacious) */}
-      <div className="card card-fittrack p-3.5 p-md-4">
+      <div className="card card-fittrack p-3 p-md-4">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <div className="d-flex align-items-center gap-2">
             <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
               <CalendarIcon size={18} />
             </div>
-            <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+            <h5 className="fw-bold text-white mb-0" style={{ fontSize: '1rem' }}>
               Workout Sessions ({workouts.length})
             </h5>
           </div>
@@ -524,12 +594,12 @@ const Workouts = () => {
         ) : workouts.length === 0 ? (
           <div className="p-4 text-center">
             <div
-              className="d-inline-flex p-3 rounded-circle bg-light text-muted mx-auto mb-2.5"
+              className="d-inline-flex p-3 rounded-circle bg-light text-muted mx-auto mb-3"
               style={{ width: 56, height: 56, alignItems: 'center', justifyItems: 'center' }}
             >
               <DumbbellIcon size={28} />
             </div>
-            <h6 className="fw-bold text-dark mb-1">No workouts found</h6>
+            <h6 className="fw-bold text-white mb-1">No workouts found</h6>
             <p className="text-muted smaller mb-3">
               No sessions match your search or filter criteria.
             </p>

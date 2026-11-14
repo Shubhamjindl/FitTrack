@@ -35,7 +35,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg fittrack-navbar py-2 px-3">
       <div className="container-fluid max-w-7xl">
-        <Link to="/" className="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary-custom fs-4" onClick={closeMenu}>
+        <Link to="/" className="navbar-brand d-flex align-items-center fw-bold text-primary-custom fs-4" style={{ gap: '0.75rem' }} onClick={closeMenu}>
           <div
             className="d-flex align-items-center justify-content-center text-white rounded-3 p-2"
             style={{ backgroundColor: 'var(--primary-green)', width: 38, height: 38 }}

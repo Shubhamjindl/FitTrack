@@ -138,11 +138,11 @@ const Dashboard = () => {
             Log your workouts, track your progress, and build a healthier, stronger you.
           </p>
           <div className="d-flex flex-wrap align-items-center gap-2.5">
-            <Link to="/workouts/new" className="btn-hero-primary d-inline-flex align-items-center gap-2">
+            <Link to="/workouts/new" className="btn-hero-primary d-inline-flex align-items-center" style={{ gap: '0.5rem' }}>
               <PlusIcon size={17} />
-              <span>+ Log Workout</span>
+              <span>Log Workout</span>
             </Link>
-            <Link to="/workouts" className="btn-hero-outline d-inline-flex align-items-center gap-2">
+            <Link to="/workouts" className="btn-hero-outline d-inline-flex align-items-center" style={{ gap: '0.5rem' }}>
               <CalendarIcon size={16} />
               <span>View History</span>
             </Link>

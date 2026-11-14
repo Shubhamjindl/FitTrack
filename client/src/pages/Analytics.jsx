@@ -133,17 +133,17 @@ const Analytics = () => {
   const distinctExercises = data?.distinctExercises || [];
 
   return (
-    <div className="container py-3.5 animate-fade-in">
+    <div className="container py-4 animate-fade-in">
       {/* Title Header */}
-      <div className="mb-3.5">
-        <h1 className="fw-bold text-dark mb-1 h3">Progress Analytics</h1>
+      <div className="mb-4">
+        <h1 className="fw-semibold text-white mb-1 h3" style={{ fontWeight: 600 }}>Progress Analytics</h1>
         <p className="text-muted mb-0 small">
           Visualize workout frequency, duration trends, exercise strength progress, and category distribution
         </p>
       </div>
 
-      {/* Top 4 Metric Cards (Matching Previous Structure with New Clean Design) */}
-      <div className="row g-3 mb-4">
+      {/* Top 4 Metric Cards */}
+      <div className="row g-4 mb-4">
         {/* Card 1: AVG DURATION */}
         <div className="col-12 col-sm-6 col-lg-3">
           <StatCard
@@ -190,17 +190,17 @@ const Analytics = () => {
         </div>
       </div>
 
-      {/* Row 1: 2 Big Charts Side by Side (50% / 50%) */}
-      <div className="row g-3.5 mb-3.5">
+      {/* Row 1: 2 Big Charts Side by Side (50% / 50%) with 24px gap */}
+      <div className="row g-4 mb-4">
         {/* Chart 1: Workout Frequency (Last 6 Months) */}
         <div className="col-12 col-lg-6">
-          <div className="card card-fittrack p-3.5 p-md-4 h-100">
-            <div className="d-flex align-items-center gap-2 mb-3">
-              <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
+          <div className="card card-fittrack p-4 h-100">
+            <div className="d-flex align-items-center mb-3" style={{ gap: '0.65rem' }}>
+              <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 32, height: 32 }}>
                 <BarChartIcon size={16} />
               </div>
               <div>
-                <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
                   Workout Frequency (Last 6 Months)
                 </h5>
                 <p className="text-muted smaller mb-0">
@@ -238,13 +238,13 @@ const Analytics = () => {
 
         {/* Chart 2: Session Duration Trend */}
         <div className="col-12 col-lg-6">
-          <div className="card card-fittrack p-3.5 p-md-4 h-100">
-            <div className="d-flex align-items-center gap-2 mb-3">
-              <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
+          <div className="card card-fittrack p-4 h-100">
+            <div className="d-flex align-items-center mb-3" style={{ gap: '0.65rem' }}>
+              <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 32, height: 32 }}>
                 <ClockIcon size={16} />
               </div>
               <div>
-                <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
                   Session Duration Trend
                 </h5>
                 <p className="text-muted smaller mb-0">
@@ -296,18 +296,18 @@ const Analytics = () => {
       </div>
 
       {/* Row 2: 2 Big Charts Side by Side (50% / 50%) */}
-      <div className="row g-3.5 mb-4">
+      <div className="row g-4 mb-4">
         {/* Chart 3: Exercise Weight Progression */}
         <div className="col-12 col-lg-6">
-          <div className="card card-fittrack p-3.5 p-md-4 h-100 d-flex flex-column justify-content-between">
+          <div className="card card-fittrack p-4 h-100 d-flex flex-column justify-content-between">
             <div>
               <div className="d-flex justify-content-between align-items-start mb-3">
-                <div className="d-flex align-items-center gap-2">
-                  <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
+                <div className="d-flex align-items-center" style={{ gap: '0.65rem' }}>
+                  <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 32, height: 32 }}>
                     <DumbbellIcon size={16} />
                   </div>
                   <div>
-                    <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                    <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
                       Exercise Weight Progression
                     </h5>
                     <p className="text-muted smaller mb-0">
@@ -376,14 +376,14 @@ const Analytics = () => {
 
         {/* Chart 4: Workout Type Distribution Donut Chart */}
         <div className="col-12 col-lg-6">
-          <div className="card card-fittrack p-3.5 p-md-4 h-100 d-flex flex-column justify-content-between">
+          <div className="card card-fittrack p-4 h-100 d-flex flex-column justify-content-between">
             <div>
-              <div className="d-flex align-items-center gap-2 mb-3">
-                <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
+              <div className="d-flex align-items-center mb-3" style={{ gap: '0.65rem' }}>
+                <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 32, height: 32 }}>
                   <BarChartIcon size={16} />
                 </div>
                 <div>
-                  <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                  <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
                     Workout Type Distribution
                   </h5>
                   <p className="text-muted smaller mb-0">
@@ -436,7 +436,7 @@ const Analytics = () => {
                   { name: 'Strength', value: 7 },
                   { name: 'Yoga', value: 1 },
                 ]).map((t, idx) => (
-                  <div key={t.name} className="d-flex align-items-center gap-1.5 smaller">
+                  <div key={t.name} className="d-flex align-items-center smaller" style={{ gap: '0.45rem' }}>
                     <span
                       className="rounded-circle d-inline-block"
                       style={{

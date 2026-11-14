@@ -110,32 +110,32 @@ const Profile = () => {
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'A';
 
   return (
-    <div className="container py-3.5 animate-fade-in max-w-4xl">
+    <div className="container py-4 animate-fade-in max-w-4xl">
       {/* Page Title */}
-      <div className="mb-3.5 pb-1">
-        <h1 className="fw-bold text-dark mb-1 h3">Athlete Profile</h1>
+      <div className="mb-4 pb-1">
+        <h1 className="fw-semibold text-white mb-1 h3">Athlete Profile</h1>
         <p className="text-muted mb-0 small">
           Manage your account details and security settings
         </p>
       </div>
 
       {/* User Header Profile Card with Mountain Summit Graphic */}
-      <div className="profile-hero-card p-4 p-md-4.5 mb-4">
-        <div className="profile-hero-content d-flex flex-column flex-sm-row align-items-center gap-3.5">
-          <div className="profile-avatar-circle shadow-sm">
+      <div className="profile-hero-card p-4 mb-4">
+        <div className="profile-hero-content d-flex flex-column flex-sm-row align-items-center" style={{ gap: '1.25rem' }}>
+          <div className="profile-avatar-circle shadow-sm flex-shrink-0">
             {userInitial}
           </div>
 
           <div className="text-center text-sm-start flex-grow-1">
-            <h2 className="fw-bold text-dark mb-1 h4">{user?.name || 'Alex Morgan'}</h2>
-            <div className="d-flex flex-wrap justify-content-center justify-content-sm-start align-items-center gap-2.5 text-muted small">
-              <span className="d-flex align-items-center gap-1.5">
-                <MailIcon size={14} />
+            <h2 className="fw-semibold text-white mb-1 h4" style={{ fontWeight: 600 }}>{user?.name || 'Alex Morgan'}</h2>
+            <div className="d-flex flex-wrap justify-content-center justify-content-sm-start align-items-center text-muted small" style={{ gap: '0.85rem' }}>
+              <span className="d-inline-flex align-items-center" style={{ gap: '0.45rem' }}>
+                <MailIcon size={14} className="text-muted flex-shrink-0" />
                 <span>{user?.email || 'alex.fit@example.com'}</span>
               </span>
-              <span>•</span>
-              <span className="d-flex align-items-center gap-1.5">
-                <CalendarIcon size={14} />
+              <span className="text-muted opacity-50">•</span>
+              <span className="d-inline-flex align-items-center" style={{ gap: '0.45rem' }}>
+                <CalendarIcon size={14} className="text-muted flex-shrink-0" />
                 <span>Member since {memberSince}</span>
               </span>
             </div>
@@ -168,12 +168,12 @@ const Profile = () => {
         {/* Update Information */}
         <div className="col-12 col-md-6">
           <div className="card card-fittrack p-4 h-100">
-            <div className="d-flex align-items-center gap-2.5 mb-3">
-              <div className="section-icon-badge">
+            <div className="d-flex align-items-center mb-3" style={{ gap: '0.65rem' }}>
+              <div className="section-icon-badge flex-shrink-0">
                 <UserIcon size={18} />
               </div>
               <div>
-                <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                   Update Information
                 </h5>
                 <p className="text-muted smaller mb-0">
@@ -261,12 +261,12 @@ const Profile = () => {
         {/* Security & Password */}
         <div className="col-12 col-md-6">
           <div className="card card-fittrack p-4 h-100">
-            <div className="d-flex align-items-center gap-2.5 mb-3">
-              <div className="section-icon-badge">
+            <div className="d-flex align-items-center mb-3" style={{ gap: '0.65rem' }}>
+              <div className="section-icon-badge flex-shrink-0">
                 <LockIcon size={18} />
               </div>
               <div>
-                <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                   Security & Password
                 </h5>
                 <p className="text-muted smaller mb-0">

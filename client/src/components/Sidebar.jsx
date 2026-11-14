@@ -30,7 +30,7 @@ const Sidebar = () => {
       {/* Top Section: Logo & Navigation */}
       <div>
         {/* Brand Header */}
-        <Link to="/" className="sidebar-brand d-flex align-items-center gap-2.5 text-white">
+        <Link to="/" className="sidebar-brand d-flex align-items-center text-white" style={{ gap: '0.75rem' }}>
           <div className="sidebar-logo-icon">
             <DumbbellIcon size={20} />
           </div>

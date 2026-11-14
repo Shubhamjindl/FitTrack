@@ -49,16 +49,16 @@ const StatCard = ({
       </div>
       <div className="min-w-0 flex-grow-1">
         <div className="d-flex align-items-baseline gap-1">
-          <span className="fw-bold stat-card-value text-dark" style={{ fontSize: '1.45rem', lineHeight: 1.15, letterSpacing: '-0.5px' }}>
+          <span className="stat-card-value text-white" style={{ fontSize: '1.42rem', lineHeight: 1.15, fontWeight: 600, letterSpacing: '-0.4px' }}>
             {value}
           </span>
           {unit && (
-            <span className="text-muted fw-semibold" style={{ fontSize: '0.85rem' }}>
+            <span className="text-muted fw-medium" style={{ fontSize: '0.85rem' }}>
               {unit}
             </span>
           )}
         </div>
-        <div className="fw-semibold text-secondary-custom text-truncate mt-0.5" style={{ fontSize: '0.85rem' }}>
+        <div className="text-secondary-custom text-truncate mt-0.5" style={{ fontSize: '0.85rem', fontWeight: 500 }}>
           {title}
         </div>
         {subtitle && (
