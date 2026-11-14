@@ -9,6 +9,7 @@ import {
   ClockIcon,
   CalendarIcon,
   CheckIcon,
+  LockIcon,
 } from '../components/Icons';
 
 // API base URL: local Vite proxy or deployed Render backend
@@ -29,7 +30,8 @@ const WorkoutForm = () => {
   const { id } = useParams(); // If present, edit mode
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
-  const { token } = useAuth();
+  const { token, user, isDemo: authDemo } = useAuth();
+  const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
 
   const [loading, setLoading] = useState(isEditMode);
   const [submitting, setSubmitting] = useState(false);
@@ -128,6 +130,11 @@ const WorkoutForm = () => {
     e.preventDefault();
     setError('');
 
+    if (isDemo) {
+      setError('Demo account is view-only. You cannot add or edit workouts on this account.');
+      return;
+    }
+
     if (!name.trim()) {
       setError('Please provide a workout title/name.');
       return;
@@ -216,6 +223,18 @@ const WorkoutForm = () => {
           Back to Workouts
         </Link>
       </div>
+
+      {isDemo && (
+        <div className="demo-banner mb-4 d-flex align-items-center gap-3">
+          <div className="demo-banner-icon">
+            <LockIcon size={20} />
+          </div>
+          <div>
+            <div className="fw-semibold text-primary-custom mb-0.5">Demo Account (View Only)</div>
+            <div className="small text-muted">You are logged in as Alex Morgan. Adding or updating workouts is disabled on this demo account. Register your own personal account to record workouts!</div>
+          </div>
+        </div>
+      )}
 
       {error && (
         <div className="alert alert-danger rounded-3 mb-4" role="alert">
@@ -465,20 +484,22 @@ const WorkoutForm = () => {
         {/* Action Controls */}
         <div className="d-flex justify-content-end gap-2">
           <Link to="/workouts" className="btn btn-light border px-4">
-            Cancel
+            {isDemo ? 'Back to Workouts' : 'Cancel'}
           </Link>
-          <button
-            type="submit"
-            className="btn btn-primary-green px-4"
-            disabled={submitting}
-          >
-            {submitting ? (
-              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
-            ) : (
-              <CheckIcon size={18} />
-            )}
-            <span>{isEditMode ? 'Update Workout' : 'Save Workout'}</span>
-          </button>
+          {!isDemo && (
+            <button
+              type="submit"
+              className="btn btn-primary-green px-4"
+              disabled={submitting}
+            >
+              {submitting ? (
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+              ) : (
+                <CheckIcon size={18} />
+              )}
+              <span>{isEditMode ? 'Update Workout' : 'Save Workout'}</span>
+            </button>
+          )}
         </div>
       </form>
     </div>

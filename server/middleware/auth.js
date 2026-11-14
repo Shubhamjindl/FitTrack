@@ -41,4 +41,15 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+// Guard to block mutating actions on the public demo account
+const preventDemoAction = (req, res, next) => {
+  if (req.user && req.user.email && req.user.email.toLowerCase() === 'alex.fit@example.com') {
+    return res.status(403).json({
+      success: false,
+      message: 'Demo account is read-only. Create your own free account to add, edit, or delete workouts!',
+    });
+  }
+  next();
+};
+
+module.exports = { protect, preventDemoAction };

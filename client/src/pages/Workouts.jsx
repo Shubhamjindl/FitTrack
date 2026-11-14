@@ -30,7 +30,8 @@ const WORKOUT_TYPES = [
 ];
 
 const Workouts = () => {
-  const { token } = useAuth();
+  const { token, user, isDemo: authDemo } = useAuth();
+  const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -134,7 +135,7 @@ const Workouts = () => {
   };
 
   const handleDeleteWorkout = async () => {
-    if (!workoutToDelete) return;
+    if (!workoutToDelete || isDemo) return;
 
     try {
       const res = await fetch(`${API_URL}/workouts/${workoutToDelete._id}`, {
@@ -173,12 +174,14 @@ const Workouts = () => {
             Browse, search, filter, and review all your logged workout sessions
           </p>
         </div>
-        <div>
-          <Link to="/workouts/new" className="btn btn-primary-green">
-            <PlusIcon size={18} />
-            <span>Add New Workout</span>
-          </Link>
-        </div>
+        {!isDemo && (
+          <div>
+            <Link to="/workouts/new" className="btn btn-primary-green">
+              <PlusIcon size={18} />
+              <span>Add New Workout</span>
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Filter & Search Bar Card */}

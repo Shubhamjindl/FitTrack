@@ -7,18 +7,11 @@ import {
   CalendarIcon,
   LockIcon,
   CheckIcon,
-  ActivityIcon,
-  ClockIcon,
-  DumbbellIcon,
-  TrophyIcon,
 } from '../components/Icons';
 
-const API_URL = import.meta.env.VITE_API_URL || '/api';
-
 const Profile = () => {
-  const { user, token, updateProfile, changePassword } = useAuth();
-  const [profileStats, setProfileStats] = useState(null);
-  const [loadingStats, setLoadingStats] = useState(true);
+  const { user, updateProfile, changePassword, isDemo: authDemo } = useAuth();
+  const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
 
   // Name Update form
   const [name, setName] = useState(user?.name || '');
@@ -40,40 +33,16 @@ const Profile = () => {
     }
   }, [user]);
 
-  // Fetch full profile stats
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setLoadingStats(true);
-        const res = await fetch(`${API_URL}/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (res.ok) {
-          const json = await res.json();
-          setProfileStats(json.stats);
-        }
-      } catch (err) {
-        console.error('Failed to load profile stats:', err);
-      } finally {
-        setLoadingStats(false);
-      }
-    };
-
-    if (token) {
-      fetchProfile();
-    } else {
-      setLoadingStats(false);
-    }
-  }, [token]);
-
   // Handle Name Update
   const handleUpdateName = async (e) => {
     e.preventDefault();
     setNameSuccess('');
     setNameError('');
+
+    if (isDemo) {
+      setNameError('Demo account name cannot be changed.');
+      return;
+    }
 
     if (!name.trim()) {
       setNameError('Name cannot be empty.');
@@ -96,6 +65,11 @@ const Profile = () => {
     e.preventDefault();
     setPasswordSuccess('');
     setPasswordError('');
+
+    if (isDemo) {
+      setPasswordError('Demo account password cannot be changed.');
+      return;
+    }
 
     if (!currentPassword || !newPassword || !confirmPassword) {
       setPasswordError('Please fill in all password fields.');
@@ -139,7 +113,7 @@ const Profile = () => {
       <div className="mb-4 pb-2 border-bottom">
         <h1 className="fw-bold text-dark mb-1 h2">Athlete Profile</h1>
         <p className="text-muted mb-0 small">
-          View your fitness credentials, lifetime statistics, and account security
+          Manage your account profile details and security settings
         </p>
       </div>
 
@@ -170,67 +144,17 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Basic Fitness Statistics Overview */}
-      <div className="card card-fittrack p-4 mb-4">
-        <h5 className="fw-bold text-dark mb-3">Lifetime Fitness Statistics</h5>
-
-        {loadingStats ? (
-          <div className="py-4 text-center">
-            <div className="spinner-border text-success spinner-border-sm me-2" role="status" />
-            Loading statistics...
+      {isDemo && (
+        <div className="demo-banner mb-4 d-flex align-items-center gap-3">
+          <div className="demo-banner-icon">
+            <LockIcon size={20} />
           </div>
-        ) : (
-          <div className="row g-3">
-            <div className="col-6 col-md-3">
-              <div className="p-3 bg-light-section rounded-3 h-100">
-                <div className="d-flex align-items-center gap-2 text-muted small mb-1">
-                  <ActivityIcon size={16} className="text-success" />
-                  <span>Total Workouts</span>
-                </div>
-                <div className="h4 fw-bold text-dark mb-0">
-                  {profileStats?.totalWorkouts || 0}
-                </div>
-              </div>
-            </div>
-
-            <div className="col-6 col-md-3">
-              <div className="p-3 bg-light-section rounded-3 h-100">
-                <div className="d-flex align-items-center gap-2 text-muted small mb-1">
-                  <ClockIcon size={16} className="text-primary" />
-                  <span>Time Invested</span>
-                </div>
-                <div className="h4 fw-bold text-dark mb-0">
-                  {profileStats?.totalDurationHours || 0} <span className="small text-muted fw-normal">hrs</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-6 col-md-3">
-              <div className="p-3 bg-light-section rounded-3 h-100">
-                <div className="d-flex align-items-center gap-2 text-muted small mb-1">
-                  <DumbbellIcon size={16} className="text-purple" />
-                  <span>Exercises Logged</span>
-                </div>
-                <div className="h4 fw-bold text-dark mb-0">
-                  {profileStats?.totalExercises || 0}
-                </div>
-              </div>
-            </div>
-
-            <div className="col-6 col-md-3">
-              <div className="p-3 bg-light-section rounded-3 h-100">
-                <div className="d-flex align-items-center gap-2 text-muted small mb-1">
-                  <TrophyIcon size={16} className="text-warning" />
-                  <span>Volume Lifted</span>
-                </div>
-                <div className="h4 fw-bold text-dark mb-0">
-                  {(profileStats?.totalVolumeKg || 0).toLocaleString()} <span className="small text-muted fw-normal">kg</span>
-                </div>
-              </div>
-            </div>
+          <div>
+            <div className="fw-semibold text-primary-custom mb-0.5">Demo Account (View Only)</div>
+            <div className="small text-muted">You are logged in as Alex Morgan. Profile details and credentials are fixed in read-only mode to preserve preview access for all visitors.</div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="row g-4">
         {/* Update Profile Name Form */}
@@ -262,12 +186,18 @@ const Profile = () => {
                   <input
                     id="editNameInput"
                     type="text"
-                    className="form-control"
+                    className={`form-control ${isDemo ? 'bg-light' : ''}`}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    disabled={isDemo}
                     required
                   />
                 </div>
+                {isDemo && (
+                  <span className="form-text small text-muted">
+                    Name cannot be changed in demo mode.
+                  </span>
+                )}
               </div>
 
               <div className="mb-4">
@@ -286,18 +216,20 @@ const Profile = () => {
                 </span>
               </div>
 
-              <button
-                type="submit"
-                className="btn btn-primary-green w-100"
-                disabled={savingName}
-              >
-                {savingName ? (
-                  <span className="spinner-border spinner-border-sm me-2" role="status" />
-                ) : (
-                  <CheckIcon size={16} />
-                )}
-                <span>Save Changes</span>
-              </button>
+              {!isDemo && (
+                <button
+                  type="submit"
+                  className="btn btn-primary-green w-100"
+                  disabled={savingName}
+                >
+                  {savingName ? (
+                    <span className="spinner-border spinner-border-sm me-2" role="status" />
+                  ) : (
+                    <CheckIcon size={16} />
+                  )}
+                  <span>Save Changes</span>
+                </button>
+              )}
             </form>
           </div>
         </div>
@@ -319,80 +251,95 @@ const Profile = () => {
               </div>
             )}
 
-            <form onSubmit={handleChangePassword}>
-              <div className="mb-3">
-                <label className="form-label" htmlFor="currentPassword">
-                  Current Password
-                </label>
-                <div className="input-group">
-                  <span className="input-group-text bg-light text-muted">
-                    <LockIcon size={16} />
-                  </span>
-                  <input
-                    id="currentPassword"
-                    type="password"
-                    className="form-control"
-                    placeholder="••••••••"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    required
-                  />
+            {isDemo ? (
+              <div className="d-flex flex-column align-items-center justify-content-center text-center py-4 my-auto text-muted">
+                <div className="mb-3 p-3 rounded-circle bg-light-section text-muted shadow-xs">
+                  <LockIcon size={28} />
                 </div>
+                <h6 className="fw-semibold text-dark mb-1">Credentials Locked</h6>
+                <p className="small text-muted mb-3" style={{ maxWidth: 280 }}>
+                  Password modifications are disabled for the public demo account to ensure continuous access.
+                </p>
+                <span className="badge bg-light-section text-secondary border px-3 py-1.5 fw-normal">
+                  Read-Only Mode
+                </span>
               </div>
-
-              <div className="mb-3">
-                <label className="form-label" htmlFor="newPassword">
-                  New Password
-                </label>
-                <div className="input-group">
-                  <span className="input-group-text bg-light text-muted">
-                    <LockIcon size={16} />
-                  </span>
-                  <input
-                    id="newPassword"
-                    type="password"
-                    className="form-control"
-                    placeholder="••••••••"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                  />
+            ) : (
+              <form onSubmit={handleChangePassword}>
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="currentPassword">
+                    Current Password
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted">
+                      <LockIcon size={16} />
+                    </span>
+                    <input
+                      id="currentPassword"
+                      type="password"
+                      className="form-control"
+                      placeholder="••••••••"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="mb-4">
-                <label className="form-label" htmlFor="confirmNewPassword">
-                  Confirm New Password
-                </label>
-                <div className="input-group">
-                  <span className="input-group-text bg-light text-muted">
-                    <LockIcon size={16} />
-                  </span>
-                  <input
-                    id="confirmNewPassword"
-                    type="password"
-                    className="form-control"
-                    placeholder="••••••••"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="newPassword">
+                    New Password
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted">
+                      <LockIcon size={16} />
+                    </span>
+                    <input
+                      id="newPassword"
+                      type="password"
+                      className="form-control"
+                      placeholder="••••••••"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <button
-                type="submit"
-                className="btn btn-outline-secondary w-100 rounded-3"
-                disabled={savingPassword}
-              >
-                {savingPassword ? (
-                  <span className="spinner-border spinner-border-sm me-2" role="status" />
-                ) : (
-                  <LockIcon size={16} />
-                )}
-                <span>Update Password</span>
-              </button>
-            </form>
+                <div className="mb-4">
+                  <label className="form-label" htmlFor="confirmNewPassword">
+                    Confirm New Password
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted">
+                      <LockIcon size={16} />
+                    </span>
+                    <input
+                      id="confirmNewPassword"
+                      type="password"
+                      className="form-control"
+                      placeholder="••••••••"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-outline-secondary w-100 rounded-3"
+                  disabled={savingPassword}
+                >
+                  {savingPassword ? (
+                    <span className="spinner-border spinner-border-sm me-2" role="status" />
+                  ) : (
+                    <LockIcon size={16} />
+                  )}
+                  <span>Update Password</span>
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

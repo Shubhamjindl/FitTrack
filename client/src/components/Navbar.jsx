@@ -15,7 +15,8 @@ import {
 } from './Icons';
 
 const Navbar = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, isDemo: authDemo } = useAuth();
+  const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -94,16 +95,18 @@ const Navbar = () => {
                     <span>Workouts</span>
                   </NavLink>
                 </li>
-                <li className="nav-item">
-                  <NavLink
-                    to="/workouts/new"
-                    className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-                    onClick={closeMenu}
-                  >
-                    <PlusIcon size={18} />
-                    <span>Add Workout</span>
-                  </NavLink>
-                </li>
+                {!isDemo && (
+                  <li className="nav-item">
+                    <NavLink
+                      to="/workouts/new"
+                      className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                      onClick={closeMenu}
+                    >
+                      <PlusIcon size={18} />
+                      <span>Add Workout</span>
+                    </NavLink>
+                  </li>
+                )}
                 <li className="nav-item">
                   <NavLink
                     to="/analytics"

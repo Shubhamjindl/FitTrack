@@ -59,6 +59,7 @@ const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         createdAt: user.createdAt,
+        isDemo: user.email?.toLowerCase() === 'alex.fit@example.com',
       },
     });
   } catch (error) {
@@ -113,6 +114,7 @@ const loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         createdAt: user.createdAt,
+        isDemo: user.email?.toLowerCase() === 'alex.fit@example.com',
       },
     });
   } catch (error) {
@@ -144,6 +146,7 @@ const getMe = async (req, res) => {
         name: user.name,
         email: user.email,
         createdAt: user.createdAt,
+        isDemo: user.email?.toLowerCase() === 'alex.fit@example.com',
       },
     });
   } catch (error) {
@@ -187,6 +190,7 @@ const updateProfile = async (req, res) => {
         name: user.name,
         email: user.email,
         createdAt: user.createdAt,
+        isDemo: user.email?.toLowerCase() === 'alex.fit@example.com',
       },
     });
   } catch (error) {

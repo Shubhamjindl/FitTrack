@@ -7,18 +7,18 @@ const {
   updateWorkout,
   deleteWorkout,
 } = require('../controllers/workoutController');
-const { protect } = require('../middleware/auth');
+const { protect, preventDemoAction } = require('../middleware/auth');
 
 // All workout routes require authentication
 router.use(protect);
 
 router.route('/')
   .get(getWorkouts)
-  .post(createWorkout);
+  .post(preventDemoAction, createWorkout);
 
 router.route('/:id')
   .get(getWorkoutById)
-  .put(updateWorkout)
-  .delete(deleteWorkout);
+  .put(preventDemoAction, updateWorkout)
+  .delete(preventDemoAction, deleteWorkout);
 
 module.exports = router;

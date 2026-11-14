@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
   CloseIcon,
   CalendarIcon,
@@ -10,6 +11,9 @@ import {
 } from './Icons';
 
 const WorkoutModal = ({ workout, onClose }) => {
+  const { user, isDemo: authDemo } = useAuth();
+  const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
+
   useEffect(() => {
     if (!workout) return;
     const handleKeyDown = (e) => {
@@ -199,15 +203,17 @@ const WorkoutModal = ({ workout, onClose }) => {
         </div>
 
         {/* Modal Footer */}
-        <div className="modal-footer border-top px-4 py-3 bg-light-section d-flex justify-content-between">
-          <Link
-            to={`/workouts/edit/${workout._id}`}
-            className="btn btn-outline-green btn-sm"
-            onClick={onClose}
-          >
-            <EditIcon size={16} />
-            <span>Edit Workout</span>
-          </Link>
+        <div className={`modal-footer border-top px-4 py-3 bg-light-section d-flex ${isDemo ? 'justify-content-end' : 'justify-content-between'}`}>
+          {!isDemo && (
+            <Link
+              to={`/workouts/edit/${workout._id}`}
+              className="btn btn-outline-green btn-sm"
+              onClick={onClose}
+            >
+              <EditIcon size={16} />
+              <span>Edit Workout</span>
+            </Link>
+          )}
 
           <button type="button" className="btn btn-secondary btn-sm rounded-3 px-3" onClick={onClose}>
             Close

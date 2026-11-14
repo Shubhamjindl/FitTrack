@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
   ClockIcon,
   CalendarIcon,
@@ -10,6 +11,9 @@ import {
 } from './Icons';
 
 const WorkoutCard = ({ workout, onView, onDelete }) => {
+  const { user, isDemo: authDemo } = useAuth();
+  const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
+
   const formattedDate = new Date(workout.date).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -88,30 +92,34 @@ const WorkoutCard = ({ workout, onView, onDelete }) => {
       <div className="d-flex align-items-center justify-content-between pt-3 border-top mt-2">
         <button
           onClick={() => onView(workout)}
-          className="btn btn-primary-green-sm"
+          className={`btn btn-primary-green-sm ${isDemo ? 'w-100 justify-content-center' : ''}`}
           title="View Complete Breakdown"
         >
           <EyeIcon size={15} />
-          <span>View</span>
+          <span>{isDemo ? 'View Details' : 'View'}</span>
         </button>
 
-        <div className="d-flex align-items-center gap-2">
-          <Link
-            to={`/workouts/edit/${workout._id}`}
-            className="btn btn-action-icon"
-            title="Edit Workout"
-          >
-            <EditIcon size={15} />
-          </Link>
+        {!isDemo && (
+          <div className="d-flex align-items-center gap-2">
+            <Link
+              to={`/workouts/edit/${workout._id}`}
+              className="btn btn-action-icon"
+              title="Edit Workout"
+            >
+              <EditIcon size={15} />
+            </Link>
 
-          <button
-            onClick={() => onDelete(workout)}
-            className="btn btn-action-icon btn-action-icon-danger"
-            title="Delete Workout"
-          >
-            <TrashIcon size={15} />
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={() => onDelete(workout)}
+              className="btn btn-action-icon btn-action-icon-danger"
+              title="Delete Workout"
+              aria-label="Delete Workout"
+            >
+              <TrashIcon size={15} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

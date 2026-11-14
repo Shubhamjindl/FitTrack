@@ -23,12 +23,14 @@ import {
   PlusIcon,
   TrendingUpIcon,
   ChevronRightIcon,
+  InfoIcon,
 } from '../components/Icons';
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const Dashboard = () => {
-  const { user, token } = useAuth();
+  const { user, token, isDemo: authDemo } = useAuth();
+  const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,7 +68,7 @@ const Dashboard = () => {
   }, [token]);
 
   const handleDeleteWorkout = async () => {
-    if (!workoutToDelete) return;
+    if (!workoutToDelete || isDemo) return;
     try {
       const res = await fetch(`${API_URL}/workouts/${workoutToDelete._id}`, {
         method: 'DELETE',
@@ -148,12 +150,31 @@ const Dashboard = () => {
           <Link to="/workouts" className="btn btn-outline-green">
             Workout History
           </Link>
-          <Link to="/workouts/new" className="btn btn-primary-green">
-            <PlusIcon size={18} />
-            <span>Log Workout</span>
-          </Link>
+          {!isDemo && (
+            <Link to="/workouts/new" className="btn btn-primary-green">
+              <PlusIcon size={18} />
+              <span>Log Workout</span>
+            </Link>
+          )}
         </div>
       </div>
+
+      {isDemo && (
+        <div className="demo-banner mb-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div className="d-flex align-items-center gap-3">
+            <div className="demo-banner-icon">
+              <InfoIcon size={20} />
+            </div>
+            <div>
+              <div className="fw-semibold text-primary-custom mb-0.5">Exploring in Demo Mode (Alex Morgan)</div>
+              <div className="small text-muted">All workout history and analytics are shared and read-only. Create your own personal account to track personal workouts!</div>
+            </div>
+          </div>
+          <Link to="/register" className="btn btn-outline-green btn-sm px-3 text-nowrap">
+            Create Free Account
+          </Link>
+        </div>
+      )}
 
       {/* 4 Pastel Statistic Cards */}
       <div className="row g-3 mb-4">

@@ -148,11 +148,16 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
+  const isDemo = Boolean(
+    user && (user.email?.toLowerCase() === 'alex.fit@example.com' || user.isDemo)
+  );
+
   const value = {
     user,
     token,
     loading,
     isAuthenticated: !!token && !!user,
+    isDemo,
     login,
     register,
     logout,
