@@ -241,10 +241,10 @@ const Workouts = () => {
         </div>
       </div>
 
-      {/* 3 Overview Cards Set Horizontally: Frequently Trained & History Overview (around same width) -> Training Streak (small) */}
-      <div className="workouts-overview-grid">
-        {/* Card 1: Frequently Trained */}
-        <div className="h-100">
+      {/* 3 Overview Cards Set Horizontally: Frequently Trained (col-lg-5) -> History Overview (col-lg-4) -> Training Streak (col-lg-3) */}
+      <div className="row g-3 g-xl-4 mb-4">
+        {/* Card 1: Frequently Trained (Enlarged) */}
+        <div className="col-12 col-lg-5">
           <div className="card card-fittrack p-3.5 h-100 d-flex flex-column justify-content-between">
             <div>
               <div className="d-flex align-items-center justify-content-between mb-3">
@@ -261,11 +261,11 @@ const Workouts = () => {
                 </span>
               </div>
 
-              {/* Undivided single flow with generous spacing: Name on left, bar in middle, sessions on right */}
-              <div className="d-flex flex-column gap-3 my-auto py-1">
+              {/* Generously Spaced Muscle Rows: Name on left, wide bar in middle, sessions on right */}
+              <div className="d-flex flex-column gap-2.5 my-auto py-1">
                 {muscleFocus.map((m) => (
-                  <div key={m.name} className="d-flex align-items-center justify-content-between gap-2.5">
-                    <span className="fw-semibold text-dark smaller" style={{ minWidth: 68 }}>
+                  <div key={m.name} className="d-flex align-items-center justify-content-between gap-3">
+                    <span className="fw-semibold text-dark smaller" style={{ minWidth: 72 }}>
                       {m.name}
                     </span>
                     <div className="flex-grow-1 mx-2 muscle-bar-track" style={{ height: 8 }}>
@@ -289,8 +289,8 @@ const Workouts = () => {
           </div>
         </div>
 
-        {/* Card 2: History Overview (Around same width as Frequently Trained) */}
-        <div className="h-100">
+        {/* Card 2: History Overview (Reduced width) */}
+        <div className="col-12 col-lg-4">
           <div className="card card-fittrack p-3.5 h-100 d-flex flex-column justify-content-between">
             <div>
               <div className="d-flex align-items-center justify-content-between mb-2">
@@ -302,18 +302,18 @@ const Workouts = () => {
                     History Overview
                   </h6>
                 </div>
-                <div className="badge bg-light text-dark border px-2.5 py-1 smaller fw-medium d-inline-flex align-items-center gap-1">
+                <div className="badge bg-light text-dark border px-2 py-0.5 smaller fw-medium d-inline-flex align-items-center gap-1">
                   <span>Last 4 Weeks</span>
-                  <ChevronDownIcon size={12} className="text-muted" />
+                  <ChevronDownIcon size={11} className="text-muted" />
                 </div>
               </div>
 
-              {/* Bar Chart with generous margins & top labels */}
-              <div style={{ width: '100%', height: 148 }}>
+              {/* Bar Chart with numbers on top of bars */}
+              <div style={{ width: '100%', height: 145 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={historyOverviewData}
-                    margin={{ top: 20, right: 15, left: -20, bottom: 0 }}
+                    margin={{ top: 20, right: 10, left: -25, bottom: 0 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
                     <XAxis
@@ -349,7 +349,7 @@ const Workouts = () => {
                       dataKey="sessions"
                       fill="#10b981"
                       radius={[4, 4, 0, 0]}
-                      maxBarSize={32}
+                      maxBarSize={28}
                     >
                       <LabelList
                         dataKey="sessions"
@@ -367,70 +367,50 @@ const Workouts = () => {
 
             <div className="smaller text-muted pt-2.5 mt-auto border-top d-flex align-items-center justify-content-between">
               <span>Weekly Avg: <strong className="text-dark">2.8 workouts</strong></span>
-              <span className="text-emerald fw-semibold">+33% vs prior mo</span>
+              <span className="text-emerald fw-semibold">+33%</span>
             </div>
           </div>
         </div>
 
-        {/* Card 3: Training Streak (in small) */}
-        <div className="h-100">
+        {/* Card 3: Training Streak (Spacious & Uncluttered from inside) */}
+        <div className="col-12 col-lg-3">
           <div className="card card-fittrack p-3.5 h-100 d-flex flex-column justify-content-between">
-            <div>
-              {/* Header */}
-              <div className="d-flex align-items-center justify-content-between mb-2">
-                <div className="d-flex align-items-center gap-1.5">
-                  <div className="p-1.5 rounded-2 bg-amber-subtle text-amber d-flex align-items-center justify-content-center">
-                    <FlameIcon size={16} />
-                  </div>
-                  <span className="fw-bold text-dark small">Training Streak</span>
+            {/* Header */}
+            <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center gap-1.5">
+                <div className="p-1.5 rounded-2 bg-amber-subtle text-amber d-flex align-items-center justify-content-center">
+                  <FlameIcon size={16} />
                 </div>
-                <span className="badge rounded-pill bg-emerald-subtle text-emerald px-2 py-0.5 fw-semibold smaller">
-                  Active
-                </span>
+                <span className="fw-bold text-dark small">Training Streak</span>
               </div>
+              <span className="badge rounded-pill bg-emerald-subtle text-emerald px-2 py-0.5 fw-semibold smaller">
+                Active
+              </span>
+            </div>
 
-              {/* Main Metric Row with Concentric Ring Flame Emblem */}
-              <div className="d-flex align-items-center justify-content-between my-2">
+            {/* Clean Center Content: Big bold number & circular flame badge */}
+            <div className="my-auto py-3">
+              <div className="d-flex align-items-center justify-content-between">
                 <div>
-                  <div className="d-flex align-items-baseline gap-1">
-                    <span className="fw-bolder text-dark" style={{ fontSize: '2rem', lineHeight: 1 }}>
-                      7
-                    </span>
-                    <span className="text-muted fw-semibold small">days</span>
+                  <div className="fw-bolder text-dark" style={{ fontSize: '2.5rem', lineHeight: 1 }}>
+                    7 <span className="text-muted fw-normal" style={{ fontSize: '1.1rem' }}>days</span>
                   </div>
-                  <div className="smaller text-muted mt-1" style={{ fontSize: '0.78rem', lineHeight: 1.25 }}>
-                    7 consecutive days completed!
+                  <div className="smaller text-muted mt-2" style={{ fontSize: '0.82rem' }}>
+                    Consecutive streak
                   </div>
                 </div>
 
-                <div className="streak-circle-badge flex-shrink-0 ms-1" style={{ width: 46, height: 46 }}>
-                  <FlameIcon size={20} />
-                </div>
-              </div>
-
-              {/* 7-Day Day-by-Day Mini Tracker */}
-              <div className="my-2">
-                <div className="streak-days-track-mini">
-                  {streakDays.map((d, idx) => (
-                    <div key={idx} className="streak-day-item">
-                      <div
-                        className={`streak-day-circle-mini ${d.completed ? 'active' : ''}`}
-                        title={`${d.day}: Completed`}
-                      >
-                        {d.completed ? <CheckIcon size={11} /> : d.day[0]}
-                      </div>
-                      <span className="streak-day-label-mini mt-0.5">{d.day[0]}</span>
-                    </div>
-                  ))}
+                <div className="streak-circle-badge flex-shrink-0" style={{ width: 50, height: 50 }}>
+                  <FlameIcon size={24} />
                 </div>
               </div>
             </div>
 
-            {/* Footer Summary / Best */}
+            {/* Footer */}
             <div className="smaller text-muted pt-2.5 mt-auto border-top d-flex align-items-center justify-content-between">
               <span className="d-inline-flex align-items-center gap-1">
                 <TrophyIcon size={12} className="text-amber" />
-                Best: <strong className="text-dark">14d</strong>
+                Best: <strong className="text-dark">14 days</strong>
               </span>
               <span className="text-emerald fw-semibold">Top 5%</span>
             </div>
