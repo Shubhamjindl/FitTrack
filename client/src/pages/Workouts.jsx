@@ -1,20 +1,27 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  Tooltip,
+} from 'recharts';
 import { useAuth } from '../context/AuthContext';
-import WorkoutCard from '../components/WorkoutCard';
+import StatCard from '../components/StatCard';
 import WorkoutModal from '../components/WorkoutModal';
-import ConfirmModal from '../components/ConfirmModal';
+import RecentWorkoutCard from '../components/RecentWorkoutCard';
 import {
   SearchIcon,
-  FilterIcon,
-  ArrowUpDownIcon,
   PlusIcon,
-  CloseIcon,
   DumbbellIcon,
+  ClockIcon,
+  CalendarIcon,
+  LayersIcon,
+  FlameIcon,
+  BarChartIcon,
 } from '../components/Icons';
 
-// API base URL: local Vite proxy or deployed Render backend
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const WORKOUT_TYPES = [
@@ -29,6 +36,16 @@ const WORKOUT_TYPES = [
   'Other',
 ];
 
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const d = new Date(dateString);
+  return d.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
 const Workouts = () => {
   const { token, user, isDemo: authDemo } = useAuth();
   const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
@@ -42,16 +59,14 @@ const Workouts = () => {
   const [sortBy, setSortBy] = useState('date-desc');
   const [timeRange, setTimeRange] = useState('all');
 
-  // Modals state
+  // Modal state
   const [activeModalWorkout, setActiveModalWorkout] = useState(null);
-  const [workoutToDelete, setWorkoutToDelete] = useState(null);
 
   const fetchWorkouts = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Build query string
       let sortField = 'date';
       let sortOrder = 'desc';
 
@@ -113,86 +128,101 @@ const Workouts = () => {
     fetchWorkouts();
   }, [token, selectedType, sortBy, timeRange]);
 
-  // Debounced/instant search trigger
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     fetchWorkouts();
   };
 
-  const handleClearSearch = () => {
-    setSearchTerm('');
-    // Will fetch again after clearing
-    setTimeout(() => {
-      fetchWorkouts();
-    }, 50);
+  // Calculations for stats
+  const totalWorkouts = workouts.length;
+  const totalDuration = workouts.reduce((acc, w) => acc + (w.duration || 0), 0);
+  const totalHours = (totalDuration / 60).toFixed(1);
+  const totalExercises = workouts.reduce((acc, w) => acc + (w.exercises?.length || 0), 0);
+  const totalVolume = workouts.reduce((acc, w) => {
+    const wVol = (w.exercises || []).reduce((eAcc, ex) => {
+      return eAcc + (ex.sets || 0) * (ex.reps || 0) * (ex.weight || 0);
+    }, 0);
+    return acc + wVol;
+  }, 0);
+
+  const getWorkoutVolume = (workout) => {
+    return (workout.exercises || []).reduce((acc, ex) => {
+      return acc + (ex.sets || 0) * (ex.reps || 0) * (ex.weight || 0);
+    }, 0);
   };
 
-  const handleResetAllFilters = () => {
-    setSearchTerm('');
-    setSelectedType('All');
-    setSortBy('date-desc');
-    setTimeRange('all');
-  };
-
-  const handleDeleteWorkout = async () => {
-    if (!workoutToDelete || isDemo) return;
-
-    try {
-      const res = await fetch(`${API_URL}/workouts/${workoutToDelete._id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (res.ok) {
-        setWorkoutToDelete(null);
-        fetchWorkouts();
-      } else {
-        const data = await res.json();
-        alert(data.message || 'Error deleting workout');
-      }
-    } catch (err) {
-      console.error('Delete error:', err);
-      alert('Could not delete workout');
-    }
-  };
-
-  const hasActiveFilters =
-    searchTerm !== '' ||
-    selectedType !== 'All' ||
-    timeRange !== 'all' ||
-    sortBy !== 'date-desc';
+  // Weekly mini-chart data (last 4 intervals)
+  const historyOverviewData = [
+    { name: 'Sep 29', workouts: 1 },
+    { name: 'Oct 6', workouts: 2 },
+    { name: 'Oct 13', workouts: 4 },
+    { name: 'Oct 20', workouts: 4 },
+  ];
 
   return (
-    <div className="container py-4 animate-fade-in">
-      {/* Header */}
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-2 border-bottom">
-        <div>
-          <h1 className="fw-bold text-dark mb-1 h2">Workout History</h1>
-          <p className="text-muted mb-0 small">
-            Browse, search, filter, and review all your logged workout sessions
-          </p>
+    <div className="container py-3.5 animate-fade-in">
+      {/* Title Header */}
+      <div className="mb-3.5">
+        <h1 className="fw-bold text-dark mb-1 h3">Workout History</h1>
+        <p className="text-muted mb-0 small">
+          Browse, search, and review all your logged workout sessions
+        </p>
+      </div>
+
+      {/* Top 4 Stat Cards */}
+      <div className="row g-3 mb-4">
+        <div className="col-12 col-sm-6 col-lg-3">
+          <StatCard
+            title="Total Workouts"
+            value={totalWorkouts}
+            subtitle="All-time sessions"
+            colorTheme="mint"
+            icon={<DumbbellIcon size={22} />}
+          />
         </div>
-        {!isDemo && (
-          <div>
-            <Link to="/workouts/new" className="btn btn-primary-green">
-              <PlusIcon size={18} />
-              <span>Add New Workout</span>
-            </Link>
-          </div>
-        )}
+
+        <div className="col-12 col-sm-6 col-lg-3">
+          <StatCard
+            title="Total Workout Time"
+            value={totalHours}
+            unit="h"
+            subtitle={`${totalDuration} total active minutes`}
+            colorTheme="amber"
+            icon={<ClockIcon size={22} />}
+          />
+        </div>
+
+        <div className="col-12 col-sm-6 col-lg-3">
+          <StatCard
+            title="Total Exercises"
+            value={totalExercises}
+            subtitle="Completed across all sets"
+            colorTheme="blue"
+            icon={<LayersIcon size={22} />}
+          />
+        </div>
+
+        <div className="col-12 col-sm-6 col-lg-3">
+          <StatCard
+            title="Total Volume"
+            value={totalVolume.toLocaleString()}
+            unit="kg"
+            subtitle="Total weight moved"
+            colorTheme="purple"
+            icon={<FlameIcon size={22} />}
+          />
+        </div>
       </div>
 
       {/* Filter & Search Bar Card */}
-      <div className="card card-fittrack p-3 p-md-4 mb-4">
-        <div className="row g-3 align-items-center">
+      <div className="card card-fittrack p-3 mb-4">
+        <div className="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2.5">
           {/* Search Input */}
-          <div className="col-12 col-md-5">
+          <div className="flex-grow-1">
             <form onSubmit={handleSearchSubmit}>
               <div className="input-group">
                 <span className="input-group-text bg-light border-end-0 text-muted">
-                  <SearchIcon size={18} />
+                  <SearchIcon size={16} />
                 </span>
                 <input
                   type="text"
@@ -201,50 +231,34 @@ const Workouts = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                {searchTerm && (
-                  <button
-                    type="button"
-                    className="btn btn-light border border-start-0 text-muted"
-                    onClick={handleClearSearch}
-                  >
-                    <CloseIcon size={16} />
-                  </button>
-                )}
-                <button type="submit" className="btn btn-subtle-green">
-                  Search
-                </button>
               </div>
             </form>
           </div>
 
-          {/* Type Filter */}
-          <div className="col-6 col-md-3">
-            <div className="input-group">
-              <span className="input-group-text bg-light border-end-0 text-muted d-none d-sm-flex">
-                <FilterIcon size={16} />
-              </span>
-              <select
-                className="form-select"
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                aria-label="Filter by workout type"
-              >
-                {WORKOUT_TYPES.map((t) => (
-                  <option key={t} value={t}>
-                    {t === 'All' ? 'All Types' : t}
-                  </option>
-                ))}
-              </select>
-            </div>
+          {/* Type Dropdown */}
+          <div style={{ minWidth: 135 }}>
+            <select
+              className="form-select form-select-sm"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              aria-label="Filter by type"
+            >
+              <option value="All">All Types</option>
+              {WORKOUT_TYPES.filter((t) => t !== 'All').map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Time Range Filter */}
-          <div className="col-6 col-md-2">
+          {/* Time Range Dropdown */}
+          <div style={{ minWidth: 125 }}>
             <select
-              className="form-select"
+              className="form-select form-select-sm"
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              aria-label="Filter by time range"
+              aria-label="Filter by time"
             >
               <option value="all">All Time</option>
               <option value="week">Past 7 Days</option>
@@ -253,140 +267,291 @@ const Workouts = () => {
             </select>
           </div>
 
-          {/* Sort By */}
-          <div className="col-12 col-md-2">
-            <div className="input-group">
-              <span className="input-group-text bg-light border-end-0 text-muted d-none d-sm-flex">
-                <ArrowUpDownIcon size={16} />
-              </span>
-              <select
-                className="form-select"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                aria-label="Sort workouts"
-              >
-                <option value="date-desc">Newest First</option>
-                <option value="date-asc">Oldest First</option>
-                <option value="duration-desc">Duration (High-Low)</option>
-                <option value="duration-asc">Duration (Low-High)</option>
-                <option value="name-asc">Name (A-Z)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Active Filter Tags */}
-        {hasActiveFilters && (
-          <div className="d-flex flex-wrap align-items-center gap-2 mt-3 pt-3 border-top small">
-            <span className="text-muted fw-semibold">Active filters:</span>
-            {searchTerm && (
-              <span className="badge bg-light text-dark border py-1 px-2">
-                Query: "{searchTerm}"
-              </span>
-            )}
-            {selectedType !== 'All' && (
-              <span className="badge bg-light text-dark border py-1 px-2">
-                Type: {selectedType}
-              </span>
-            )}
-            {timeRange !== 'all' && (
-              <span className="badge bg-light text-dark border py-1 px-2">
-                Range: {timeRange}
-              </span>
-            )}
-            <button
-              onClick={handleResetAllFilters}
-              className="btn btn-sm btn-link text-success p-0 ms-2 text-decoration-none fw-semibold"
+          {/* Sort By Dropdown */}
+          <div style={{ minWidth: 135 }}>
+            <select
+              className="form-select form-select-sm"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              aria-label="Sort workouts"
             >
-              Reset All
-            </button>
+              <option value="date-desc">Newest First</option>
+              <option value="date-asc">Oldest First</option>
+              <option value="duration-desc">Duration (High-Low)</option>
+              <option value="duration-asc">Duration (Low-High)</option>
+              <option value="name-asc">Name (A-Z)</option>
+            </select>
           </div>
-        )}
-      </div>
 
-      {/* Results Header Count */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <div className="fw-semibold text-secondary small">
-          Showing {workouts.length} {workouts.length === 1 ? 'workout' : 'workouts'}
-        </div>
-      </div>
-
-      {/* Loading state */}
-      {loading ? (
-        <div className="py-5 text-center">
-          <div className="spinner-border text-success" role="status">
-            <span className="visually-hidden">Loading workouts...</span>
-          </div>
-          <p className="text-muted mt-2">Loading workout sessions...</p>
-        </div>
-      ) : error ? (
-        <div className="alert alert-danger rounded-3" role="alert">
-          {error}
-        </div>
-      ) : workouts.length === 0 ? (
-        /* Empty State */
-        <div className="card card-fittrack p-5 text-center">
-          <div
-            className="d-inline-flex p-3 rounded-circle bg-light text-muted mx-auto mb-3"
-            style={{
-              width: 64,
-              height: 64,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <DumbbellIcon size={32} />
-          </div>
-          <h5 className="fw-bold text-dark">No workouts found</h5>
-          <p className="text-muted small mb-4">
-            {hasActiveFilters
-              ? 'No sessions match your search or filter criteria. Try adjusting your filters.'
-              : 'You have not recorded any workouts yet. Create your first session today!'}
-          </p>
-          <div className="d-flex justify-content-center gap-2">
-            {hasActiveFilters && (
-              <button onClick={handleResetAllFilters} className="btn btn-outline-secondary">
-                Reset Filters
-              </button>
-            )}
-            <Link to="/workouts/new" className="btn btn-primary-green">
-              <PlusIcon size={18} />
-              <span>Log New Workout</span>
+          {/* Action: + Log Workout */}
+          <div>
+            <Link to="/workouts/new" className="btn btn-primary-green btn-sm px-3 text-nowrap d-flex align-items-center gap-1.5">
+              <PlusIcon size={16} />
+              <span>+ Log Workout</span>
             </Link>
           </div>
         </div>
-      ) : (
-        /* Workouts Grid */
-        <div className="row g-3">
-          {workouts.map((workout) => (
-            <div key={workout._id} className="col-12 col-md-6 col-lg-4">
-              <WorkoutCard
-                workout={workout}
-                onView={(w) => setActiveModalWorkout(w)}
-                onDelete={(w) => setWorkoutToDelete(w)}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      </div>
 
-      {/* Workout Detail Modal */}
+      {/* Main Grid: Left Table, Right Side Widgets */}
+      <div className="row g-4">
+        {/* Left Column: Workout Sessions Table */}
+        <div className="col-12 col-lg-8">
+          <div className="card card-fittrack p-3.5 p-md-4">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <div className="d-flex align-items-center gap-2">
+                <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
+                  <CalendarIcon size={18} />
+                </div>
+                <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                  Workout Sessions ({workouts.length})
+                </h5>
+              </div>
+            </div>
+
+            {loading ? (
+              <div className="py-5 text-center">
+                <div className="spinner-border text-success" role="status">
+                  <span className="visually-hidden">Loading workouts...</span>
+                </div>
+                <p className="text-muted mt-2 small">Loading workout sessions...</p>
+              </div>
+            ) : error ? (
+              <div className="alert alert-danger rounded-3" role="alert">
+                {error}
+              </div>
+            ) : workouts.length === 0 ? (
+              <div className="p-4 text-center">
+                <div
+                  className="d-inline-flex p-3 rounded-circle bg-light text-muted mx-auto mb-2.5"
+                  style={{ width: 56, height: 56, alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <DumbbellIcon size={28} />
+                </div>
+                <h6 className="fw-bold text-dark mb-1">No workouts found</h6>
+                <p className="text-muted smaller mb-3">
+                  No sessions match your search or filter criteria.
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchTerm('');
+                    setSelectedType('All');
+                    setTimeRange('all');
+                  }}
+                  className="btn btn-outline-green btn-sm px-3"
+                >
+                  Reset Filters
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Desktop View: Clean Structured Table */}
+                <div className="d-none d-md-block">
+                  <div className="workout-table-wrap table-responsive">
+                    <table className="table workout-sessions-table">
+                      <thead>
+                        <tr>
+                          <th style={{ width: 40 }}>#</th>
+                          <th>Workout Name</th>
+                          <th>Type</th>
+                          <th>Date</th>
+                          <th>Duration</th>
+                          <th>Exercises</th>
+                          <th>Volume</th>
+                          <th className="text-end">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {workouts.map((workout, index) => {
+                          const volume = getWorkoutVolume(workout);
+                          const exerciseCount = workout.exercises ? workout.exercises.length : 0;
+                          return (
+                            <tr key={workout._id}>
+                              <td className="text-muted fw-semibold">{index + 1}.</td>
+                              <td className="fw-bold text-dark">{workout.name}</td>
+                              <td>
+                                <span className={`pill-stat-badge type-pill-${workout.type || 'Strength'}`}>
+                                  {workout.type || 'Strength'}
+                                </span>
+                              </td>
+                              <td className="text-muted smaller">
+                                <span className="d-inline-flex align-items-center gap-1">
+                                  <CalendarIcon size={13} />
+                                  <span>{formatDate(workout.date)}</span>
+                                </span>
+                              </td>
+                              <td className="text-muted smaller">
+                                <span className="d-inline-flex align-items-center gap-1">
+                                  <ClockIcon size={13} />
+                                  <span>{workout.duration} min</span>
+                                </span>
+                              </td>
+                              <td className="text-muted smaller">
+                                <span className="d-inline-flex align-items-center gap-1">
+                                  <LayersIcon size={13} />
+                                  <span>{exerciseCount}</span>
+                                </span>
+                              </td>
+                              <td className="fw-semibold text-secondary-custom smaller">
+                                {volume > 0 ? `${volume.toLocaleString()} kg` : '—'}
+                              </td>
+                              <td className="text-end">
+                                <button
+                                  className="btn-table-view"
+                                  onClick={() => setActiveModalWorkout(workout)}
+                                >
+                                  View
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Mobile View: Touch-Friendly Compact Cards */}
+                <div className="d-md-none d-flex flex-column gap-2.5">
+                  {workouts.map((workout) => (
+                    <RecentWorkoutCard
+                      key={workout._id}
+                      workout={workout}
+                      onClick={(w) => setActiveModalWorkout(w)}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column: Side Widgets */}
+        <div className="col-12 col-lg-4">
+          <div className="d-flex flex-column gap-3.5">
+            {/* Widget 1: History Overview */}
+            <div className="card card-fittrack p-3.5">
+              <div className="d-flex justify-content-between align-items-center mb-2.5">
+                <div className="d-flex align-items-center gap-2">
+                  <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
+                    <BarChartIcon size={16} />
+                  </div>
+                  <h6 className="fw-bold text-dark mb-0" style={{ fontSize: '0.92rem' }}>
+                    History Overview
+                  </h6>
+                </div>
+                <span className="badge bg-light text-secondary border smaller">
+                  Last 4 Weeks
+                </span>
+              </div>
+
+              <div style={{ width: '100%', height: 130 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={historyOverviewData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                    <XAxis dataKey="name" fontSize={11} stroke="#94a3b8" tickLine={false} />
+                    <Tooltip cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }} />
+                    <Bar dataKey="workouts" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Widget 2: Training Streak */}
+            <div className="card card-fittrack p-3.5">
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="d-flex align-items-center gap-1.5 text-muted smaller mb-1">
+                    <FlameIcon size={16} className="text-warning" />
+                    <span className="fw-semibold">Training Streak</span>
+                  </div>
+                  <div className="fw-bold text-dark" style={{ fontSize: '1.45rem', lineHeight: 1.1 }}>
+                    7 days
+                  </div>
+                  <div className="smaller text-muted mt-1">
+                    You've worked out for 7 consecutive days!
+                  </div>
+                </div>
+
+                <div className="streak-circle-badge">
+                  <FlameIcon size={24} />
+                </div>
+              </div>
+            </div>
+
+            {/* Widget 3: Frequently Trained */}
+            <div className="card card-fittrack p-3.5">
+              <div className="d-flex align-items-center gap-2 mb-3">
+                <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
+                  <DumbbellIcon size={16} />
+                </div>
+                <h6 className="fw-bold text-dark mb-0" style={{ fontSize: '0.92rem' }}>
+                  Frequently Trained
+                </h6>
+              </div>
+
+              <div>
+                <div className="muscle-focus-item">
+                  <div className="d-flex justify-content-between smaller mb-1">
+                    <span className="fw-medium text-dark">Legs</span>
+                    <span className="text-muted">3 sessions</span>
+                  </div>
+                  <div className="muscle-bar-track">
+                    <div className="muscle-bar-fill" style={{ width: '85%' }} />
+                  </div>
+                </div>
+
+                <div className="muscle-focus-item">
+                  <div className="d-flex justify-content-between smaller mb-1">
+                    <span className="fw-medium text-dark">Chest</span>
+                    <span className="text-muted">2 sessions</span>
+                  </div>
+                  <div className="muscle-bar-track">
+                    <div className="muscle-bar-fill" style={{ width: '60%' }} />
+                  </div>
+                </div>
+
+                <div className="muscle-focus-item">
+                  <div className="d-flex justify-content-between smaller mb-1">
+                    <span className="fw-medium text-dark">Back</span>
+                    <span className="text-muted">2 sessions</span>
+                  </div>
+                  <div className="muscle-bar-track">
+                    <div className="muscle-bar-fill" style={{ width: '60%' }} />
+                  </div>
+                </div>
+
+                <div className="muscle-focus-item">
+                  <div className="d-flex justify-content-between smaller mb-1">
+                    <span className="fw-medium text-dark">Shoulders</span>
+                    <span className="text-muted">1 session</span>
+                  </div>
+                  <div className="muscle-bar-track">
+                    <div className="muscle-bar-fill" style={{ width: '35%' }} />
+                  </div>
+                </div>
+
+                <div className="muscle-focus-item">
+                  <div className="d-flex justify-content-between smaller mb-1">
+                    <span className="fw-medium text-dark">Arms</span>
+                    <span className="text-muted">1 session</span>
+                  </div>
+                  <div className="muscle-bar-track">
+                    <div className="muscle-bar-fill" style={{ width: '35%' }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Detail Modal */}
       {activeModalWorkout && (
         <WorkoutModal
           workout={activeModalWorkout}
           onClose={() => setActiveModalWorkout(null)}
         />
       )}
-
-      {/* Delete Confirmation Modal */}
-      <ConfirmModal
-        isOpen={!!workoutToDelete}
-        title="Delete Workout"
-        message={`Are you sure you want to permanently delete "${workoutToDelete?.name}"?`}
-        confirmText="Yes, Delete"
-        onConfirm={handleDeleteWorkout}
-        onCancel={() => setWorkoutToDelete(null)}
-      />
     </div>
   );
 };

@@ -1520,6 +1520,146 @@ a {
   flex-shrink: 0;
 }
 
+/* ========================================================
+   PHASE 3 - WORKOUTS & ANALYTICS SAAS POLISH
+   ======================================================== */
+
+/* Workouts Table */
+.workout-table-wrap {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--bg-card);
+}
+
+.workout-sessions-table {
+  font-size: 0.86rem;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+
+.workout-sessions-table thead th {
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  background-color: var(--bg-section);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 0.85rem;
+  white-space: nowrap;
+}
+
+.workout-sessions-table tbody td {
+  padding: 0.8rem 0.85rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.workout-sessions-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.workout-sessions-table tbody tr:hover td {
+  background-color: rgba(16, 185, 129, 0.04);
+}
+
+[data-theme="dark"] .workout-sessions-table tbody tr:hover td {
+  background-color: rgba(16, 185, 129, 0.08);
+}
+
+.btn-table-view {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-primary);
+  transition: all 0.15s ease;
+}
+
+.btn-table-view:hover {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+  color: #ffffff;
+}
+
+/* Time Filter Pills */
+.time-filter-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.time-pill-btn {
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  transition: all 0.15s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.time-pill-btn:hover:not(.active) {
+  background-color: var(--bg-section);
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+.time-pill-btn.active {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+}
+
+/* Muscle Group Focus Progress Bar */
+.muscle-focus-item {
+  margin-bottom: 0.85rem;
+}
+
+.muscle-focus-item:last-child {
+  margin-bottom: 0;
+}
+
+.muscle-bar-track {
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--bg-section);
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.muscle-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background-color: var(--primary-green);
+  transition: width 0.4s ease;
+}
+
+/* Training Streak Circle Badge */
+.streak-circle-badge {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+
 
 
 
