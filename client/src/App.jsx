@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 
 // Pages
 import Dashboard from './pages/Dashboard';
@@ -22,68 +20,64 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="d-flex flex-column min-vh-100 bg-main">
-            <Navbar />
-            <main className="flex-grow-1">
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
 
-                {/* Protected Routes */}
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/workouts"
-                  element={
-                    <ProtectedRoute>
-                      <Workouts />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/workouts/new"
-                  element={
-                    <ProtectedRoute>
-                      <WorkoutForm />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/workouts/edit/:id"
-                  element={
-                    <ProtectedRoute>
-                      <WorkoutForm />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/analytics"
-                  element={
-                    <ProtectedRoute>
-                      <Analytics />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <ProtectedRoute>
-                      <Profile />
-                    </ProtectedRoute>
-                  }
-                />
+              {/* Protected Routes (Automatically wrapped with AppLayout inside ProtectedRoute) */}
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/workouts"
+                element={
+                  <ProtectedRoute>
+                    <Workouts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/workouts/new"
+                element={
+                  <ProtectedRoute>
+                    <WorkoutForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/workouts/edit/:id"
+                element={
+                  <ProtectedRoute>
+                    <WorkoutForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/analytics"
+                element={
+                  <ProtectedRoute>
+                    <Analytics />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
 
-                {/* 404 Route */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
+              {/* 404 Route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </div>
         </Router>
       </AuthProvider>

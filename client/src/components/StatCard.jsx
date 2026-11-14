@@ -4,17 +4,17 @@ const StatCard = ({ title, value, unit, subtitle, colorTheme = 'mint', icon }) =
   const themeClass = `card-pastel-${colorTheme}`;
 
   return (
-    <div className={`p-4 h-100 ${themeClass} shadow-sm position-relative overflow-hidden`}>
-      <div className="d-flex justify-content-between align-items-start mb-3">
+    <div className={`p-3 p-md-3.5 h-100 ${themeClass} shadow-sm position-relative overflow-hidden`}>
+      <div className="d-flex justify-content-between align-items-start mb-2.5">
         <div>
-          <span className="text-uppercase fw-bold" style={{ fontSize: '0.75rem', letterSpacing: '0.05em', opacity: 0.85 }}>
+          <span className="text-uppercase fw-bold" style={{ fontSize: '0.72rem', letterSpacing: '0.05em', opacity: 0.85 }}>
             {title}
           </span>
-          <div className="d-flex align-items-baseline gap-2 mt-1">
-            <h2 className="display-6 fw-bold mb-0" style={{ letterSpacing: '-0.5px' }}>
+          <div className="d-flex align-items-baseline gap-1.5 mt-0.5">
+            <span className="stat-number fw-bold mb-0" style={{ letterSpacing: '-0.5px' }}>
               {value}
-            </h2>
-            {unit && <span className="fw-semibold small" style={{ opacity: 0.85 }}>{unit}</span>}
+            </span>
+            {unit && <span className="fw-semibold small" style={{ opacity: 0.85, fontSize: '0.85rem' }}>{unit}</span>}
           </div>
         </div>
         <div className="stat-icon-badge">
@@ -22,7 +22,7 @@ const StatCard = ({ title, value, unit, subtitle, colorTheme = 'mint', icon }) =
         </div>
       </div>
       {subtitle && (
-        <div className="small fw-medium" style={{ opacity: 0.9 }}>
+        <div className="small fw-medium" style={{ opacity: 0.85, fontSize: '0.8rem' }}>
           {subtitle}
         </div>
       )}

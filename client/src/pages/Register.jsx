@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { DumbbellIcon, UserIcon, MailIcon, LockIcon } from '../components/Icons';
+import { useTheme } from '../context/ThemeContext';
+import { DumbbellIcon, UserIcon, MailIcon, LockIcon, SunIcon, MoonIcon } from '../components/Icons';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -12,6 +13,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
 
   const { register } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -45,7 +47,18 @@ const Register = () => {
   };
 
   return (
-    <div className="container py-5">
+    <div className="container py-5 position-relative">
+      <div className="position-absolute top-0 end-0 p-3">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="btn-header-action"
+          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+          aria-label="Toggle Theme"
+        >
+          {theme === 'light' ? <MoonIcon size={18} /> : <SunIcon size={18} />}
+        </button>
+      </div>
       <div className="row justify-content-center">
         <div className="col-12 col-md-8 col-lg-5">
           <div className="text-center mb-4">

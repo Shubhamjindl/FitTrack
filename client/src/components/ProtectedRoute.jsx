@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import AppLayout from './AppLayout';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -8,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
+      <div className="d-flex justify-content-center align-items-center min-vh-100 bg-main">
         <div className="spinner-border text-success" role="status">
           <span className="visually-hidden">Loading UpToFit...</span>
         </div>
@@ -20,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return children;
+  return <AppLayout>{children}</AppLayout>;
 };
 
 export default ProtectedRoute;
