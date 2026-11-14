@@ -10,11 +10,21 @@ const getAnalytics = async (req, res) => {
 
     const workouts = await Workout.find({ user: userId }).sort({ date: 1 }); // chronological
 
+    // Initialize past 6 months
+    const monthMap = {};
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const today = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const key = `${months[d.getMonth()]} ${d.getFullYear().toString().slice(2)}`;
+      monthMap[key] = { month: key, workouts: 0, totalDuration: 0 };
+    }
+
     if (workouts.length === 0) {
       return res.json({
         success: true,
         data: {
-          frequency: [],
+          frequency: Object.values(monthMap),
           durationTrends: [],
           typeDistribution: [],
           distinctExercises: [],
@@ -98,17 +108,6 @@ const getAnalytics = async (req, res) => {
     });
 
     // 3. Frequency by Month / Week (last 6 months)
-    const monthMap = {};
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
-    // Initialize past 6 months
-    const today = new Date();
-    for (let i = 5; i >= 0; i--) {
-      const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      const key = `${months[d.getMonth()]} ${d.getFullYear().toString().slice(2)}`;
-      monthMap[key] = { month: key, workouts: 0, totalDuration: 0 };
-    }
-
     workouts.forEach((w) => {
       const wDate = new Date(w.date);
       const key = `${months[wDate.getMonth()]} ${wDate.getFullYear().toString().slice(2)}`;

@@ -148,8 +148,8 @@ const Analytics = () => {
         <div className="col-12 col-sm-6 col-lg-3">
           <StatCard
             title="Avg Duration"
-            value={summary.averageDuration ? `${summary.averageDuration} min` : '51 min'}
-            subtitle="Average session length"
+            value={summary.totalWorkouts > 0 ? `${summary.averageDuration || 0} min` : '0 min'}
+            subtitle={summary.totalWorkouts > 0 ? 'Average session length' : 'No workouts logged yet'}
             colorTheme="mint"
             icon={<ClockIcon size={22} />}
           />
@@ -159,8 +159,8 @@ const Analytics = () => {
         <div className="col-12 col-sm-6 col-lg-3">
           <StatCard
             title="Top Category"
-            value={summary.favoriteType && summary.favoriteType !== 'None' ? summary.favoriteType : 'Strength'}
-            subtitle="Most frequent workout type"
+            value={summary.favoriteType && summary.favoriteType !== 'None' ? summary.favoriteType : 'None'}
+            subtitle={summary.favoriteType && summary.favoriteType !== 'None' ? 'Most frequent workout type' : 'No workouts logged yet'}
             colorTheme="blue"
             icon={<ActivityIcon size={22} />}
           />
@@ -170,8 +170,8 @@ const Analytics = () => {
         <div className="col-12 col-sm-6 col-lg-3">
           <StatCard
             title="Heaviest Lift"
-            value={summary.heaviestLift?.weight ? `${summary.heaviestLift.weight} kg` : '180 kg'}
-            subtitle={summary.heaviestLift?.exercise || 'Leg Press'}
+            value={summary.heaviestLift?.weight ? `${summary.heaviestLift.weight} kg` : '0 kg'}
+            subtitle={summary.heaviestLift?.exercise || 'No lifts recorded yet'}
             colorTheme="purple"
             icon={<TrophyIcon size={22} />}
           />
@@ -181,8 +181,7 @@ const Analytics = () => {
         <div className="col-12 col-sm-6 col-lg-3">
           <StatCard
             title="Total Volume"
-            value={(summary.totalVolume || 55214).toLocaleString()}
-            unit="kg"
+            value={`${(summary.totalVolume || 0).toLocaleString()} kg`}
             subtitle="Weight moved all-time"
             colorTheme="amber"
             icon={<FlameIcon size={22} />}
@@ -212,19 +211,12 @@ const Analytics = () => {
             <div style={{ width: '100%', height: 260 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={frequency.length > 0 ? frequency : [
-                    { month: 'Jun 26', workouts: 0 },
-                    { month: 'Jul 26', workouts: 0 },
-                    { month: 'Aug 26', workouts: 0 },
-                    { month: 'Sep 26', workouts: 1 },
-                    { month: 'Oct 26', workouts: 10 },
-                    { month: 'Nov 26', workouts: 0 },
-                  ]}
+                  data={frequency}
                   margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
                   <XAxis dataKey="month" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} allowDecimals={false} />
                   <Tooltip
                     formatter={(val) => [`${val} workouts`, 'Sessions']}
                     cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }}
@@ -254,42 +246,44 @@ const Analytics = () => {
             </div>
 
             <div style={{ width: '100%', height: 260 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={durationTrends.length > 0 ? durationTrends : [
-                    { date: 'Oct 2', duration: 52 },
-                    { date: 'Oct 5', duration: 48 },
-                    { date: 'Oct 8', duration: 60 },
-                    { date: 'Oct 10', duration: 50 },
-                    { date: 'Oct 14', duration: 35 },
-                    { date: 'Oct 17', duration: 60 },
-                    { date: 'Oct 20', duration: 45 },
-                  ]}
-                  margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
-                >
-                  <defs>
-                    <linearGradient id="durationGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
-                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
-                  <Tooltip
-                    formatter={(val) => [`${val} min`, 'Duration']}
-                    cursor={{ stroke: '#10b981', strokeWidth: 1 }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="duration"
-                    stroke="#10b981"
-                    strokeWidth={2.5}
-                    fill="url(#durationGrad)"
-                    dot={{ r: 3.5, fill: '#10b981', strokeWidth: 1.5, stroke: '#fff' }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              {durationTrends.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={durationTrends}
+                    margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
+                  >
+                    <defs>
+                      <linearGradient id="durationGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
+                    <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
+                    <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
+                    <Tooltip
+                      formatter={(val) => [`${val} min`, 'Duration']}
+                      cursor={{ stroke: '#10b981', strokeWidth: 1 }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="duration"
+                      stroke="#10b981"
+                      strokeWidth={2.5}
+                      fill="url(#durationGrad)"
+                      dot={{ r: 3.5, fill: '#10b981', strokeWidth: 1.5, stroke: '#fff' }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-100 d-flex flex-column align-items-center justify-content-center text-center p-3">
+                  <div className="p-3 rounded-circle bg-secondary-subtle text-muted mb-2">
+                    <ClockIcon size={24} />
+                  </div>
+                  <span className="fw-semibold text-white small mb-1">No duration trends yet</span>
+                  <span className="text-muted smaller">Log workout sessions with active duration to visualize trends</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -334,41 +328,47 @@ const Analytics = () => {
               </div>
 
               <div style={{ width: '100%', height: 260 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart
-                    data={exerciseProgress.length > 0 ? exerciseProgress : [
-                      { date: 'Oct 2', weight: 80 },
-                      { date: 'Oct 10', weight: 82.5 },
-                      { date: 'Oct 17', weight: 85 },
-                    ]}
-                    margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
-                  >
-                    <defs>
-                      <linearGradient id="exWeightGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#0284c7" stopOpacity={0.25} />
-                        <stop offset="95%" stopColor="#0284c7" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
-                    <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                    <YAxis
-                      stroke="#94a3b8"
-                      fontSize={11}
-                      tickLine={false}
-                      domain={['dataMin - 5', 'dataMax + 5']}
-                      unit="kg"
-                    />
-                    <Tooltip formatter={(val) => [`${val} kg`, 'Max Weight']} />
-                    <Area
-                      type="monotone"
-                      dataKey="weight"
-                      stroke="#0284c7"
-                      strokeWidth={2.5}
-                      fill="url(#exWeightGrad)"
-                      dot={{ r: 4, fill: '#0284c7', strokeWidth: 2, stroke: '#fff' }}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+                {exerciseProgress.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart
+                      data={exerciseProgress}
+                      margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
+                    >
+                      <defs>
+                        <linearGradient id="exWeightGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#0284c7" stopOpacity={0.25} />
+                          <stop offset="95%" stopColor="#0284c7" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
+                      <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
+                      <YAxis
+                        stroke="#94a3b8"
+                        fontSize={11}
+                        tickLine={false}
+                        domain={['dataMin - 5', 'dataMax + 5']}
+                        unit="kg"
+                      />
+                      <Tooltip formatter={(val) => [`${val} kg`, 'Max Weight']} />
+                      <Area
+                        type="monotone"
+                        dataKey="weight"
+                        stroke="#0284c7"
+                        strokeWidth={2.5}
+                        fill="url(#exWeightGrad)"
+                        dot={{ r: 4, fill: '#0284c7', strokeWidth: 2, stroke: '#fff' }}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-100 d-flex flex-column align-items-center justify-content-center text-center p-3">
+                    <div className="p-3 rounded-circle bg-secondary-subtle text-muted mb-2">
+                      <DumbbellIcon size={24} />
+                    </div>
+                    <span className="fw-semibold text-white small mb-1">No strength progression data</span>
+                    <span className="text-muted smaller">Record exercises with weight sets to track progressive overload</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -393,62 +393,56 @@ const Analytics = () => {
               </div>
 
               <div style={{ width: '100%', height: 210 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={typeDistribution.length > 0 ? typeDistribution : [
-                        { name: 'Strength', value: 7, percentage: 64 },
-                        { name: 'Cycling', value: 1, percentage: 9 },
-                        { name: 'Yoga', value: 1, percentage: 9 },
-                        { name: 'HIIT', value: 1, percentage: 9 },
-                        { name: 'Running', value: 1, percentage: 9 },
-                      ]}
-                      dataKey="value"
-                      nameKey="name"
-                      innerRadius={55}
-                      outerRadius={80}
-                      paddingAngle={3}
-                    >
-                      {(typeDistribution.length > 0 ? typeDistribution : [
-                        { name: 'Strength' },
-                        { name: 'Cycling' },
-                        { name: 'Yoga' },
-                        { name: 'HIIT' },
-                        { name: 'Running' },
-                      ]).map((entry, idx) => (
-                        <Cell
-                          key={`cell-${idx}`}
-                          fill={TYPE_COLORS[entry.name] || DEFAULT_COLORS[idx % DEFAULT_COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(val, name, entry) => [`${val} workouts (${entry.payload.percentage || 0}%)`, name]} />
-                  </PieChart>
-                </ResponsiveContainer>
+                {typeDistribution.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={typeDistribution}
+                        dataKey="value"
+                        nameKey="name"
+                        innerRadius={55}
+                        outerRadius={80}
+                        paddingAngle={3}
+                      >
+                        {typeDistribution.map((entry, idx) => (
+                          <Cell
+                            key={`cell-${idx}`}
+                            fill={TYPE_COLORS[entry.name] || DEFAULT_COLORS[idx % DEFAULT_COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(val, name, entry) => [`${val} workouts (${entry.payload.percentage || 0}%)`, name]} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-100 d-flex flex-column align-items-center justify-content-center text-center p-3">
+                    <div className="p-3 rounded-circle bg-secondary-subtle text-muted mb-2">
+                      <BarChartIcon size={24} />
+                    </div>
+                    <span className="fw-semibold text-white small mb-1">No workout categories yet</span>
+                    <span className="text-muted smaller">Log different workout types to view category breakdown</span>
+                  </div>
+                )}
               </div>
 
               {/* Bottom Horizontal Legend with Colored Dots */}
-              <div className="d-flex flex-wrap justify-content-center align-items-center gap-3 pt-2">
-                {(typeDistribution.length > 0 ? typeDistribution : [
-                  { name: 'Cycling', value: 1 },
-                  { name: 'HIIT', value: 1 },
-                  { name: 'Running', value: 1 },
-                  { name: 'Strength', value: 7 },
-                  { name: 'Yoga', value: 1 },
-                ]).map((t, idx) => (
-                  <div key={t.name} className="d-flex align-items-center smaller" style={{ gap: '0.45rem' }}>
-                    <span
-                      className="rounded-circle d-inline-block"
-                      style={{
-                        width: 9,
-                        height: 9,
-                        backgroundColor: TYPE_COLORS[t.name] || DEFAULT_COLORS[idx % DEFAULT_COLORS.length],
-                      }}
-                    />
-                    <span className="text-muted">{t.name}</span>
-                  </div>
-                ))}
-              </div>
+              {typeDistribution.length > 0 && (
+                <div className="d-flex flex-wrap justify-content-center align-items-center gap-3 pt-2">
+                  {typeDistribution.map((t, idx) => (
+                    <div key={t.name} className="d-flex align-items-center smaller" style={{ gap: '0.45rem' }}>
+                      <span
+                        className="rounded-circle d-inline-block"
+                        style={{
+                          width: 9,
+                          height: 9,
+                          backgroundColor: TYPE_COLORS[t.name] || DEFAULT_COLORS[idx % DEFAULT_COLORS.length],
+                        }}
+                      />
+                      <span className="text-muted">{t.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

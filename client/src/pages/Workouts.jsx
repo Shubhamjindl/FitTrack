@@ -486,7 +486,7 @@ const Workouts = () => {
                   }}
                   aria-label="Frequently trained timeframe filter"
                 >
-                  <option value="all">All Time (App Start)</option>
+                  <option value="all">All Time</option>
                   <option value="30days">Last 30 Days</option>
                   <option value="90days">Last 90 Days</option>
                 </select>
@@ -580,7 +580,7 @@ const Workouts = () => {
                 aria-label="History overview timeframe filter"
               >
                 <option value="active">Last Active Period</option>
-                <option value="recent4">Last 4 Weeks (Live)</option>
+                <option value="recent4">Last 4 Weeks</option>
               </select>
             </div>
 
@@ -676,12 +676,6 @@ const Workouts = () => {
                 Training Streak
               </span>
             </div>
-            <span
-              className={`badge rounded-pill ${streakStats.isActive ? 'bg-emerald-subtle text-emerald' : 'border border-secondary border-opacity-30 text-muted bg-transparent'} px-2.5 py-0.5 fw-semibold smaller flex-shrink-0`}
-              style={{ fontSize: '0.72rem' }}
-            >
-              {streakStats.isActive ? 'Active' : 'Inactive'}
-            </span>
           </div>
 
           {/* Clean Center Content: Bold Green/Muted Streak and White days + circular flame emblem */}

@@ -344,8 +344,17 @@ const Dashboard = () => {
                   <TrendingUpIcon size={20} />
                 </div>
                 <div>
-                  <div className="fw-bold text-emerald mb-0" style={{ fontSize: '1.2rem', lineHeight: 1.15 }}>
-                    +12%
+                  <div
+                    className={`fw-bold mb-0 ${
+                      (stats?.volumeTrendDirection || 'neutral') === 'down'
+                        ? 'text-danger'
+                        : (stats?.volumeTrendDirection || 'neutral') === 'up'
+                        ? 'text-emerald'
+                        : 'text-muted'
+                    }`}
+                    style={{ fontSize: '1.2rem', lineHeight: 1.15 }}
+                  >
+                    {stats?.volumeTrend || '0%'}
                   </div>
                   <div className="smaller text-muted">Volume vs. last 4 weeks</div>
                 </div>

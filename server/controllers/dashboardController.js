@@ -93,6 +93,49 @@ const getDashboardStats = async (req, res) => {
       exercises: w.exercises ? w.exercises.slice(0, 3) : [], // snippet
     }));
 
+    // Calculate 4-week volume trend (last 28 days vs prior 28 days)
+    const twentyEightDaysAgo = new Date(now);
+    twentyEightDaysAgo.setDate(now.getDate() - 28);
+    twentyEightDaysAgo.setHours(0, 0, 0, 0);
+
+    const fiftySixDaysAgo = new Date(now);
+    fiftySixDaysAgo.setDate(now.getDate() - 56);
+    fiftySixDaysAgo.setHours(0, 0, 0, 0);
+
+    let recent4WeeksVolume = 0;
+    let prior4WeeksVolume = 0;
+
+    allWorkouts.forEach((w) => {
+      const wDate = new Date(w.date);
+      let wVol = 0;
+      if (Array.isArray(w.exercises)) {
+        w.exercises.forEach((ex) => {
+          wVol += (ex.sets || 0) * (ex.reps || 0) * (ex.weight || 0);
+        });
+      }
+
+      if (wDate >= twentyEightDaysAgo && wDate <= now) {
+        recent4WeeksVolume += wVol;
+      } else if (wDate >= fiftySixDaysAgo && wDate < twentyEightDaysAgo) {
+        prior4WeeksVolume += wVol;
+      }
+    });
+
+    let volumeTrend = '0%';
+    let volumeTrendDirection = 'neutral';
+
+    if (recent4WeeksVolume === 0 && prior4WeeksVolume === 0) {
+      volumeTrend = '0%';
+      volumeTrendDirection = 'neutral';
+    } else if (prior4WeeksVolume === 0 && recent4WeeksVolume > 0) {
+      volumeTrend = '+100%';
+      volumeTrendDirection = 'up';
+    } else if (prior4WeeksVolume > 0) {
+      const diffPercent = Math.round(((recent4WeeksVolume - prior4WeeksVolume) / prior4WeeksVolume) * 100);
+      volumeTrend = diffPercent >= 0 ? `+${diffPercent}%` : `${diffPercent}%`;
+      volumeTrendDirection = diffPercent > 0 ? 'up' : (diffPercent < 0 ? 'down' : 'neutral');
+    }
+
     return res.json({
       success: true,
       data: {
@@ -100,6 +143,8 @@ const getDashboardStats = async (req, res) => {
         totalExercises,
         totalDuration, // in minutes
         totalVolume, // in kg/lbs
+        volumeTrend,
+        volumeTrendDirection,
         thisWeekWorkouts: thisWeekCount,
         thisWeekDuration,
         activityChart,
