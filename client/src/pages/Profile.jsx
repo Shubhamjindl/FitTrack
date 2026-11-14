@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import ProfileSummitGraphic from '../components/ProfileSummitGraphic';
 import {
   UserIcon,
   MailIcon,
@@ -105,45 +105,50 @@ const Profile = () => {
         month: 'long',
         year: 'numeric',
       })
-    : 'Recently';
+    : 'October 2026';
+
+  const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'A';
 
   return (
-    <div className="container py-4 animate-fade-in max-w-4xl">
-      {/* Header */}
-      <div className="mb-4 pb-2 border-bottom">
-        <h1 className="fw-bold text-dark mb-1 h2">Athlete Profile</h1>
+    <div className="container py-3.5 animate-fade-in max-w-4xl">
+      {/* Page Title */}
+      <div className="mb-3.5 pb-1">
+        <h1 className="fw-bold text-dark mb-1 h3">Athlete Profile</h1>
         <p className="text-muted mb-0 small">
-          Manage your account profile details and security settings
+          Manage your account details and security settings
         </p>
       </div>
 
-      {/* User Header Profile Card */}
-      <div className="card card-fittrack p-4 p-md-5 mb-4">
-        <div className="d-flex flex-column flex-sm-row align-items-center gap-4">
-          <div
-            className="user-avatar-pill shadow"
-            style={{ width: 84, height: 84, fontSize: '2.2rem' }}
-          >
-            {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+      {/* User Header Profile Card with Mountain Summit Graphic */}
+      <div className="profile-hero-card p-4 p-md-4.5 mb-4">
+        <div className="profile-hero-content d-flex flex-column flex-sm-row align-items-center gap-3.5">
+          <div className="profile-avatar-circle shadow-sm">
+            {userInitial}
           </div>
 
           <div className="text-center text-sm-start flex-grow-1">
-            <h3 className="fw-bold text-dark mb-1">{user?.name}</h3>
-            <div className="d-flex flex-wrap justify-content-center justify-content-sm-start align-items-center gap-3 text-muted small">
-              <span className="d-flex align-items-center gap-1">
-                <MailIcon size={15} />
-                <span>{user?.email}</span>
+            <h2 className="fw-bold text-dark mb-1 h4">{user?.name || 'Alex Morgan'}</h2>
+            <div className="d-flex flex-wrap justify-content-center justify-content-sm-start align-items-center gap-2.5 text-muted small">
+              <span className="d-flex align-items-center gap-1.5">
+                <MailIcon size={14} />
+                <span>{user?.email || 'alex.fit@example.com'}</span>
               </span>
               <span>•</span>
-              <span className="d-flex align-items-center gap-1">
-                <CalendarIcon size={15} />
+              <span className="d-flex align-items-center gap-1.5">
+                <CalendarIcon size={14} />
                 <span>Member since {memberSince}</span>
               </span>
             </div>
           </div>
         </div>
+
+        {/* Mountain Ridge Summit Background Artwork */}
+        <div className="profile-hero-bg">
+          <ProfileSummitGraphic />
+        </div>
       </div>
 
+      {/* Demo Banner */}
       {isDemo && (
         <div className="demo-banner mb-4 d-flex align-items-center gap-3">
           <div className="demo-banner-icon">
@@ -151,17 +156,31 @@ const Profile = () => {
           </div>
           <div>
             <div className="fw-semibold text-primary-custom mb-0.5">Demo Account (View Only)</div>
-            <div className="small text-muted">You are logged in as Alex Morgan. Profile details and credentials are fixed in read-only mode to preserve preview access for all visitors.</div>
+            <div className="small text-muted">
+              You are exploring as Alex Morgan. Profile details and credentials are fixed in read-only mode to preserve preview access for all visitors.
+            </div>
           </div>
         </div>
       )}
 
+      {/* Profile Sections: Update Information & Security */}
       <div className="row g-4">
-        {/* Update Profile Name Form */}
+        {/* Update Information */}
         <div className="col-12 col-md-6">
           <div className="card card-fittrack p-4 h-100">
-            <h5 className="fw-bold text-dark mb-2">Update Information</h5>
-            <p className="text-muted small mb-3">Modify your public display name</p>
+            <div className="d-flex align-items-center gap-2.5 mb-3">
+              <div className="section-icon-badge">
+                <UserIcon size={18} />
+              </div>
+              <div>
+                <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                  Update Information
+                </h5>
+                <p className="text-muted smaller mb-0">
+                  Modify your public display name and email address
+                </p>
+              </div>
+            </div>
 
             {nameSuccess && (
               <div className="alert alert-success py-2 px-3 small rounded-3 mb-3">
@@ -176,12 +195,12 @@ const Profile = () => {
 
             <form onSubmit={handleUpdateName}>
               <div className="mb-3">
-                <label className="form-label" htmlFor="editNameInput">
+                <label className="form-label small fw-semibold" htmlFor="editNameInput">
                   Display Name
                 </label>
                 <div className="input-group">
                   <span className="input-group-text bg-light text-muted">
-                    <UserIcon size={16} />
+                    <UserIcon size={15} />
                   </span>
                   <input
                     id="editNameInput"
@@ -194,24 +213,29 @@ const Profile = () => {
                   />
                 </div>
                 {isDemo && (
-                  <span className="form-text small text-muted">
+                  <span className="form-text smaller text-muted">
                     Name cannot be changed in demo mode.
                   </span>
                 )}
               </div>
 
               <div className="mb-4">
-                <label className="form-label" htmlFor="emailReadonly">
+                <label className="form-label small fw-semibold" htmlFor="emailReadonly">
                   Email Address
                 </label>
-                <input
-                  id="emailReadonly"
-                  type="email"
-                  className="form-control bg-light"
-                  value={user?.email || ''}
-                  disabled
-                />
-                <span className="form-text small text-muted">
+                <div className="input-group">
+                  <span className="input-group-text bg-light text-muted">
+                    <MailIcon size={15} />
+                  </span>
+                  <input
+                    id="emailReadonly"
+                    type="email"
+                    className="form-control bg-light"
+                    value={user?.email || ''}
+                    disabled
+                  />
+                </div>
+                <span className="form-text smaller text-muted">
                   Email cannot be changed directly for security.
                 </span>
               </div>
@@ -234,11 +258,22 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Change Password Form */}
+        {/* Security & Password */}
         <div className="col-12 col-md-6">
           <div className="card card-fittrack p-4 h-100">
-            <h5 className="fw-bold text-dark mb-2">Security & Password</h5>
-            <p className="text-muted small mb-3">Ensure your account uses a secure password</p>
+            <div className="d-flex align-items-center gap-2.5 mb-3">
+              <div className="section-icon-badge">
+                <LockIcon size={18} />
+              </div>
+              <div>
+                <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                  Security & Password
+                </h5>
+                <p className="text-muted smaller mb-0">
+                  Ensure your account uses a secure password
+                </p>
+              </div>
+            </div>
 
             {passwordSuccess && (
               <div className="alert alert-success py-2 px-3 small rounded-3 mb-3">
@@ -252,27 +287,35 @@ const Profile = () => {
             )}
 
             {isDemo ? (
-              <div className="d-flex flex-column align-items-center justify-content-center text-center py-4 my-auto text-muted">
-                <div className="mb-3 p-3 rounded-circle bg-light-section text-muted shadow-xs">
-                  <LockIcon size={28} />
+              <div className="d-flex flex-column align-items-center justify-content-center text-center py-4 my-auto">
+                <div
+                  className="mb-3 d-flex align-items-center justify-content-center rounded-circle"
+                  style={{
+                    width: 58,
+                    height: 58,
+                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                    color: '#10b981',
+                  }}
+                >
+                  <LockIcon size={26} />
                 </div>
-                <h6 className="fw-semibold text-dark mb-1">Credentials Locked</h6>
-                <p className="small text-muted mb-3" style={{ maxWidth: 280 }}>
+                <h6 className="fw-bold text-dark mb-1">Credentials Locked</h6>
+                <p className="smaller text-muted mb-3" style={{ maxWidth: 280 }}>
                   Password modifications are disabled for the public demo account to ensure continuous access.
                 </p>
-                <span className="badge bg-light-section text-secondary border px-3 py-1.5 fw-normal">
+                <span className="btn btn-outline-green btn-sm px-3 py-1 smaller rounded-pill">
                   Read-Only Mode
                 </span>
               </div>
             ) : (
               <form onSubmit={handleChangePassword}>
                 <div className="mb-3">
-                  <label className="form-label" htmlFor="currentPassword">
+                  <label className="form-label small fw-semibold" htmlFor="currentPassword">
                     Current Password
                   </label>
                   <div className="input-group">
                     <span className="input-group-text bg-light text-muted">
-                      <LockIcon size={16} />
+                      <LockIcon size={15} />
                     </span>
                     <input
                       id="currentPassword"
@@ -287,12 +330,12 @@ const Profile = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label" htmlFor="newPassword">
+                  <label className="form-label small fw-semibold" htmlFor="newPassword">
                     New Password
                   </label>
                   <div className="input-group">
                     <span className="input-group-text bg-light text-muted">
-                      <LockIcon size={16} />
+                      <LockIcon size={15} />
                     </span>
                     <input
                       id="newPassword"
@@ -307,12 +350,12 @@ const Profile = () => {
                 </div>
 
                 <div className="mb-4">
-                  <label className="form-label" htmlFor="confirmNewPassword">
+                  <label className="form-label small fw-semibold" htmlFor="confirmNewPassword">
                     Confirm New Password
                   </label>
                   <div className="input-group">
                     <span className="input-group-text bg-light text-muted">
-                      <LockIcon size={16} />
+                      <LockIcon size={15} />
                     </span>
                     <input
                       id="confirmNewPassword"
@@ -328,7 +371,7 @@ const Profile = () => {
 
                 <button
                   type="submit"
-                  className="btn btn-outline-secondary w-100 rounded-3"
+                  className="btn btn-primary-green w-100"
                   disabled={savingPassword}
                 >
                   {savingPassword ? (

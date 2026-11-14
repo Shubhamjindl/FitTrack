@@ -1201,5 +1201,346 @@ a {
   color: var(--primary-green);
 }
 
+/* ========================================================
+   PHASE 2 - MODERN SAAS REDESIGN (Dashboard & Profile)
+   ======================================================== */
+
+/* Motivational Hero Banner */
+.hero-card-v2 {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: linear-gradient(135deg, #ffffff 0%, #f6fbf8 55%, #edf9f2 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] .hero-card-v2 {
+  background: linear-gradient(135deg, #091712 0%, #062b1e 55%, #041f16 100%);
+  border-color: rgba(16, 185, 129, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 520px;
+}
+
+.hero-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 1.85rem;
+  }
+}
+
+.hero-subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.hero-graphic-wrap {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 52%;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+@media (max-width: 991px) {
+  .hero-graphic-wrap {
+    opacity: 0.25;
+    width: 75%;
+  }
+}
+
+.hero-graphic-wrap svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-hero-primary {
+  background-color: var(--primary-green);
+  color: #ffffff;
+  font-weight: 600;
+  border: 1px solid var(--primary-green);
+  border-radius: 10px;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+}
+
+.btn-hero-primary:hover {
+  background-color: var(--primary-green-hover);
+  border-color: var(--primary-green-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-hero-outline {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: var(--text-primary);
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .btn-hero-outline {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+}
+
+.btn-hero-outline:hover {
+  background-color: var(--bg-section);
+  color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+/* Stat Cards V2 */
+.stat-card-v2 {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.stat-card-v2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+[data-theme="dark"] .stat-card-v2 {
+  background-color: #15181e;
+  border-color: #262a33;
+}
+
+[data-theme="dark"] .stat-card-v2:hover {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.stat-card-icon-circle {
+  transition: transform 0.2s ease;
+}
+
+.stat-card-v2:hover .stat-card-icon-circle {
+  transform: scale(1.08);
+}
+
+/* Fitness Snapshot Card */
+.fitness-snapshot-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.snapshot-sparkline-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 140px;
+  height: 80px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.snapshot-metric-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background-color: var(--bg-section);
+  margin-bottom: 10px;
+  transition: background-color 0.15s ease;
+}
+
+.snapshot-metric-item:hover {
+  background-color: rgba(16, 185, 129, 0.06);
+}
+
+.snapshot-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background-color: rgba(16, 185, 129, 0.12);
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Recent Workouts V2 */
+.recent-workout-card-v2 {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid #10b981;
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  text-decoration: none;
+}
+
+.recent-workout-card-v2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="dark"] .recent-workout-card-v2 {
+  background-color: #15181e;
+  border-color: #262a33;
+}
+
+[data-theme="dark"] .recent-workout-card-v2:hover {
+  border-color: #10b981;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.pill-stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  background-color: var(--bg-section);
+  color: var(--text-muted);
+}
+
+.type-pill-Strength {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #059669;
+}
+
+[data-theme="dark"] .type-pill-Strength {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.type-pill-Running,
+.type-pill-Cardio {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+}
+
+[data-theme="dark"] .type-pill-Running,
+[data-theme="dark"] .type-pill-Cardio {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+}
+
+.type-pill-HIIT {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
+[data-theme="dark"] .type-pill-HIIT {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.type-pill-Yoga {
+  background-color: rgba(147, 51, 234, 0.12);
+  color: #7e22ce;
+}
+
+[data-theme="dark"] .type-pill-Yoga {
+  background-color: rgba(147, 51, 234, 0.2);
+  color: #c084fc;
+}
+
+.type-pill-Cycling {
+  background-color: rgba(2, 132, 199, 0.12);
+  color: #0369a1;
+}
+
+[data-theme="dark"] .type-pill-Cycling {
+  background-color: rgba(2, 132, 199, 0.2);
+  color: #38bdf8;
+}
+
+/* Profile Hero Landscape Card */
+.profile-hero-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.profile-hero-bg {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 55%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .profile-hero-bg {
+    opacity: 0.2;
+    width: 80%;
+  }
+}
+
+.profile-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.profile-avatar-circle {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+  flex-shrink: 0;
+}
+
+.section-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: rgba(16, 185, 129, 0.12);
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+
 
 

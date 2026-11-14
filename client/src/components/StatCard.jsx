@@ -1,31 +1,72 @@
 import React from 'react';
 
-const StatCard = ({ title, value, unit, subtitle, colorTheme = 'mint', icon }) => {
-  const themeClass = `card-pastel-${colorTheme}`;
+const StatCard = ({
+  title,
+  value,
+  unit,
+  subtitle,
+  colorTheme = 'mint',
+  icon,
+}) => {
+  // Theme color maps for clean icon circular badge
+  const themeMap = {
+    mint: {
+      bg: 'var(--stat-mint-bg, rgba(16, 185, 129, 0.12))',
+      color: '#10b981',
+      border: 'rgba(16, 185, 129, 0.2)',
+    },
+    blue: {
+      bg: 'var(--stat-blue-bg, rgba(2, 132, 199, 0.12))',
+      color: '#0284c7',
+      border: 'rgba(2, 132, 199, 0.2)',
+    },
+    purple: {
+      bg: 'var(--stat-purple-bg, rgba(147, 51, 234, 0.12))',
+      color: '#9333ea',
+      border: 'rgba(147, 51, 234, 0.2)',
+    },
+    amber: {
+      bg: 'var(--stat-amber-bg, rgba(245, 158, 11, 0.12))',
+      color: '#d97706',
+      border: 'rgba(245, 158, 11, 0.2)',
+    },
+  };
+
+  const theme = themeMap[colorTheme] || themeMap.mint;
 
   return (
-    <div className={`p-3 p-md-3.5 h-100 ${themeClass} shadow-sm position-relative overflow-hidden`}>
-      <div className="d-flex justify-content-between align-items-start mb-2.5">
-        <div>
-          <span className="text-uppercase fw-bold" style={{ fontSize: '0.72rem', letterSpacing: '0.05em', opacity: 0.85 }}>
-            {title}
-          </span>
-          <div className="d-flex align-items-baseline gap-1.5 mt-0.5">
-            <span className="stat-number fw-bold mb-0" style={{ letterSpacing: '-0.5px' }}>
-              {value}
-            </span>
-            {unit && <span className="fw-semibold small" style={{ opacity: 0.85, fontSize: '0.85rem' }}>{unit}</span>}
-          </div>
-        </div>
-        <div className="stat-icon-badge">
-          {icon}
-        </div>
+    <div className="stat-card-v2 p-3 p-xl-3.5 h-100 rounded-3 shadow-sm d-flex align-items-center gap-3">
+      <div
+        className="stat-card-icon-circle flex-shrink-0 d-flex align-items-center justify-content-center rounded-circle"
+        style={{
+          width: 48,
+          height: 48,
+          backgroundColor: theme.bg,
+          color: theme.color,
+        }}
+      >
+        {icon}
       </div>
-      {subtitle && (
-        <div className="small fw-medium" style={{ opacity: 0.85, fontSize: '0.8rem' }}>
-          {subtitle}
+      <div className="min-w-0 flex-grow-1">
+        <div className="d-flex align-items-baseline gap-1">
+          <span className="fw-bold stat-card-value text-dark" style={{ fontSize: '1.45rem', lineHeight: 1.15, letterSpacing: '-0.5px' }}>
+            {value}
+          </span>
+          {unit && (
+            <span className="text-muted fw-semibold" style={{ fontSize: '0.85rem' }}>
+              {unit}
+            </span>
+          )}
         </div>
-      )}
+        <div className="fw-semibold text-secondary-custom text-truncate mt-0.5" style={{ fontSize: '0.85rem' }}>
+          {title}
+        </div>
+        {subtitle && (
+          <div className="text-muted text-truncate" style={{ fontSize: '0.74rem' }}>
+            {subtitle}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
