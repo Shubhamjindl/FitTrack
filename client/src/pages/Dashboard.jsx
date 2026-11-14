@@ -13,6 +13,7 @@ import { useAuth } from '../context/AuthContext';
 import StatCard from '../components/StatCard';
 import RecentWorkoutCard from '../components/RecentWorkoutCard';
 import WorkoutModal from '../components/WorkoutModal';
+import HeroBannerGraphic from '../components/HeroBannerGraphic';
 import {
   DumbbellIcon,
   ClockIcon,
@@ -122,17 +123,8 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* Motivational Hero Banner with Realistic Sunrise Mountain Photo */}
+      {/* Motivational Hero Banner */}
       <div className="hero-card-v2 p-4 p-md-4.5 mb-4">
-        {/* Realistic High-Res Background Image */}
-        <img
-          src="/banner-hero.jpg"
-          alt="Athlete looking over mountain horizon at sunrise"
-          className="hero-bg-img"
-          loading="eager"
-        />
-        <div className="hero-overlay" />
-
         <div className="hero-content">
           <h2 className="hero-title fw-bold text-dark mb-2">
             Stay Consistent. <span className="text-emerald">Get Stronger.</span>
@@ -141,17 +133,18 @@ const Dashboard = () => {
             Log your workouts, track your progress, and build a healthier, stronger you.
           </p>
           <div className="d-flex flex-wrap align-items-center gap-2.5">
-            {!isDemo && (
-              <Link to="/workouts/new" className="btn-hero-primary d-inline-flex align-items-center gap-2">
-                <PlusIcon size={17} />
-                <span>+ Log Workout</span>
-              </Link>
-            )}
+            <Link to="/workouts/new" className="btn-hero-primary d-inline-flex align-items-center gap-2">
+              <PlusIcon size={17} />
+              <span>+ Log Workout</span>
+            </Link>
             <Link to="/workouts" className="btn-hero-outline d-inline-flex align-items-center gap-2">
               <CalendarIcon size={16} />
               <span>View History</span>
             </Link>
           </div>
+        </div>
+        <div className="hero-graphic-wrap">
+          <HeroBannerGraphic />
         </div>
       </div>
 
