@@ -121,8 +121,8 @@ const Profile = () => {
 
       {/* User Header Profile Card with Mountain Summit Graphic */}
       <div className="profile-hero-card p-4 mb-4">
-        <div className="profile-hero-content d-flex flex-column flex-sm-row align-items-center" style={{ gap: '1.25rem' }}>
-          <div className="profile-avatar-circle shadow-sm flex-shrink-0">
+        <div className="profile-hero-content d-flex flex-column flex-sm-row align-items-center" style={{ gap: '1.5rem' }}>
+          <div className="profile-avatar-circle shadow-sm flex-shrink-0 me-sm-2 mb-3 mb-sm-0">
             {userInitial}
           </div>
 

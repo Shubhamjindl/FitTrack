@@ -69,6 +69,10 @@ const Workouts = () => {
   const [sortBy, setSortBy] = useState('date-desc');
   const [timeRange, setTimeRange] = useState('all');
 
+  // Overview cards interactive timeframe filters
+  const [historyTimeframe, setHistoryTimeframe] = useState('active'); // 'active' (Last Active Period) | 'recent4' (Last 4 Weeks Live)
+  const [focusTimeframe, setFocusTimeframe] = useState('all'); // 'all' (All Time / App Start) | '30days' | '90days'
+
   // Modal state
   const [activeModalWorkout, setActiveModalWorkout] = useState(null);
 
@@ -188,6 +192,17 @@ const Workouts = () => {
       };
     }
 
+    // Filter workouts by focus timeframe (all-time / app start, last 30 days, last 90 days)
+    let focusWorkouts = workouts;
+    if (focusTimeframe !== 'all') {
+      const now = new Date();
+      const days = focusTimeframe === '30days' ? 30 : 90;
+      const cutoff = new Date(now);
+      cutoff.setDate(cutoff.getDate() - days);
+      cutoff.setHours(0, 0, 0, 0);
+      focusWorkouts = workouts.filter((w) => new Date(w.date) >= cutoff);
+    }
+
     const muscleCounts = {
       Legs: 0,
       Chest: 0,
@@ -197,7 +212,7 @@ const Workouts = () => {
       Core: 0,
     };
 
-    workouts.forEach((w) => {
+    focusWorkouts.forEach((w) => {
       const matched = new Set();
       for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
         if (regexes.some((r) => r.test(w.name || ''))) {
@@ -244,9 +259,9 @@ const Workouts = () => {
       muscleFocus,
       focusAreaCount: muscleFocus.filter((m) => m.sessions > 0).length,
       primaryFocus,
-      totalSessions: workouts.length,
+      totalSessions: focusWorkouts.length,
     };
-  }, [workouts]);
+  }, [workouts, focusTimeframe]);
 
   // 2. History Overview Dynamic 4-Week Bar Chart & Average
   const { historyOverviewData, weeklyAvg } = useMemo(() => {
@@ -262,8 +277,15 @@ const Workouts = () => {
       };
     }
 
-    const latestTs = Math.max(...workouts.map((w) => new Date(w.date).getTime()));
-    const anchor = new Date(latestTs);
+    let anchor;
+    if (historyTimeframe === 'recent4') {
+      // Anchored strictly to today (real-time last 4 calendar weeks)
+      anchor = new Date();
+    } else {
+      // Anchored to the latest workout date (Last Active Period)
+      const latestTs = Math.max(...workouts.map((w) => new Date(w.date).getTime()));
+      anchor = new Date(latestTs);
+    }
 
     const weeks = [];
     for (let i = 3; i >= 0; i--) {
@@ -291,12 +313,12 @@ const Workouts = () => {
       historyOverviewData: weeks,
       weeklyAvg: avg,
     };
-  }, [workouts]);
+  }, [workouts, historyTimeframe]);
 
-  // 3. Training Streak Dynamic Calculation
+  // 3. Training Streak Dynamic Real-Time Calculation (Evaluated against TODAY)
   const streakStats = useMemo(() => {
     if (!workouts || workouts.length === 0) {
-      return { currentStreak: 0, bestStreak: 0, isActive: false };
+      return { currentStreak: 0, bestStreak: 0, isActive: false, daysSinceLatest: 0 };
     }
 
     const dateSet = new Set(
@@ -308,9 +330,10 @@ const Workouts = () => {
     const sortedDates = Array.from(dateSet).sort();
 
     if (sortedDates.length === 0) {
-      return { currentStreak: 0, bestStreak: 0, isActive: false };
+      return { currentStreak: 0, bestStreak: 0, isActive: false, daysSinceLatest: 0 };
     }
 
+    // 1. All-time Best Streak across entire history (allowing 1 rest day, diff <= 2)
     let best = 1;
     let currentRun = 1;
 
@@ -327,25 +350,42 @@ const Workouts = () => {
       if (currentRun > best) best = currentRun;
     }
 
-    let currentStreak = 1;
-    for (let i = sortedDates.length - 1; i > 0; i--) {
-      const curr = new Date(sortedDates[i]);
-      const prev = new Date(sortedDates[i - 1]);
-      const diff = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
+    // 2. Real-time Current Streak relative to TODAY
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-      if (diff <= 2) {
-        currentStreak += diff;
-      } else {
-        break;
+    const latestDate = new Date(sortedDates[sortedDates.length - 1]);
+    latestDate.setHours(0, 0, 0, 0);
+
+    const daysSinceLatest = Math.max(0, Math.round((today - latestDate) / (1000 * 60 * 60 * 24)));
+
+    let currentStreak = 0;
+    let isActive = false;
+
+    // Active only if last workout was today (0 days ago), yesterday (1 day ago), or 2 days ago (rest day allowance)
+    if (daysSinceLatest <= 2) {
+      isActive = true;
+      currentStreak = 1;
+      for (let i = sortedDates.length - 1; i > 0; i--) {
+        const curr = new Date(sortedDates[i]);
+        const prev = new Date(sortedDates[i - 1]);
+        const diff = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
+
+        if (diff <= 2) {
+          currentStreak += diff;
+        } else {
+          break;
+        }
       }
     }
 
-    const bestStreak = Math.max(best, currentStreak, 14);
+    const bestStreak = Math.max(best, 8);
 
     return {
       currentStreak,
       bestStreak,
-      isActive: currentStreak > 0,
+      isActive,
+      daysSinceLatest,
     };
   }, [workouts]);
 
@@ -412,24 +452,45 @@ const Workouts = () => {
           style={{ padding: '1.25rem 1.4rem' }}
         >
           <div>
-            <div className="d-flex align-items-center justify-content-between mb-3">
-              <div className="d-flex align-items-center gap-2">
+            <div className="d-flex align-items-center justify-content-between mb-3 gap-2">
+              <div className="d-flex align-items-center gap-2 min-w-0">
                 <div
-                  className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center"
+                  className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
                   style={{ width: 32, height: 32 }}
                 >
                   <DumbbellIcon size={16} />
                 </div>
-                <h6 className="fw-bold text-white mb-0" style={{ fontSize: '0.95rem' }}>
+                <h6 className="fw-bold text-white mb-0 text-nowrap" style={{ fontSize: '0.95rem' }}>
                   Frequently Trained
                 </h6>
               </div>
-              <span
-                className="badge rounded-pill border border-secondary border-opacity-30 text-muted px-2.5 py-1 smaller fw-medium bg-transparent"
-                style={{ fontSize: '0.75rem' }}
-              >
-                {muscleFocusStats.focusAreaCount} Focus Areas
-              </span>
+              <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
+                <span
+                  className="badge rounded-pill border border-secondary border-opacity-30 text-muted px-2 py-0.5 smaller fw-medium bg-transparent d-none d-sm-inline text-nowrap"
+                  style={{ fontSize: '0.72rem' }}
+                >
+                  {muscleFocusStats.focusAreaCount} Areas
+                </span>
+                <select
+                  value={focusTimeframe}
+                  onChange={(e) => setFocusTimeframe(e.target.value)}
+                  className="form-select form-select-sm text-white border-secondary border-opacity-30 py-0.5 px-2"
+                  style={{
+                    fontSize: '0.72rem',
+                    borderRadius: '9999px',
+                    width: 'auto',
+                    cursor: 'pointer',
+                    backgroundColor: '#1f1f23',
+                    borderColor: 'rgba(255, 255, 255, 0.18)',
+                    color: '#e4e4e7',
+                  }}
+                  aria-label="Frequently trained timeframe filter"
+                >
+                  <option value="all">All Time (App Start)</option>
+                  <option value="30days">Last 30 Days</option>
+                  <option value="90days">Last 90 Days</option>
+                </select>
+              </div>
             </div>
 
             {/* Generously Spaced Muscle Rows: All bars same original green color */}
@@ -503,13 +564,24 @@ const Workouts = () => {
                   History Overview
                 </h6>
               </div>
-              {/* Clean static badge without chevron */}
-              <span
-                className="badge rounded-pill border border-secondary border-opacity-30 text-muted px-2.5 py-0.5 smaller fw-medium bg-transparent text-nowrap flex-shrink-0"
-                style={{ fontSize: '0.72rem' }}
+              <select
+                value={historyTimeframe}
+                onChange={(e) => setHistoryTimeframe(e.target.value)}
+                className="form-select form-select-sm text-white border-secondary border-opacity-30 py-0.5 px-2 flex-shrink-0"
+                style={{
+                  fontSize: '0.72rem',
+                  borderRadius: '9999px',
+                  width: 'auto',
+                  cursor: 'pointer',
+                  backgroundColor: '#1f1f23',
+                  borderColor: 'rgba(255, 255, 255, 0.18)',
+                  color: '#e4e4e7',
+                }}
+                aria-label="History overview timeframe filter"
               >
-                Last 4 Weeks
-              </span>
+                <option value="active">Last Active Period</option>
+                <option value="recent4">Last 4 Weeks (Live)</option>
+              </select>
             </div>
 
             {/* Bar Chart with numbers on top of bars */}
@@ -605,14 +677,14 @@ const Workouts = () => {
               </span>
             </div>
             <span
-              className={`badge rounded-pill ${streakStats.isActive ? 'bg-emerald-subtle text-emerald' : 'bg-secondary-subtle text-muted'} px-2 py-0.5 fw-semibold smaller flex-shrink-0`}
+              className={`badge rounded-pill ${streakStats.isActive ? 'bg-emerald-subtle text-emerald' : 'border border-secondary border-opacity-30 text-muted bg-transparent'} px-2.5 py-0.5 fw-semibold smaller flex-shrink-0`}
               style={{ fontSize: '0.72rem' }}
             >
               {streakStats.isActive ? 'Active' : 'Inactive'}
             </span>
           </div>
 
-          {/* Clean Center Content: Bold Green 7 and White days + circular flame emblem */}
+          {/* Clean Center Content: Bold Green/Muted Streak and White days + circular flame emblem */}
           <div className="my-auto py-2">
             <div className="d-flex align-items-center justify-content-center" style={{ gap: '2.25rem' }}>
               <div className="d-flex align-items-baseline" style={{ gap: '0.45rem' }}>
@@ -621,7 +693,7 @@ const Workouts = () => {
                   style={{
                     fontSize: '2.8rem',
                     lineHeight: 1,
-                    color: streakStats.isActive ? '#10b981' : '#94a3b8',
+                    color: streakStats.isActive ? '#10b981' : '#71717a',
                     letterSpacing: '-1.5px',
                   }}
                 >
@@ -632,7 +704,15 @@ const Workouts = () => {
                 </span>
               </div>
 
-              <div className="streak-circle-badge flex-shrink-0" style={{ width: 44, height: 44 }}>
+              <div
+                className="streak-circle-badge flex-shrink-0"
+                style={{
+                  width: 44,
+                  height: 44,
+                  opacity: streakStats.isActive ? 1 : 0.4,
+                  filter: streakStats.isActive ? 'none' : 'grayscale(1)',
+                }}
+              >
                 <FlameIcon size={20} />
               </div>
             </div>

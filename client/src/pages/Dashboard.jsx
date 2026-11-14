@@ -120,7 +120,7 @@ const Dashboard = () => {
     <div className="container py-3.5 animate-fade-in">
       {/* Welcome Header */}
       <div className="mb-3.5">
-        <h1 className="fw-bold text-dark mb-1 h3">
+        <h1 className="fw-bold text-white mb-1 h3">
           Welcome back, {user?.name?.split(' ')[0] || 'Athlete'}! 👋
         </h1>
         <p className="text-muted mb-0 small">
@@ -131,7 +131,7 @@ const Dashboard = () => {
       {/* Motivational Hero Banner */}
       <div className="hero-card-v2 p-4 mb-4">
         <div className="hero-content">
-          <h2 className="hero-title fw-bold text-dark mb-2">
+          <h2 className="hero-title fw-bold text-white mb-2">
             Stay Consistent. <span className="text-emerald">Get Stronger.</span>
           </h2>
           <p className="hero-subtitle mb-3">
@@ -374,7 +374,7 @@ const Dashboard = () => {
               <ClipboardIcon size={18} />
             </div>
             <div>
-              <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+              <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                 Recent Workouts
               </h5>
               <p className="text-muted smaller mb-0">

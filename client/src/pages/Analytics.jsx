@@ -190,8 +190,8 @@ const Analytics = () => {
         </div>
       </div>
 
-      {/* Row 1: 2 Big Charts Side by Side (50% / 50%) with 24px gap */}
-      <div className="row g-4 mb-4">
+      {/* Row 1: 2 Big Charts Side by Side (50% / 50%) with generous spacing */}
+      <div className="row g-4 mb-4 pb-2">
         {/* Chart 1: Workout Frequency (Last 6 Months) */}
         <div className="col-12 col-lg-6">
           <div className="card card-fittrack p-4 h-100">
@@ -220,7 +220,7 @@ const Analytics = () => {
                     { month: 'Oct 26', workouts: 10 },
                     { month: 'Nov 26', workouts: 0 },
                   ]}
-                  margin={{ top: 15, right: 10, left: -20, bottom: 0 }}
+                  margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
                   <XAxis dataKey="month" stroke="#94a3b8" fontSize={11} tickLine={false} />
@@ -265,7 +265,7 @@ const Analytics = () => {
                     { date: 'Oct 17', duration: 60 },
                     { date: 'Oct 20', duration: 45 },
                   ]}
-                  margin={{ top: 15, right: 10, left: -20, bottom: 0 }}
+                  margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
                 >
                   <defs>
                     <linearGradient id="durationGrad" x1="0" y1="0" x2="0" y2="1">
@@ -341,7 +341,7 @@ const Analytics = () => {
                       { date: 'Oct 10', weight: 82.5 },
                       { date: 'Oct 17', weight: 85 },
                     ]}
-                    margin={{ top: 15, right: 10, left: -20, bottom: 0 }}
+                    margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
                   >
                     <defs>
                       <linearGradient id="exWeightGrad" x1="0" y1="0" x2="0" y2="1">
