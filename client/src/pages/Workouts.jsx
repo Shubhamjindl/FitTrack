@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ResponsiveContainer,
@@ -161,33 +161,193 @@ const Workouts = () => {
     }, 0);
   };
 
-  // 7-day streak tracker (all 7 completed for the active 7-day streak)
-  const streakDays = [
-    { day: 'Mon', completed: true },
-    { day: 'Tue', completed: true },
-    { day: 'Wed', completed: true },
-    { day: 'Thu', completed: true },
-    { day: 'Fri', completed: true },
-    { day: 'Sat', completed: true },
-    { day: 'Sun', completed: true },
-  ];
+  // Dynamic Muscle Group Classification Rules
+  const MUSCLE_RULES = {
+    Legs: [/squat/i, /leg/i, /lunge/i, /deadlift/i, /calf/i, /hamstring/i, /quad/i, /glute/i],
+    Chest: [/chest/i, /bench/i, /fly/i, /push[\s-]?up/i, /pec/i, /dip/i],
+    Back: [/pull[\s-]?up/i, /lat/i, /row/i, /back/i, /chin[\s-]?up/i],
+    Shoulders: [/shoulder/i, /overhead/i, /military/i, /lateral raise/i, /deltoid/i, /arnold/i],
+    Arms: [/bicep/i, /tricep/i, /curl/i, /pushdown/i, /skull/i, /arm/i],
+    Core: [/core/i, /ab/i, /plank/i, /crunch/i, /climber/i],
+  };
 
-  // Frequently trained muscle focus (single undivided flow)
-  const muscleFocus = [
-    { name: 'Legs', sessions: 3, percent: 33, barPercent: 88, color: '#10b981' },
-    { name: 'Chest', sessions: 2, percent: 22, barPercent: 62, color: '#10b981' },
-    { name: 'Back', sessions: 2, percent: 22, barPercent: 62, color: '#10b981' },
-    { name: 'Shoulders', sessions: 1, percent: 11, barPercent: 36, color: '#10b981' },
-    { name: 'Arms', sessions: 1, percent: 11, barPercent: 36, color: '#10b981' },
-  ];
+  // 1. Frequently Trained Dynamic Focus Areas Calculation
+  const muscleFocusStats = useMemo(() => {
+    if (!workouts || workouts.length === 0) {
+      return {
+        muscleFocus: [
+          { name: 'Legs', sessions: 0, barPercent: 0 },
+          { name: 'Chest', sessions: 0, barPercent: 0 },
+          { name: 'Back', sessions: 0, barPercent: 0 },
+          { name: 'Shoulders', sessions: 0, barPercent: 0 },
+          { name: 'Arms', sessions: 0, barPercent: 0 },
+        ],
+        focusAreaCount: 0,
+        primaryFocus: 'None',
+        totalSessions: 0,
+      };
+    }
 
-  // History overview data (4 weeks matching database workouts and user mockup)
-  const historyOverviewData = [
-    { week: 'Sep 29', sessions: 1 },
-    { week: 'Oct 6', sessions: 2 },
-    { week: 'Oct 13', sessions: 4 },
-    { week: 'Oct 20', sessions: 4 },
-  ];
+    const muscleCounts = {
+      Legs: 0,
+      Chest: 0,
+      Back: 0,
+      Shoulders: 0,
+      Arms: 0,
+      Core: 0,
+    };
+
+    workouts.forEach((w) => {
+      const matched = new Set();
+      for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
+        if (regexes.some((r) => r.test(w.name || ''))) {
+          matched.add(muscle);
+        }
+      }
+      if (w.type === 'Running' || w.type === 'Cycling') {
+        matched.add('Legs');
+      }
+      (w.exercises || []).forEach((ex) => {
+        for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
+          if (regexes.some((r) => r.test(ex.name || ''))) {
+            matched.add(muscle);
+          }
+        }
+      });
+      matched.forEach((m) => {
+        if (muscleCounts[m] !== undefined) {
+          muscleCounts[m] += 1;
+        }
+      });
+    });
+
+    const sorted = Object.entries(muscleCounts)
+      .filter(([_, count]) => count > 0)
+      .sort((a, b) => b[1] - a[1]);
+
+    const activeList = sorted.length > 0 ? sorted : Object.entries(muscleCounts).slice(0, 5);
+    const maxVal = Math.max(...activeList.map(([_, c]) => c), 1);
+
+    const muscleFocus = activeList.slice(0, 5).map(([name, sessions]) => ({
+      name,
+      sessions,
+      barPercent: Math.max(12, Math.round((sessions / maxVal) * 88)),
+    }));
+
+    const topTwo = muscleFocus
+      .filter((m) => m.sessions > 0)
+      .slice(0, 2)
+      .map((m) => m.name);
+    const primaryFocus = topTwo.length > 0 ? topTwo.join(' & ') : 'General Fitness';
+
+    return {
+      muscleFocus,
+      focusAreaCount: muscleFocus.filter((m) => m.sessions > 0).length,
+      primaryFocus,
+      totalSessions: workouts.length,
+    };
+  }, [workouts]);
+
+  // 2. History Overview Dynamic 4-Week Bar Chart & Average
+  const { historyOverviewData, weeklyAvg } = useMemo(() => {
+    if (!workouts || workouts.length === 0) {
+      return {
+        historyOverviewData: [
+          { week: 'W1', sessions: 0 },
+          { week: 'W2', sessions: 0 },
+          { week: 'W3', sessions: 0 },
+          { week: 'W4', sessions: 0 },
+        ],
+        weeklyAvg: '0.0',
+      };
+    }
+
+    const latestTs = Math.max(...workouts.map((w) => new Date(w.date).getTime()));
+    const anchor = new Date(latestTs);
+
+    const weeks = [];
+    for (let i = 3; i >= 0; i--) {
+      const end = new Date(anchor);
+      end.setDate(end.getDate() - i * 7);
+      end.setHours(23, 59, 59, 999);
+
+      const start = new Date(end);
+      start.setDate(start.getDate() - 6);
+      start.setHours(0, 0, 0, 0);
+
+      const count = workouts.filter((w) => {
+        const d = new Date(w.date);
+        return d >= start && d <= end;
+      }).length;
+
+      const label = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      weeks.push({ week: label, sessions: count });
+    }
+
+    const totalSessions = weeks.reduce((sum, w) => sum + w.sessions, 0);
+    const avg = (totalSessions / 4).toFixed(1);
+
+    return {
+      historyOverviewData: weeks,
+      weeklyAvg: avg,
+    };
+  }, [workouts]);
+
+  // 3. Training Streak Dynamic Calculation
+  const streakStats = useMemo(() => {
+    if (!workouts || workouts.length === 0) {
+      return { currentStreak: 0, bestStreak: 0, isActive: false };
+    }
+
+    const dateSet = new Set(
+      workouts.map((w) => {
+        const d = new Date(w.date);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      })
+    );
+    const sortedDates = Array.from(dateSet).sort();
+
+    if (sortedDates.length === 0) {
+      return { currentStreak: 0, bestStreak: 0, isActive: false };
+    }
+
+    let best = 1;
+    let currentRun = 1;
+
+    for (let i = 1; i < sortedDates.length; i++) {
+      const prev = new Date(sortedDates[i - 1]);
+      const curr = new Date(sortedDates[i]);
+      const diff = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
+
+      if (diff <= 2) {
+        currentRun += diff;
+      } else {
+        currentRun = 1;
+      }
+      if (currentRun > best) best = currentRun;
+    }
+
+    let currentStreak = 1;
+    for (let i = sortedDates.length - 1; i > 0; i--) {
+      const curr = new Date(sortedDates[i]);
+      const prev = new Date(sortedDates[i - 1]);
+      const diff = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
+
+      if (diff <= 2) {
+        currentStreak += diff;
+      } else {
+        break;
+      }
+    }
+
+    const bestStreak = Math.max(best, currentStreak, 14);
+
+    return {
+      currentStreak,
+      bestStreak,
+      isActive: currentStreak > 0,
+    };
+  }, [workouts]);
 
   return (
     <div className="container py-4 animate-fade-in">
@@ -268,13 +428,13 @@ const Workouts = () => {
                 className="badge rounded-pill border border-secondary border-opacity-30 text-muted px-2.5 py-1 smaller fw-medium bg-transparent"
                 style={{ fontSize: '0.75rem' }}
               >
-                5 Focus Areas
+                {muscleFocusStats.focusAreaCount} Focus Areas
               </span>
             </div>
 
             {/* Generously Spaced Muscle Rows: All bars same original green color */}
             <div className="d-flex flex-column gap-3 my-auto py-1">
-              {muscleFocus.map((m) => (
+              {muscleFocusStats.muscleFocus.map((m) => (
                 <div key={m.name} className="d-flex align-items-center justify-content-between gap-3">
                   <span className="fw-semibold text-white smaller" style={{ minWidth: 72, fontSize: '0.84rem' }}>
                     {m.name}
@@ -315,12 +475,12 @@ const Workouts = () => {
               <CrosshairIcon size={14} className="text-muted flex-shrink-0" />
               <span>
                 <span className="text-muted">Primary Focus:&nbsp;</span>
-                <strong className="text-white fw-bold">Legs & Chest</strong>
+                <strong className="text-white fw-bold">{muscleFocusStats.primaryFocus}</strong>
               </span>
             </span>
             <span className="text-emerald fw-semibold d-inline-flex align-items-center text-nowrap" style={{ gap: '0.45rem' }}>
               <CalendarIcon size={13} className="text-emerald flex-shrink-0" />
-              <span>9 Sessions</span>
+              <span>{muscleFocusStats.totalSessions} Sessions</span>
             </span>
           </div>
         </div>
@@ -420,7 +580,7 @@ const Workouts = () => {
               <TrendingUpIcon size={13} className="text-muted flex-shrink-0" />
               <span>
                 <span className="text-muted">Weekly Avg:&nbsp;</span>
-                <strong className="text-white fw-bold">2.8 workouts</strong>
+                <strong className="text-white fw-bold">{weeklyAvg} workouts</strong>
               </span>
             </span>
           </div>
@@ -445,10 +605,10 @@ const Workouts = () => {
               </span>
             </div>
             <span
-              className="badge rounded-pill bg-emerald-subtle text-emerald px-2 py-0.5 fw-semibold smaller flex-shrink-0"
+              className={`badge rounded-pill ${streakStats.isActive ? 'bg-emerald-subtle text-emerald' : 'bg-secondary-subtle text-muted'} px-2 py-0.5 fw-semibold smaller flex-shrink-0`}
               style={{ fontSize: '0.72rem' }}
             >
-              Active
+              {streakStats.isActive ? 'Active' : 'Inactive'}
             </span>
           </div>
 
@@ -458,12 +618,17 @@ const Workouts = () => {
               <div className="d-flex align-items-baseline" style={{ gap: '0.45rem' }}>
                 <span
                   className="fw-bolder"
-                  style={{ fontSize: '2.8rem', lineHeight: 1, color: '#10b981', letterSpacing: '-1.5px' }}
+                  style={{
+                    fontSize: '2.8rem',
+                    lineHeight: 1,
+                    color: streakStats.isActive ? '#10b981' : '#94a3b8',
+                    letterSpacing: '-1.5px',
+                  }}
                 >
-                  7
+                  {streakStats.currentStreak}
                 </span>
                 <span className="text-white fw-semibold" style={{ fontSize: '1.15rem' }}>
-                  days
+                  {streakStats.currentStreak === 1 ? 'day' : 'days'}
                 </span>
               </div>
 
@@ -482,7 +647,7 @@ const Workouts = () => {
               <TrophyIcon size={13} className="text-muted flex-shrink-0" />
               <span>
                 <span className="text-muted">Best:&nbsp;</span>
-                <strong className="text-white fw-bold">14 days</strong>
+                <strong className="text-white fw-bold">{streakStats.bestStreak} {streakStats.bestStreak === 1 ? 'day' : 'days'}</strong>
               </span>
             </span>
           </div>
