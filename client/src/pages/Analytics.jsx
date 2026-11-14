@@ -17,27 +17,27 @@ import { useAuth } from '../context/AuthContext';
 import StatCard from '../components/StatCard';
 import {
   BarChartIcon,
-  TrendingUpIcon,
   ClockIcon,
   DumbbellIcon,
-  LayersIcon,
   FlameIcon,
+  TrophyIcon,
+  ActivityIcon,
 } from '../components/Icons';
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const TYPE_COLORS = {
   Strength: '#10b981',
-  Running: '#f59e0b',
-  HIIT: '#ef4444',
-  Yoga: '#8b5cf6',
+  Cardio: '#38bdf8',
   Cycling: '#0284c7',
-  Cardio: '#06b6d4',
+  HIIT: '#ef4444',
+  Running: '#f59e0b',
+  Yoga: '#8b5cf6',
   Bodyweight: '#64748b',
   Other: '#94a3b8',
 };
 
-const DEFAULT_COLORS = ['#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#0284c7', '#06b6d4'];
+const DEFAULT_COLORS = ['#0284c7', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#06b6d4'];
 
 const Analytics = () => {
   const { token } = useAuth();
@@ -47,7 +47,6 @@ const Analytics = () => {
   const [loading, setLoading] = useState(true);
   const [loadingEx, setLoadingEx] = useState(false);
   const [error, setError] = useState(null);
-  const [timeFilter, setTimeFilter] = useState('30d');
 
   const fetchAnalytics = async () => {
     try {
@@ -128,166 +127,116 @@ const Analytics = () => {
   }
 
   const summary = data?.summary || {};
+  const frequency = data?.frequency || [];
   const durationTrends = data?.durationTrends || [];
   const typeDistribution = data?.typeDistribution || [];
   const distinctExercises = data?.distinctExercises || [];
 
-  // Transform duration trends for Volume Trend chart
-  const volumeTrendData = durationTrends.map((d, index) => {
-    // Generate representative volume for display if not set per workout
-    const baseVolume = 18000 + ((index * 3700) % 22000);
-    return {
-      date: d.date,
-      name: d.name,
-      volume: d.type === 'Running' || d.type === 'Yoga' ? 0 : baseVolume,
-    };
-  });
-
-  const totalHours = ((summary.totalDuration || (summary.averageDuration * (summary.totalWorkouts || 11))) / 60).toFixed(1);
-
   return (
     <div className="container py-3.5 animate-fade-in">
-      {/* Title Header with Time Filter Pills */}
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3.5">
-        <div>
-          <h1 className="fw-bold text-dark mb-1 h3">Analytics</h1>
-          <p className="text-muted mb-0 small">
-            Track your performance, progress, and training patterns
-          </p>
-        </div>
-
-        {/* Time Filter Pill Strip */}
-        <div className="time-filter-strip">
-          {[
-            { id: '7d', label: 'Last 7 Days' },
-            { id: '30d', label: 'Last 30 Days' },
-            { id: '3m', label: 'Last 3 Months' },
-            { id: '6m', label: 'Last 6 Months' },
-            { id: 'all', label: 'All Time' },
-          ].map((pill) => (
-            <button
-              key={pill.id}
-              className={`time-pill-btn ${timeFilter === pill.id ? 'active' : ''}`}
-              onClick={() => setTimeFilter(pill.id)}
-            >
-              {pill.label}
-            </button>
-          ))}
-        </div>
+      {/* Title Header */}
+      <div className="mb-3.5">
+        <h1 className="fw-bold text-dark mb-1 h3">Progress Analytics</h1>
+        <p className="text-muted mb-0 small">
+          Visualize workout frequency, duration trends, exercise strength progress, and category distribution
+        </p>
       </div>
 
-      {/* Top 4 Stat Cards */}
+      {/* Top 4 Metric Cards (Matching Previous Structure with New Clean Design) */}
       <div className="row g-3 mb-4">
+        {/* Card 1: AVG DURATION */}
         <div className="col-12 col-sm-6 col-lg-3">
           <StatCard
-            title="Workouts"
-            value={summary.totalWorkouts || 11}
-            subtitle="+37% vs. previous 30 days"
+            title="Avg Duration"
+            value={summary.averageDuration ? `${summary.averageDuration} min` : '51 min'}
+            subtitle="Average session length"
             colorTheme="mint"
-            icon={<DumbbellIcon size={22} />}
-          />
-        </div>
-
-        <div className="col-12 col-sm-6 col-lg-3">
-          <StatCard
-            title="Active Time"
-            value={totalHours > 0 ? totalHours : '9.4'}
-            unit="h"
-            subtitle="+22% vs. previous 30 days"
-            colorTheme="amber"
             icon={<ClockIcon size={22} />}
           />
         </div>
 
+        {/* Card 2: TOP CATEGORY */}
         <div className="col-12 col-sm-6 col-lg-3">
           <StatCard
-            title="Exercises"
-            value={distinctExercises.length > 0 ? distinctExercises.length : 32}
-            subtitle="+28% vs. previous 30 days"
+            title="Top Category"
+            value={summary.favoriteType && summary.favoriteType !== 'None' ? summary.favoriteType : 'Strength'}
+            subtitle="Most frequent workout type"
             colorTheme="blue"
-            icon={<LayersIcon size={22} />}
+            icon={<ActivityIcon size={22} />}
           />
         </div>
 
+        {/* Card 3: HEAVIEST LIFT */}
+        <div className="col-12 col-sm-6 col-lg-3">
+          <StatCard
+            title="Heaviest Lift"
+            value={summary.heaviestLift?.weight ? `${summary.heaviestLift.weight} kg` : '180 kg'}
+            subtitle={summary.heaviestLift?.exercise || 'Leg Press'}
+            colorTheme="purple"
+            icon={<TrophyIcon size={22} />}
+          />
+        </div>
+
+        {/* Card 4: TOTAL VOLUME */}
         <div className="col-12 col-sm-6 col-lg-3">
           <StatCard
             title="Total Volume"
             value={(summary.totalVolume || 55214).toLocaleString()}
             unit="kg"
-            subtitle="+12% vs. previous 30 days"
-            colorTheme="purple"
+            subtitle="Weight moved all-time"
+            colorTheme="amber"
             icon={<FlameIcon size={22} />}
           />
         </div>
       </div>
 
-      {/* Row 1: Training Volume Trend & Workout Duration Trend */}
-      <div className="row g-3.5 mb-4">
-        {/* Training Volume Trend */}
+      {/* Row 1: 2 Big Charts Side by Side (50% / 50%) */}
+      <div className="row g-3.5 mb-3.5">
+        {/* Chart 1: Workout Frequency (Last 6 Months) */}
         <div className="col-12 col-lg-6">
           <div className="card card-fittrack p-3.5 p-md-4 h-100">
             <div className="d-flex align-items-center gap-2 mb-3">
               <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
-                <TrendingUpIcon size={16} />
+                <BarChartIcon size={16} />
               </div>
               <div>
                 <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
-                  Training Volume Trend
+                  Workout Frequency (Last 6 Months)
                 </h5>
-                <p className="text-muted smaller mb-0">Total weight moved per workout</p>
+                <p className="text-muted smaller mb-0">
+                  Number of workout sessions completed per month
+                </p>
               </div>
             </div>
 
-            <div style={{ width: '100%', height: 230 }}>
+            <div style={{ width: '100%', height: 260 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={volumeTrendData.length > 0 ? volumeTrendData : [
-                    { date: 'Sep 29', volume: 22000 },
-                    { date: 'Oct 3', volume: 29000 },
-                    { date: 'Oct 6', volume: 24000 },
-                    { date: 'Oct 9', volume: 19000 },
-                    { date: 'Oct 11', volume: 32000 },
-                    { date: 'Oct 14', volume: 16000 },
-                    { date: 'Oct 17', volume: 28000 },
-                    { date: 'Oct 20', volume: 25000 },
-                    { date: 'Oct 21', volume: 34000 },
+                <BarChart
+                  data={frequency.length > 0 ? frequency : [
+                    { month: 'Jun 26', workouts: 0 },
+                    { month: 'Jul 26', workouts: 0 },
+                    { month: 'Aug 26', workouts: 0 },
+                    { month: 'Sep 26', workouts: 1 },
+                    { month: 'Oct 26', workouts: 10 },
+                    { month: 'Nov 26', workouts: 0 },
                   ]}
-                  margin={{ top: 10, right: 10, left: -15, bottom: 0 }}
+                  margin={{ top: 15, right: 10, left: -20, bottom: 0 }}
                 >
-                  <defs>
-                    <linearGradient id="volGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
-                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                  <YAxis
-                    stroke="#94a3b8"
-                    fontSize={11}
-                    tickLine={false}
-                    tickFormatter={(v) => `${Math.round(v / 1000)}k`}
-                  />
+                  <XAxis dataKey="month" stroke="#94a3b8" fontSize={11} tickLine={false} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
                   <Tooltip
-                    formatter={(val) => [`${val.toLocaleString()} kg`, 'Volume']}
-                    cursor={{ stroke: '#10b981', strokeWidth: 1 }}
+                    formatter={(val) => [`${val} workouts`, 'Sessions']}
+                    cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }}
                   />
-                  <Area
-                    type="monotone"
-                    dataKey="volume"
-                    stroke="#10b981"
-                    strokeWidth={2.5}
-                    fillOpacity={1}
-                    fill="url(#volGrad)"
-                    dot={{ r: 3.5, fill: '#10b981', strokeWidth: 1.5, stroke: '#fff' }}
-                  />
-                </AreaChart>
+                  <Bar dataKey="workouts" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={42} />
+                </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
         </div>
 
-        {/* Workout Duration Trend */}
+        {/* Chart 2: Session Duration Trend */}
         <div className="col-12 col-lg-6">
           <div className="card card-fittrack p-3.5 p-md-4 h-100">
             <div className="d-flex align-items-center gap-2 mb-3">
@@ -296,66 +245,81 @@ const Analytics = () => {
               </div>
               <div>
                 <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
-                  Workout Duration Trend
+                  Session Duration Trend
                 </h5>
-                <p className="text-muted smaller mb-0">Workout time (minutes)</p>
+                <p className="text-muted smaller mb-0">
+                  Active workout time (minutes) chronologically
+                </p>
               </div>
             </div>
 
-            <div style={{ width: '100%', height: 230 }}>
+            <div style={{ width: '100%', height: 260 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
+                <AreaChart
                   data={durationTrends.length > 0 ? durationTrends : [
-                    { date: 'Sep 29', duration: 28 },
-                    { date: 'Oct 3', duration: 42 },
-                    { date: 'Oct 6', duration: 48 },
-                    { date: 'Oct 9', duration: 34 },
-                    { date: 'Oct 11', duration: 55 },
-                    { date: 'Oct 14', duration: 38 },
-                    { date: 'Oct 17', duration: 52 },
+                    { date: 'Oct 2', duration: 52 },
+                    { date: 'Oct 5', duration: 48 },
+                    { date: 'Oct 8', duration: 60 },
+                    { date: 'Oct 10', duration: 50 },
+                    { date: 'Oct 14', duration: 35 },
+                    { date: 'Oct 17', duration: 60 },
                     { date: 'Oct 20', duration: 45 },
-                    { date: 'Oct 21', duration: 65 },
                   ]}
-                  margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                  margin={{ top: 15, right: 10, left: -20, bottom: 0 }}
                 >
+                  <defs>
+                    <linearGradient id="durationGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
                   <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
                   <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
                   <Tooltip
                     formatter={(val) => [`${val} min`, 'Duration']}
-                    cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }}
+                    cursor={{ stroke: '#10b981', strokeWidth: 1 }}
                   />
-                  <Bar dataKey="duration" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={36} />
-                </BarChart>
+                  <Area
+                    type="monotone"
+                    dataKey="duration"
+                    stroke="#10b981"
+                    strokeWidth={2.5}
+                    fill="url(#durationGrad)"
+                    dot={{ r: 3.5, fill: '#10b981', strokeWidth: 1.5, stroke: '#fff' }}
+                  />
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Row 2: Exercise Progression, Workout Type Distribution, Muscle Group Focus */}
+      {/* Row 2: 2 Big Charts Side by Side (50% / 50%) */}
       <div className="row g-3.5 mb-4">
-        {/* Exercise Progression */}
-        <div className="col-12 col-lg-4">
+        {/* Chart 3: Exercise Weight Progression */}
+        <div className="col-12 col-lg-6">
           <div className="card card-fittrack p-3.5 p-md-4 h-100 d-flex flex-column justify-content-between">
             <div>
-              <div className="d-flex justify-content-between align-items-start mb-2.5">
+              <div className="d-flex justify-content-between align-items-start mb-3">
                 <div className="d-flex align-items-center gap-2">
                   <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
-                    <TrendingUpIcon size={16} />
+                    <DumbbellIcon size={16} />
                   </div>
                   <div>
-                    <h6 className="fw-bold text-dark mb-0" style={{ fontSize: '0.92rem' }}>
-                      Exercise Progression
-                    </h6>
-                    <p className="text-muted smaller mb-0">Track strength progress</p>
+                    <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                      Exercise Weight Progression
+                    </h5>
+                    <p className="text-muted smaller mb-0">
+                      Track progressive overload for a selected exercise
+                    </p>
                   </div>
                 </div>
 
                 {distinctExercises.length > 0 && (
                   <select
                     className="form-select form-select-sm"
-                    style={{ maxWidth: 140, fontSize: '0.78rem' }}
+                    style={{ maxWidth: 170, fontSize: '0.8rem' }}
                     value={selectedExercise}
                     onChange={(e) => handleExerciseChange(e.target.value)}
                     disabled={loadingEx}
@@ -369,33 +333,39 @@ const Analytics = () => {
                 )}
               </div>
 
-              <div style={{ width: '100%', height: 180 }}>
+              <div style={{ width: '100%', height: 260 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart
                     data={exerciseProgress.length > 0 ? exerciseProgress : [
-                      { date: 'Oct 3', weight: 80 },
-                      { date: 'Oct 11', weight: 84 },
-                      { date: 'Oct 18', weight: 88 },
+                      { date: 'Oct 2', weight: 80 },
+                      { date: 'Oct 10', weight: 82.5 },
+                      { date: 'Oct 17', weight: 85 },
                     ]}
                     margin={{ top: 15, right: 10, left: -20, bottom: 0 }}
                   >
                     <defs>
-                      <linearGradient id="exProgGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.28} />
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0.02} />
+                      <linearGradient id="exWeightGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#0284c7" stopOpacity={0.25} />
+                        <stop offset="95%" stopColor="#0284c7" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
                     <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                    <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} domain={['dataMin - 5', 'dataMax + 5']} />
+                    <YAxis
+                      stroke="#94a3b8"
+                      fontSize={11}
+                      tickLine={false}
+                      domain={['dataMin - 5', 'dataMax + 5']}
+                      unit="kg"
+                    />
                     <Tooltip formatter={(val) => [`${val} kg`, 'Max Weight']} />
                     <Area
                       type="monotone"
                       dataKey="weight"
-                      stroke="#10b981"
+                      stroke="#0284c7"
                       strokeWidth={2.5}
-                      fill="url(#exProgGrad)"
-                      dot={{ r: 4, fill: '#10b981', strokeWidth: 2, stroke: '#fff' }}
+                      fill="url(#exWeightGrad)"
+                      dot={{ r: 4, fill: '#0284c7', strokeWidth: 2, stroke: '#fff' }}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -404,45 +374,47 @@ const Analytics = () => {
           </div>
         </div>
 
-        {/* Workout Type Distribution Donut Chart */}
-        <div className="col-12 col-lg-4">
-          <div className="card card-fittrack p-3.5 p-md-4 h-100">
-            <div className="d-flex align-items-center gap-2 mb-2">
-              <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
-                <BarChartIcon size={16} />
+        {/* Chart 4: Workout Type Distribution Donut Chart */}
+        <div className="col-12 col-lg-6">
+          <div className="card card-fittrack p-3.5 p-md-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div className="d-flex align-items-center gap-2 mb-3">
+                <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
+                  <BarChartIcon size={16} />
+                </div>
+                <div>
+                  <h5 className="fw-bold text-dark mb-0" style={{ fontSize: '1rem' }}>
+                    Workout Type Distribution
+                  </h5>
+                  <p className="text-muted smaller mb-0">
+                    Percentage breakdown by fitness category
+                  </p>
+                </div>
               </div>
-              <div>
-                <h6 className="fw-bold text-dark mb-0" style={{ fontSize: '0.92rem' }}>
-                  Workout Type Distribution
-                </h6>
-                <p className="text-muted smaller mb-0">Breakdown of workouts by type</p>
-              </div>
-            </div>
 
-            <div className="d-flex align-items-center justify-content-between pt-1">
-              <div style={{ width: 140, height: 160, position: 'relative' }}>
+              <div style={{ width: '100%', height: 210 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={typeDistribution.length > 0 ? typeDistribution : [
-                        { name: 'Strength', value: 6, percentage: 54 },
-                        { name: 'Running', value: 2, percentage: 18 },
-                        { name: 'HIIT', value: 1, percentage: 9 },
-                        { name: 'Yoga', value: 1, percentage: 9 },
+                        { name: 'Strength', value: 7, percentage: 64 },
                         { name: 'Cycling', value: 1, percentage: 9 },
+                        { name: 'Yoga', value: 1, percentage: 9 },
+                        { name: 'HIIT', value: 1, percentage: 9 },
+                        { name: 'Running', value: 1, percentage: 9 },
                       ]}
                       dataKey="value"
                       nameKey="name"
-                      innerRadius={46}
-                      outerRadius={65}
+                      innerRadius={55}
+                      outerRadius={80}
                       paddingAngle={3}
                     >
                       {(typeDistribution.length > 0 ? typeDistribution : [
                         { name: 'Strength' },
-                        { name: 'Running' },
-                        { name: 'HIIT' },
-                        { name: 'Yoga' },
                         { name: 'Cycling' },
+                        { name: 'Yoga' },
+                        { name: 'HIIT' },
+                        { name: 'Running' },
                       ]).map((entry, idx) => (
                         <Cell
                           key={`cell-${idx}`}
@@ -450,118 +422,32 @@ const Analytics = () => {
                         />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(val, name, entry) => [`${val} (${entry.payload.percentage || 0}%)`, name]} />
+                    <Tooltip formatter={(val, name, entry) => [`${val} workouts (${entry.payload.percentage || 0}%)`, name]} />
                   </PieChart>
                 </ResponsiveContainer>
-                {/* Center Label */}
-                <div
-                  className="position-absolute top-50 start-50 translate-middle text-center pointer-events-none"
-                  style={{ width: 70 }}
-                >
-                  <div className="fw-bold text-dark" style={{ fontSize: '1.05rem', lineHeight: 1 }}>
-                    {summary.totalWorkouts || 11}
-                  </div>
-                  <div className="smaller text-muted" style={{ fontSize: '0.68rem' }}>
-                    Workouts
-                  </div>
-                </div>
               </div>
 
-              {/* Legend List */}
-              <div className="d-flex flex-column gap-1.5 flex-grow-1 ps-3">
+              {/* Bottom Horizontal Legend with Colored Dots */}
+              <div className="d-flex flex-wrap justify-content-center align-items-center gap-3 pt-2">
                 {(typeDistribution.length > 0 ? typeDistribution : [
-                  { name: 'Strength', value: 6, percentage: 54 },
-                  { name: 'Running', value: 2, percentage: 18 },
-                  { name: 'HIIT', value: 1, percentage: 9 },
-                  { name: 'Yoga', value: 1, percentage: 9 },
-                  { name: 'Cycling', value: 1, percentage: 9 },
-                ]).slice(0, 5).map((t, idx) => (
-                  <div key={t.name} className="d-flex align-items-center justify-content-between smaller">
-                    <span className="d-flex align-items-center gap-1.5 text-dark">
-                      <span
-                        className="rounded-circle d-inline-block"
-                        style={{
-                          width: 8,
-                          height: 8,
-                          backgroundColor: TYPE_COLORS[t.name] || DEFAULT_COLORS[idx % DEFAULT_COLORS.length],
-                        }}
-                      />
-                      <span>{t.name}</span>
-                    </span>
-                    <span className="text-muted fw-semibold">
-                      {t.value} ({t.percentage}%)
-                    </span>
+                  { name: 'Cycling', value: 1 },
+                  { name: 'HIIT', value: 1 },
+                  { name: 'Running', value: 1 },
+                  { name: 'Strength', value: 7 },
+                  { name: 'Yoga', value: 1 },
+                ]).map((t, idx) => (
+                  <div key={t.name} className="d-flex align-items-center gap-1.5 smaller">
+                    <span
+                      className="rounded-circle d-inline-block"
+                      style={{
+                        width: 9,
+                        height: 9,
+                        backgroundColor: TYPE_COLORS[t.name] || DEFAULT_COLORS[idx % DEFAULT_COLORS.length],
+                      }}
+                    />
+                    <span className="text-muted">{t.name}</span>
                   </div>
                 ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Muscle Group Focus */}
-        <div className="col-12 col-lg-4">
-          <div className="card card-fittrack p-3.5 p-md-4 h-100">
-            <div className="d-flex align-items-center gap-2 mb-3">
-              <div className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
-                <DumbbellIcon size={16} />
-              </div>
-              <div>
-                <h6 className="fw-bold text-dark mb-0" style={{ fontSize: '0.92rem' }}>
-                  Muscle Group Focus
-                </h6>
-                <p className="text-muted smaller mb-0">Workout sessions per muscle group</p>
-              </div>
-            </div>
-
-            <div>
-              <div className="muscle-focus-item">
-                <div className="d-flex justify-content-between smaller mb-1">
-                  <span className="fw-medium text-dark">Legs</span>
-                  <span className="text-muted">4 sessions</span>
-                </div>
-                <div className="muscle-bar-track">
-                  <div className="muscle-bar-fill" style={{ width: '85%' }} />
-                </div>
-              </div>
-
-              <div className="muscle-focus-item">
-                <div className="d-flex justify-content-between smaller mb-1">
-                  <span className="fw-medium text-dark">Chest</span>
-                  <span className="text-muted">3 sessions</span>
-                </div>
-                <div className="muscle-bar-track">
-                  <div className="muscle-bar-fill" style={{ width: '65%' }} />
-                </div>
-              </div>
-
-              <div className="muscle-focus-item">
-                <div className="d-flex justify-content-between smaller mb-1">
-                  <span className="fw-medium text-dark">Back</span>
-                  <span className="text-muted">2 sessions</span>
-                </div>
-                <div className="muscle-bar-track">
-                  <div className="muscle-bar-fill" style={{ width: '45%' }} />
-                </div>
-              </div>
-
-              <div className="muscle-focus-item">
-                <div className="d-flex justify-content-between smaller mb-1">
-                  <span className="fw-medium text-dark">Shoulders</span>
-                  <span className="text-muted">2 sessions</span>
-                </div>
-                <div className="muscle-bar-track">
-                  <div className="muscle-bar-fill" style={{ width: '45%' }} />
-                </div>
-              </div>
-
-              <div className="muscle-focus-item">
-                <div className="d-flex justify-content-between smaller mb-1">
-                  <span className="fw-medium text-dark">Arms</span>
-                  <span className="text-muted">1 session</span>
-                </div>
-                <div className="muscle-bar-track">
-                  <div className="muscle-bar-fill" style={{ width: '25%' }} />
-                </div>
               </div>
             </div>
           </div>
