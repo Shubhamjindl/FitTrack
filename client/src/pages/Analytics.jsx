@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   ResponsiveContainer,
   BarChart,
@@ -23,6 +23,16 @@ import {
   TrophyIcon,
   ActivityIcon,
 } from '../components/Icons';
+
+const formatChartDate = (dateVal) => {
+  if (!dateVal) return '';
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return String(dateVal);
+  return d.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+  });
+};
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
@@ -50,6 +60,22 @@ const Analytics = () => {
   const [loading, setLoading] = useState(true);
   const [loadingEx, setLoadingEx] = useState(false);
   const [error, setError] = useState(null);
+
+  const rawDurationTrends = data?.durationTrends || [];
+
+  const durationTrends = useMemo(() => {
+    return rawDurationTrends.map((item) => ({
+      ...item,
+      date: formatChartDate(item.rawDate || item.date),
+    }));
+  }, [rawDurationTrends]);
+
+  const formattedExerciseProgress = useMemo(() => {
+    return (exerciseProgress || []).map((item) => ({
+      ...item,
+      date: formatChartDate(item.rawDate || item.date),
+    }));
+  }, [exerciseProgress]);
 
   // Click outside to dismiss exercise dropdown
   useEffect(() => {
@@ -142,7 +168,6 @@ const Analytics = () => {
 
   const summary = data?.summary || {};
   const frequency = data?.frequency || [];
-  const durationTrends = data?.durationTrends || [];
   const typeDistribution = data?.typeDistribution || [];
   const distinctExercises = data?.distinctExercises || [];
 
@@ -433,7 +458,7 @@ const Analytics = () => {
                     {exerciseProgress.length > 0 ? (
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart
-                          data={exerciseProgress}
+                          data={formattedExerciseProgress}
                           margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
                         >
                           <defs>

@@ -27,6 +27,24 @@ const WORKOUT_TYPES = [
   { value: 'Other', label: 'Other / Sports' },
 ];
 
+const getTodayDateString = () => {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const formatLocalDateForInput = (dateVal) => {
+  if (!dateVal) return '';
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return '';
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 const WorkoutForm = () => {
   const { id } = useParams(); // If present, edit mode
   const isEditMode = Boolean(id);
@@ -40,7 +58,7 @@ const WorkoutForm = () => {
 
   // Form states
   const [name, setName] = useState('');
-  const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(() => getTodayDateString());
   const [type, setType] = useState('Strength');
   const [duration, setDuration] = useState(45);
   const [notes, setNotes] = useState('');
@@ -83,7 +101,7 @@ const WorkoutForm = () => {
         const json = await res.json();
         const w = json.data;
         setName(w.name || '');
-        setDate(w.date ? new Date(w.date).toISOString().split('T')[0] : '');
+        setDate(w.date ? formatLocalDateForInput(w.date) : '');
         setType(w.type || 'Strength');
         setDuration(w.duration || 45);
         setNotes(w.notes || '');

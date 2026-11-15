@@ -35,6 +35,7 @@ async function seedData() {
     const daysAgo = (days) => {
       const d = new Date(now);
       d.setDate(d.getDate() - days);
+      d.setUTCHours(12, 0, 0, 0); // Normalize to midday UTC so all global timezones render the same calendar day
       return d;
     };
 

@@ -1,5 +1,14 @@
 const Workout = require('../models/Workout');
 
+// Helper to safely parse workout calendar dates to midday UTC so no timezone drifts by +/- 1 day
+const parseWorkoutDate = (dateVal) => {
+  if (!dateVal) return new Date();
+  if (typeof dateVal === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateVal.trim())) {
+    return new Date(`${dateVal.trim()}T12:00:00.000Z`);
+  }
+  return new Date(dateVal);
+};
+
 // @desc    Get all workouts for the authenticated user with search, filter, and sorting
 // @route   GET /api/workouts
 // @access  Private
@@ -130,7 +139,7 @@ const createWorkout = async (req, res) => {
     const workout = await Workout.create({
       user: req.user._id,
       name: name.trim(),
-      date: date ? new Date(date) : new Date(),
+      date: parseWorkoutDate(date),
       type: type || 'Strength',
       duration: Number(duration),
       notes: notes ? notes.trim() : '',
@@ -171,7 +180,7 @@ const updateWorkout = async (req, res) => {
     const { name, date, type, duration, notes, exercises } = req.body;
 
     if (name !== undefined) workout.name = name.trim();
-    if (date !== undefined) workout.date = new Date(date);
+    if (date !== undefined) workout.date = parseWorkoutDate(date);
     if (type !== undefined) workout.type = type;
     if (duration !== undefined) workout.duration = Number(duration);
     if (notes !== undefined) workout.notes = notes.trim();
