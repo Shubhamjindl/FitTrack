@@ -1419,8 +1419,19 @@ a {
   border-radius: 12px;
   box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.25), 0 8px 12px -6px rgba(0, 0, 0, 0.2);
   z-index: 1050;
-  max-height: 280px;
+  max-height: 188px;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
+}
+
+.smart-exercise-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.smart-exercise-dropdown::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
 }
 
 .smart-exercise-item {

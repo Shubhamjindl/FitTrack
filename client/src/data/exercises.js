@@ -437,28 +437,9 @@ export const EXERCISE_DATABASE = [
 /**
  * Filter exercises matching a specific category
  */
-export const getExercisesByCategory = (category = 'Strength', subtype = null) => {
+export const getExercisesByCategory = (category = 'Strength') => {
   if (category === 'Other') {
-    if (subtype === 'yoga') {
-      return EXERCISE_DATABASE.filter((e) => e.category === 'Yoga');
-    }
-    if (subtype === 'cardio') {
-      return EXERCISE_DATABASE.filter((e) => e.category === 'Cardio');
-    }
-    if (subtype === 'strength') {
-      return EXERCISE_DATABASE.filter((e) => e.category === 'Strength');
-    }
-    if (subtype === 'bodyweight') {
-      return EXERCISE_DATABASE.filter((e) => e.category === 'Bodyweight');
-    }
-    if (subtype === 'sport') {
-      return EXERCISE_DATABASE.filter((e) => e.category === 'Other' || e.category === 'Cardio');
-    }
-    // Return all with sports & foundational movements first
-    return [
-      ...EXERCISE_DATABASE.filter((e) => e.category === 'Other'),
-      ...EXERCISE_DATABASE.filter((e) => e.category !== 'Other'),
-    ];
+    return [];
   }
 
   // Normalize legacy categories
@@ -474,22 +455,11 @@ export const getExercisesByCategory = (category = 'Strength', subtype = null) =>
 /**
  * Search exercises across name, muscles, equipment, and category
  */
-export const searchExercises = (query = '', category = null, subtype = null) => {
+export const searchExercises = (query = '', category = null) => {
   const q = query.trim().toLowerCase();
   let list = EXERCISE_DATABASE;
 
-  if (category === 'Other') {
-    let prioritized = 'Other';
-    if (subtype === 'yoga') prioritized = 'Yoga';
-    else if (subtype === 'cardio') prioritized = 'Cardio';
-    else if (subtype === 'strength') prioritized = 'Strength';
-    else if (subtype === 'bodyweight') prioritized = 'Bodyweight';
-
-    list = [
-      ...EXERCISE_DATABASE.filter((e) => e.category.toLowerCase() === prioritized.toLowerCase()),
-      ...EXERCISE_DATABASE.filter((e) => e.category.toLowerCase() !== prioritized.toLowerCase()),
-    ];
-  } else if (category) {
+  if (category && category !== 'Other') {
     let normalized = category;
     if (['Running', 'Cycling', 'HIIT'].includes(category)) {
       normalized = 'Cardio';
