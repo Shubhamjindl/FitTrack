@@ -501,12 +501,12 @@ const WorkoutForm = () => {
                                         handleSelectExercise(index, item);
                                       }}
                                     >
-                                      <div className="d-flex align-items-center gap-2.5 min-w-0">
+                                      <div className="d-flex align-items-center gap-2.5 min-w-0 w-100">
                                         <div
-                                          className="exercise-posture-thumb"
+                                          className="exercise-posture-thumb flex-shrink-0"
                                           dangerouslySetInnerHTML={{ __html: item.svg }}
                                         />
-                                        <div className="min-w-0 text-start">
+                                        <div className="min-w-0 text-start flex-grow-1">
                                           <div className="text-primary-custom fw-semibold small text-truncate">
                                             {item.name}
                                           </div>
@@ -516,12 +516,6 @@ const WorkoutForm = () => {
                                           </div>
                                         </div>
                                       </div>
-                                      <button
-                                        type="button"
-                                        className="btn btn-outline-green btn-sm py-0.5 px-2 smaller rounded-pill flex-shrink-0"
-                                      >
-                                        + Select
-                                      </button>
                                     </div>
                                   ))
                                 )}

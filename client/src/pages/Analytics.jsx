@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   ResponsiveContainer,
   BarChart,
@@ -45,9 +45,22 @@ const Analytics = () => {
   const [data, setData] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState('');
   const [exerciseProgress, setExerciseProgress] = useState([]);
+  const [exDropdownOpen, setExDropdownOpen] = useState(false);
+  const exDropdownRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [loadingEx, setLoadingEx] = useState(false);
   const [error, setError] = useState(null);
+
+  // Click outside to dismiss exercise dropdown
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (exDropdownRef.current && !exDropdownRef.current.contains(e.target)) {
+        setExDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const fetchAnalytics = async () => {
     try {
@@ -355,19 +368,63 @@ const Analytics = () => {
                     </div>
 
                     {distinctExercises.length > 0 && (
-                      <select
-                        className="form-select form-select-sm"
-                        style={{ maxWidth: 170, fontSize: '0.8rem' }}
-                        value={selectedExercise}
-                        onChange={(e) => handleExerciseChange(e.target.value)}
-                        disabled={loadingEx}
-                      >
-                        {distinctExercises.map((ex) => (
-                          <option key={ex} value={ex}>
-                            {ex}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="position-relative" ref={exDropdownRef}>
+                        <button
+                          type="button"
+                          onClick={() => setExDropdownOpen((prev) => !prev)}
+                          className="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-between gap-2 px-2.5 py-1 rounded-3 text-truncate"
+                          style={{ maxWidth: 185, fontSize: '0.8rem', minHeight: 31 }}
+                          disabled={loadingEx}
+                          title={selectedExercise}
+                        >
+                          <span className="text-truncate fw-medium">{selectedExercise || 'Select Exercise'}</span>
+                          <span className="smaller text-muted">▾</span>
+                        </button>
+
+                        {exDropdownOpen && (
+                          <div
+                            className="analytics-exercise-dropdown shadow-lg animate-fade-in"
+                            style={{
+                              position: 'absolute',
+                              top: 'calc(100% + 4px)',
+                              right: 0,
+                              width: 215,
+                              maxHeight: 195,
+                              overflowY: 'auto',
+                              overflowX: 'hidden',
+                              backgroundColor: 'var(--bg-card)',
+                              border: '1px solid var(--border-color)',
+                              borderRadius: 10,
+                              zIndex: 1050,
+                              padding: '4px 0',
+                              boxShadow: '0 10px 25px -5px rgba(0,0,0,0.2)',
+                            }}
+                          >
+                            {distinctExercises.map((ex) => (
+                              <div
+                                key={ex}
+                                onClick={() => {
+                                  handleExerciseChange(ex);
+                                  setExDropdownOpen(false);
+                                }}
+                                className={`px-3 py-1.5 small d-flex align-items-center justify-content-between ${
+                                  selectedExercise === ex
+                                    ? 'bg-emerald-subtle text-emerald fw-semibold'
+                                    : 'text-primary-custom hover-bg-subtle'
+                                }`}
+                                style={{
+                                  cursor: 'pointer',
+                                  fontSize: '0.8rem',
+                                  transition: 'background-color 0.15s ease',
+                                }}
+                              >
+                                <span className="text-truncate">{ex}</span>
+                                {selectedExercise === ex && <span className="ms-1.5 flex-shrink-0">✓</span>}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
 

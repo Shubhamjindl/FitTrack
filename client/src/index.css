@@ -1421,6 +1421,7 @@ a {
   z-index: 1050;
   max-height: 188px;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
 }
@@ -1435,10 +1436,9 @@ a {
 }
 
 .smart-exercise-item {
-  padding: 0.65rem 0.85rem;
+  padding: 0.55rem 0.85rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 0.75rem;
   cursor: pointer;
   border-bottom: 1px solid var(--border-color);
@@ -1451,7 +1451,7 @@ a {
 
 .smart-exercise-item:hover,
 .smart-exercise-item:focus {
-  background-color: rgba(16, 185, 129, 0.08);
+  background-color: rgba(16, 185, 129, 0.09);
 }
 
 .exercise-posture-thumb {
@@ -1470,6 +1470,25 @@ a {
 .exercise-posture-thumb svg {
   width: 100%;
   height: 100%;
+}
+
+/* Analytics custom compact exercise dropdown */
+.analytics-exercise-dropdown {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
+}
+
+.analytics-exercise-dropdown::-webkit-scrollbar {
+  width: 5px;
+}
+
+.analytics-exercise-dropdown::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+
+.hover-bg-subtle:hover {
+  background-color: var(--bg-secondary);
 }
 
 /* Fitness Snapshot Card */
