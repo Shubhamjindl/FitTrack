@@ -18,19 +18,20 @@ const getWorkoutTypeTheme = (type = 'Strength') => {
         color: '#059669',
         icon: <DumbbellIcon size={16} />,
       };
+    case 'Bodyweight':
+      return {
+        accent: '#0ea5e9',
+        bg: 'rgba(14, 165, 233, 0.12)',
+        color: '#0284c7',
+        icon: <ActivityIcon size={16} />,
+      };
     case 'Running':
+    case 'Cardio':
       return {
         accent: '#f59e0b',
         bg: 'rgba(245, 158, 11, 0.12)',
         color: '#b45309',
         icon: <RunningIcon size={16} />,
-      };
-    case 'Cardio':
-      return {
-        accent: '#0284c7',
-        bg: 'rgba(2, 132, 199, 0.12)',
-        color: '#0284c7',
-        icon: <ActivityIcon size={16} />,
       };
     case 'HIIT':
       return {
@@ -51,6 +52,13 @@ const getWorkoutTypeTheme = (type = 'Strength') => {
         accent: '#06b6d4',
         bg: 'rgba(6, 182, 212, 0.12)',
         color: '#0891b2',
+        icon: <ActivityIcon size={16} />,
+      };
+    case 'Other':
+      return {
+        accent: '#64748b',
+        bg: 'rgba(100, 116, 139, 0.12)',
+        color: '#475569',
         icon: <ActivityIcon size={16} />,
       };
     default:

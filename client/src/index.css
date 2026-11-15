@@ -1553,6 +1553,16 @@ a {
   color: #34d399;
 }
 
+.type-pill-Bodyweight {
+  background-color: rgba(14, 165, 233, 0.12);
+  color: #0284c7;
+}
+
+[data-theme="dark"] .type-pill-Bodyweight {
+  background-color: rgba(14, 165, 233, 0.2);
+  color: #38bdf8;
+}
+
 .type-pill-Running,
 .type-pill-Cardio {
   background-color: rgba(245, 158, 11, 0.12);
@@ -1593,6 +1603,16 @@ a {
 [data-theme="dark"] .type-pill-Cycling {
   background-color: rgba(2, 132, 199, 0.2);
   color: #38bdf8;
+}
+
+.type-pill-Other {
+  background-color: rgba(100, 116, 139, 0.12);
+  color: #475569;
+}
+
+[data-theme="dark"] .type-pill-Other {
+  background-color: rgba(100, 116, 139, 0.2);
+  color: #94a3b8;
 }
 
 /* Profile Hero Landscape Card */
