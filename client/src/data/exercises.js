@@ -350,12 +350,117 @@ export const EXERCISE_DATABASE = [
     weightLabel: 'N/A',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="48" cy="30" r="4" fill="currentColor"/><polyline points="44,34 32,38 18,46"/><polyline points="32,38 30,30 24,34"/></svg>`,
   },
+
+  // --- SPORTS & CROSS-TRAINING (5 Movements) ---
+  {
+    id: 'swimming-laps',
+    name: 'Swimming Laps (Freestyle / Mixed)',
+    category: 'Other',
+    categoryLabel: 'Other / Sports',
+    muscles: 'Full Body, Lats, Shoulders, Core',
+    equipment: 'Pool',
+    mode: 'cardio',
+    defaultSets: 4,
+    defaultReps: 50,
+    defaultWeight: 0,
+    unit: 'm / laps',
+    repsLabel: 'Laps / Meters',
+    weightLabel: 'N/A',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-cyan-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="20" cy="24" r="4" fill="currentColor"/><line x1="24" y1="26" x2="42" y2="30"/><line x1="42" y1="30" x2="52" y2="28"/><line x1="30" y1="28" x2="22" y2="36"/><path d="M12,42 Q20,38 28,42 T44,42 T60,42"/></svg>`,
+  },
+  {
+    id: 'sports-drills',
+    name: 'Sports Agility & Sprint Drills',
+    category: 'Other',
+    categoryLabel: 'Other / Sports',
+    muscles: 'Quads, Calves, Agility, Cardiovascular',
+    equipment: 'Cones / Open Field',
+    mode: 'cardio',
+    defaultSets: 5,
+    defaultReps: 30,
+    defaultWeight: 0,
+    unit: 'sec',
+    repsLabel: 'Duration (sec)',
+    weightLabel: 'N/A',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="40" cy="18" r="4" fill="currentColor"/><polyline points="36,22 28,32 38,40 32,54"/><polyline points="28,32 18,36 14,46"/></svg>`,
+  },
+  {
+    id: 'badminton-tennis',
+    name: 'Racket Sport Rally & Footwork',
+    category: 'Other',
+    categoryLabel: 'Other / Sports',
+    muscles: 'Shoulders, Forearms, Calves, Core',
+    equipment: 'Racket & Court',
+    mode: 'cardio',
+    defaultSets: 3,
+    defaultReps: 15,
+    defaultWeight: 0,
+    unit: 'min',
+    repsLabel: 'Duration (min)',
+    weightLabel: 'N/A',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="34" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="26" y2="38"/><line x1="26" y1="38" x2="16" y2="52"/><line x1="30" y1="28" x2="44" y2="20"/><circle cx="48" cy="16" r="5"/></svg>`,
+  },
+  {
+    id: 'boxing-bag',
+    name: 'Shadow Boxing / Heavy Bag Rounds',
+    category: 'Other',
+    categoryLabel: 'Other / Sports',
+    muscles: 'Shoulders, Core, Lats, Cardiovascular',
+    equipment: 'Gloves / Heavy Bag',
+    mode: 'cardio',
+    defaultSets: 3,
+    defaultReps: 180,
+    defaultWeight: 0,
+    unit: 'sec',
+    repsLabel: 'Round Duration (sec)',
+    weightLabel: 'N/A',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-rose-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="18" r="4" fill="currentColor"/><line x1="28" y1="22" x2="26" y2="38"/><polyline points="26,38 32,54"/><polyline points="26,28 38,24 46,24"/><circle cx="48" cy="24" r="3" fill="currentColor"/></svg>`,
+  },
+  {
+    id: 'dynamic-mobility',
+    name: 'Dynamic Mobility & Sports Recovery',
+    category: 'Other',
+    categoryLabel: 'Other / Sports',
+    muscles: 'Hips, Hamstrings, Thoracic Spine, Full Body',
+    equipment: 'Floor / Mat',
+    mode: 'hold',
+    defaultSets: 3,
+    defaultReps: 45,
+    defaultWeight: 0,
+    unit: 'sec',
+    repsLabel: 'Hold / Flow Duration (sec)',
+    weightLabel: 'N/A',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="24" cy="20" r="4" fill="currentColor"/><polyline points="24,24 28,38 42,42 50,54"/><polyline points="28,32 38,28 48,32"/></svg>`,
+  },
 ];
 
 /**
  * Filter exercises matching a specific category
  */
-export const getExercisesByCategory = (category = 'Strength') => {
+export const getExercisesByCategory = (category = 'Strength', subtype = null) => {
+  if (category === 'Other') {
+    if (subtype === 'yoga') {
+      return EXERCISE_DATABASE.filter((e) => e.category === 'Yoga');
+    }
+    if (subtype === 'cardio') {
+      return EXERCISE_DATABASE.filter((e) => e.category === 'Cardio');
+    }
+    if (subtype === 'strength') {
+      return EXERCISE_DATABASE.filter((e) => e.category === 'Strength');
+    }
+    if (subtype === 'bodyweight') {
+      return EXERCISE_DATABASE.filter((e) => e.category === 'Bodyweight');
+    }
+    if (subtype === 'sport') {
+      return EXERCISE_DATABASE.filter((e) => e.category === 'Other' || e.category === 'Cardio');
+    }
+    // Return all with sports & foundational movements first
+    return [
+      ...EXERCISE_DATABASE.filter((e) => e.category === 'Other'),
+      ...EXERCISE_DATABASE.filter((e) => e.category !== 'Other'),
+    ];
+  }
+
   // Normalize legacy categories
   let normalized = category;
   if (['Running', 'Cycling', 'HIIT'].includes(category)) {
@@ -369,11 +474,22 @@ export const getExercisesByCategory = (category = 'Strength') => {
 /**
  * Search exercises across name, muscles, equipment, and category
  */
-export const searchExercises = (query = '', category = null) => {
+export const searchExercises = (query = '', category = null, subtype = null) => {
   const q = query.trim().toLowerCase();
   let list = EXERCISE_DATABASE;
 
-  if (category && category !== 'Other') {
+  if (category === 'Other') {
+    let prioritized = 'Other';
+    if (subtype === 'yoga') prioritized = 'Yoga';
+    else if (subtype === 'cardio') prioritized = 'Cardio';
+    else if (subtype === 'strength') prioritized = 'Strength';
+    else if (subtype === 'bodyweight') prioritized = 'Bodyweight';
+
+    list = [
+      ...EXERCISE_DATABASE.filter((e) => e.category.toLowerCase() === prioritized.toLowerCase()),
+      ...EXERCISE_DATABASE.filter((e) => e.category.toLowerCase() !== prioritized.toLowerCase()),
+    ];
+  } else if (category) {
     let normalized = category;
     if (['Running', 'Cycling', 'HIIT'].includes(category)) {
       normalized = 'Cardio';

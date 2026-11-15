@@ -44,6 +44,7 @@ const WorkoutForm = () => {
   const [type, setType] = useState('Strength');
   const [duration, setDuration] = useState(45);
   const [notes, setNotes] = useState('');
+  const [otherSubtype, setOtherSubtype] = useState('sport');
   const [exercises, setExercises] = useState([
     { name: '', sets: 3, reps: 10, weight: 0 },
   ]);
@@ -149,8 +150,10 @@ const WorkoutForm = () => {
     setActiveDropdownIndex(null);
   };
 
-  // Determine if weight is hidden based on workout category
-  const isWeightHidden = ['Yoga', 'Cardio', 'Running', 'Cycling', 'HIIT'].includes(type);
+  // Determine if weight is hidden based on workout category & subtype
+  const isWeightHidden =
+    ['Yoga', 'Cardio', 'Running', 'Cycling', 'HIIT'].includes(type) ||
+    (type === 'Other' && ['sport', 'cardio', 'yoga'].includes(otherSubtype));
 
   // Dynamic field labels & placeholders based on workout category
   const getFieldLabels = () => {
@@ -179,6 +182,51 @@ const WorkoutForm = () => {
         reps: 'Reps / Hold (sec)',
         weight: 'Added Wt (kg, optional)',
         placeholder: 'e.g. Standard Push-ups, Pull-ups, Forearm Plank',
+      };
+    }
+    if (type === 'Other') {
+      if (otherSubtype === 'sport') {
+        return {
+          sectionDesc: 'Track sport drills, laps, or match rounds (optional for match play)',
+          sets: 'Rounds / Drills',
+          reps: 'Duration / Laps',
+          weight: 'N/A',
+          placeholder: 'e.g. Badminton Rally Drills, Swimming Laps, Football Match, Boxing',
+        };
+      }
+      if (otherSubtype === 'cardio') {
+        return {
+          sectionDesc: 'Track cardio drills, intervals, or steady cross-training',
+          sets: 'Rounds / Intervals',
+          reps: 'Duration (sec) / Reps',
+          weight: 'N/A',
+          placeholder: 'e.g. Jump Rope, Burpees, Mountain Climbers, Sprints',
+        };
+      }
+      if (otherSubtype === 'yoga') {
+        return {
+          sectionDesc: 'Track yoga poses, mobility flows, and stretches',
+          sets: 'Rounds / Sets',
+          reps: 'Hold Duration (sec)',
+          weight: 'N/A',
+          placeholder: 'e.g. Surya Namaskar, Downward Dog, Cobra Pose, Pigeon Pose',
+        };
+      }
+      if (otherSubtype === 'strength') {
+        return {
+          sectionDesc: 'Track resistance exercises with sets, repetitions, and weights',
+          sets: 'Sets',
+          reps: 'Reps',
+          weight: 'Weight (kg)',
+          placeholder: 'e.g. Bench Press, Squat, Overhead Press, Bicep Curls',
+        };
+      }
+      return {
+        sectionDesc: 'Track mixed drills, calisthenics, or custom exercises',
+        sets: 'Sets / Rounds',
+        reps: 'Reps / Duration',
+        weight: 'Weight (kg, optional)',
+        placeholder: 'e.g. Mixed Circuit, Pull-ups, Drills, Kettlebell Swings',
       };
     }
     return {
@@ -360,6 +408,50 @@ const WorkoutForm = () => {
               </select>
             </div>
 
+            {/* If Other / Sports: show activity discipline selector */}
+            {type === 'Other' && (
+              <div className="col-12">
+                <div className="p-3 rounded-3 bg-secondary-subtle border">
+                  <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-1 mb-2">
+                    <label className="form-label small fw-semibold text-primary-custom mb-0">
+                      Activity Discipline / Format:
+                    </label>
+                    <span className="smaller text-muted">
+                      Select session focus to auto-adapt logging columns
+                    </span>
+                  </div>
+                  <div className="d-flex flex-wrap gap-2">
+                    {[
+                      { id: 'sport', label: '🏅 Sport / Game', desc: 'Rounds, Laps, Match play' },
+                      { id: 'strength', label: '⚡ Strength', desc: 'Sets, Reps, Weights' },
+                      { id: 'cardio', label: '🏃 Cardio & Conditioning', desc: 'Intervals, Duration' },
+                      { id: 'yoga', label: '🧘 Yoga & Mobility', desc: 'Poses, Holds' },
+                      { id: 'mixed', label: '🔄 Mixed / Custom', desc: 'Flexible with optional weight' },
+                    ].map((sub) => (
+                      <button
+                        key={sub.id}
+                        type="button"
+                        onClick={() => setOtherSubtype(sub.id)}
+                        className={`btn btn-sm rounded-pill px-3 py-1 text-nowrap transition-all ${
+                          otherSubtype === sub.id
+                            ? 'btn-success fw-semibold shadow-sm text-white'
+                            : 'btn-outline-secondary'
+                        }`}
+                        style={{ fontSize: '0.82rem' }}
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                  {otherSubtype === 'sport' && (
+                    <div className="mt-2 text-muted smaller">
+                      💡 <strong>Tip for sports matches</strong> (e.g. Football, Basketball, Tennis, Badminton, Swimming): If you played a continuous match, individual exercise rows are optional — your <strong>Duration</strong> and <strong>Notes</strong> are tracked!
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Date */}
             <div className="col-12 col-md-6">
               <label className="form-label" htmlFor="workoutDate">
@@ -401,21 +493,6 @@ const WorkoutForm = () => {
                   required
                 />
               </div>
-            </div>
-
-            {/* Notes */}
-            <div className="col-12">
-              <label className="form-label" htmlFor="workoutNotes">
-                Notes & Reflections (optional)
-              </label>
-              <textarea
-                id="workoutNotes"
-                rows="3"
-                className="form-control"
-                placeholder="How did you feel? Any personal records or areas to improve?"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-              />
             </div>
           </div>
 
@@ -460,17 +537,16 @@ const WorkoutForm = () => {
                   const isDropdownOpen = activeDropdownIndex === index;
                   const query = ex.name || '';
                   const suggestions = query.trim()
-                    ? searchExercises(query, type)
-                    : getExercisesByCategory(type);
+                    ? searchExercises(query, type, otherSubtype)
+                    : getExercisesByCategory(type, otherSubtype);
 
                   return (
                     <div key={index} className="exercise-row-card position-relative">
                       <div className="row g-2 align-items-end">
                         {/* Exercise Name with Smart Search Dropdown */}
                         <div className={`col-12 ${isWeightHidden ? 'col-md-5' : 'col-md-5'} position-relative`}>
-                          <label className="form-label small mb-1 fw-semibold text-primary-custom d-flex justify-content-between align-items-center">
-                            <span>Exercise #{index + 1} Name</span>
-                            <span className="text-muted smaller fw-normal">Smart search & postures</span>
+                          <label className="form-label small mb-1 fw-semibold text-primary-custom">
+                            Exercise #{index + 1} Name
                           </label>
                           <div className="position-relative">
                             <input
@@ -496,6 +572,18 @@ const WorkoutForm = () => {
                                   <span>
                                     {query.trim()
                                       ? `⚡ Matching Movements (${suggestions.length})`
+                                      : type === 'Other'
+                                      ? `⭐ Foundational for ${
+                                          otherSubtype === 'sport'
+                                            ? 'Sports & Drills'
+                                            : otherSubtype === 'yoga'
+                                            ? 'Yoga & Flexibility'
+                                            : otherSubtype === 'cardio'
+                                            ? 'Cardio & Conditioning'
+                                            : otherSubtype === 'strength'
+                                            ? 'Strength & Weights'
+                                            : 'Mixed & Cross-Training'
+                                        }`
                                       : `⭐ Foundational for ${type}`}
                                   </span>
                                   <span className="smaller text-muted">Click to auto-fill</span>
@@ -626,6 +714,26 @@ const WorkoutForm = () => {
               <PlusIcon size={16} />
               <span>+ Add Another Exercise Row</span>
             </button>
+          </div>
+
+          {/* Notes & Reflections Section (placed at the end after exercises) */}
+          <div className="pt-4 border-top mt-4">
+            <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-1 mb-2">
+              <label className="form-label fw-bold text-primary-custom mb-0" htmlFor="workoutNotes">
+                Notes & Reflections <span className="text-muted fw-normal small">(optional)</span>
+              </label>
+              <span className="text-muted smaller">
+                Personal records, session observations, or tactical reflections
+              </span>
+            </div>
+            <textarea
+              id="workoutNotes"
+              rows="3"
+              className="form-control"
+              placeholder="How did you feel? Any personal records or areas to improve?"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
           </div>
         </div>
 
