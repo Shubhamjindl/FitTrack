@@ -19,9 +19,13 @@ const getWorkouts = async (req, res) => {
       ];
     }
 
-    // Filter by type
+    // Filter by type (Cardio includes unified Running, Cycling, HIIT)
     if (type && type !== 'All') {
-      query.type = type;
+      if (type === 'Cardio') {
+        query.type = { $in: ['Cardio', 'Running', 'Cycling', 'HIIT'] };
+      } else {
+        query.type = type;
+      }
     }
 
     // Filter by date range

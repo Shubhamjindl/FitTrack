@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -11,19 +11,20 @@ import {
   CheckIcon,
   LockIcon,
 } from '../components/Icons';
+import {
+  getExercisesByCategory,
+  searchExercises,
+} from '../data/exercises';
 
 // API base URL: local Vite proxy or deployed Render backend
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const WORKOUT_TYPES = [
-  'Strength',
-  'Cardio',
-  'HIIT',
-  'Yoga',
-  'Running',
-  'Cycling',
-  'Bodyweight',
-  'Other',
+  { value: 'Strength', label: 'Strength & Weights' },
+  { value: 'Bodyweight', label: 'Bodyweight & Calisthenics' },
+  { value: 'Cardio', label: 'Cardio & Conditioning (Running, Cycling, HIIT)' },
+  { value: 'Yoga', label: 'Yoga & Flexibility' },
+  { value: 'Other', label: 'Other / Sports' },
 ];
 
 const WorkoutForm = () => {
@@ -46,6 +47,21 @@ const WorkoutForm = () => {
   const [exercises, setExercises] = useState([
     { name: '', sets: 3, reps: 10, weight: 0 },
   ]);
+
+  // Active autocomplete dropdown index
+  const [activeDropdownIndex, setActiveDropdownIndex] = useState(null);
+  const dropdownRef = useRef(null);
+
+  // Click outside listener to dismiss smart dropdown
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setActiveDropdownIndex(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Load existing workout if in edit mode
   useEffect(() => {
@@ -116,6 +132,65 @@ const WorkoutForm = () => {
       return next;
     });
   };
+
+  // Select an exercise from Smart Search Autocomplete
+  const handleSelectExercise = (index, selected) => {
+    setExercises((prev) => {
+      const next = [...prev];
+      next[index] = {
+        ...next[index],
+        name: selected.name,
+        sets: selected.defaultSets,
+        reps: selected.defaultReps,
+        weight: selected.defaultWeight,
+      };
+      return next;
+    });
+    setActiveDropdownIndex(null);
+  };
+
+  // Determine if weight is hidden based on workout category
+  const isWeightHidden = ['Yoga', 'Cardio', 'Running', 'Cycling', 'HIIT'].includes(type);
+
+  // Dynamic field labels & placeholders based on workout category
+  const getFieldLabels = () => {
+    if (type === 'Yoga') {
+      return {
+        sectionDesc: 'Track yoga asanas with rounds and hold duration (seconds)',
+        sets: 'Rounds / Sets',
+        reps: 'Hold Duration (sec)',
+        weight: 'N/A',
+        placeholder: 'e.g. Surya Namaskar, Downward Dog, Cobra Pose',
+      };
+    }
+    if (['Cardio', 'Running', 'Cycling', 'HIIT'].includes(type)) {
+      return {
+        sectionDesc: 'Track cardio movements, intervals, or steady session drills',
+        sets: 'Rounds / Intervals',
+        reps: 'Duration (sec) / Reps',
+        weight: 'N/A',
+        placeholder: 'e.g. Running, Burpees, Jump Rope, Mountain Climbers',
+      };
+    }
+    if (type === 'Bodyweight') {
+      return {
+        sectionDesc: 'Track bodyweight movements, calisthenics, and core holds',
+        sets: 'Sets',
+        reps: 'Reps / Hold (sec)',
+        weight: 'Added Wt (kg, optional)',
+        placeholder: 'e.g. Standard Push-ups, Pull-ups, Forearm Plank',
+      };
+    }
+    return {
+      sectionDesc: 'Track individual exercises with sets, repetitions, and weights',
+      sets: 'Sets',
+      reps: 'Reps',
+      weight: 'Weight (kg)',
+      placeholder: 'e.g. Barbell Bench Press, Barbell Squat, Deadlift',
+    };
+  };
+
+  const fieldLabels = getFieldLabels();
 
   // Calculate total volume live
   const calculatedTotalVolume = exercises.reduce((sum, ex) => {
@@ -275,10 +350,13 @@ const WorkoutForm = () => {
                 onChange={(e) => setType(e.target.value)}
               >
                 {WORKOUT_TYPES.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
+                  <option key={t.value} value={t.value}>
+                    {t.label}
                   </option>
                 ))}
+                {['Running', 'Cycling', 'HIIT'].includes(type) && (
+                  <option value={type}>{type} (Legacy)</option>
+                )}
               </select>
             </div>
 
@@ -347,11 +425,11 @@ const WorkoutForm = () => {
               <div>
                 <h5 className="fw-bold text-primary-custom mb-0">Exercises & Sets</h5>
                 <span className="text-muted small">
-                  Track individual exercises with sets, repetitions, and weights
+                  {fieldLabels.sectionDesc}
                 </span>
               </div>
               <div className="d-flex align-items-center gap-2">
-                {calculatedTotalVolume > 0 && (
+                {!isWeightHidden && calculatedTotalVolume > 0 && (
                   <span className="badge bg-light text-success border py-2 px-3 fw-semibold">
                     Estimated Volume: {calculatedTotalVolume.toLocaleString()} kg
                   </span>
@@ -369,7 +447,7 @@ const WorkoutForm = () => {
 
             {exercises.length === 0 ? (
               <div className="p-4 bg-light rounded-3 text-center text-muted mb-3">
-                No exercises added yet. Click <strong>"Add Exercise"</strong> to log sets and weights, or leave empty for pure cardio sessions.
+                No exercises added yet. Click <strong>"Add Exercise"</strong> to log sets and movements, or leave empty for pure continuous cardio sessions.
               </div>
             ) : (
               <div className="d-flex flex-column gap-3 mb-3">
@@ -379,28 +457,96 @@ const WorkoutForm = () => {
                     (Number(ex.reps) || 0) *
                     (Number(ex.weight) || 0);
 
+                  const isDropdownOpen = activeDropdownIndex === index;
+                  const query = ex.name || '';
+                  const suggestions = query.trim()
+                    ? searchExercises(query, type)
+                    : getExercisesByCategory(type);
+
                   return (
-                    <div key={index} className="exercise-row-card">
+                    <div key={index} className="exercise-row-card position-relative">
                       <div className="row g-2 align-items-end">
-                        {/* Exercise Name */}
-                        <div className="col-12 col-md-5">
-                          <label className="form-label small mb-1">
-                            Exercise #{index + 1} Name
+                        {/* Exercise Name with Smart Search Dropdown */}
+                        <div className={`col-12 ${isWeightHidden ? 'col-md-5' : 'col-md-5'} position-relative`}>
+                          <label className="form-label small mb-1 fw-semibold text-primary-custom d-flex justify-content-between align-items-center">
+                            <span>Exercise #{index + 1} Name</span>
+                            <span className="text-muted smaller fw-normal">Smart search & postures</span>
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="e.g. Barbell Squat, Push-ups"
-                            value={ex.name}
-                            onChange={(e) =>
-                              handleExerciseChange(index, 'name', e.target.value)
-                            }
-                          />
+                          <div className="position-relative">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder={fieldLabels.placeholder}
+                              value={ex.name}
+                              onFocus={() => setActiveDropdownIndex(index)}
+                              onChange={(e) => {
+                                handleExerciseChange(index, 'name', e.target.value);
+                                setActiveDropdownIndex(index);
+                              }}
+                              autoComplete="off"
+                            />
+
+                            {/* Smart Search Dropdown Menu */}
+                            {isDropdownOpen && (
+                              <div
+                                ref={dropdownRef}
+                                className="smart-exercise-dropdown shadow-lg animate-fade-in"
+                              >
+                                <div className="p-2 border-bottom bg-emerald-subtle text-emerald small fw-semibold d-flex justify-content-between align-items-center">
+                                  <span>
+                                    {query.trim()
+                                      ? `⚡ Matching Movements (${suggestions.length})`
+                                      : `⭐ Foundational for ${type}`}
+                                  </span>
+                                  <span className="smaller text-muted">Click to auto-fill</span>
+                                </div>
+
+                                {suggestions.length === 0 ? (
+                                  <div className="p-3 text-center small text-muted">
+                                    No preset movements found for "<strong>{query}</strong>". You can continue typing your custom name!
+                                  </div>
+                                ) : (
+                                  suggestions.map((item) => (
+                                    <div
+                                      key={item.id}
+                                      className="smart-exercise-item"
+                                      onMouseDown={(e) => {
+                                        e.preventDefault();
+                                        handleSelectExercise(index, item);
+                                      }}
+                                    >
+                                      <div className="d-flex align-items-center gap-2.5 min-w-0">
+                                        <div
+                                          className="exercise-posture-thumb"
+                                          dangerouslySetInnerHTML={{ __html: item.svg }}
+                                        />
+                                        <div className="min-w-0 text-start">
+                                          <div className="text-primary-custom fw-semibold small text-truncate">
+                                            {item.name}
+                                          </div>
+                                          <div className="text-muted smaller text-truncate">
+                                            <span className="badge bg-light-section text-muted me-1">{item.categoryLabel}</span>
+                                            <span>{item.muscles}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <button
+                                        type="button"
+                                        className="btn btn-outline-green btn-sm py-0.5 px-2 smaller rounded-pill flex-shrink-0"
+                                      >
+                                        + Select
+                                      </button>
+                                    </div>
+                                  ))
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
 
-                        {/* Sets */}
-                        <div className="col-4 col-md-2">
-                          <label className="form-label small mb-1">Sets</label>
+                        {/* Sets / Rounds */}
+                        <div className={`col-6 ${isWeightHidden ? 'col-md-3' : 'col-4 col-md-2'}`}>
+                          <label className="form-label small mb-1">{fieldLabels.sets}</label>
                           <input
                             type="number"
                             min="1"
@@ -412,9 +558,9 @@ const WorkoutForm = () => {
                           />
                         </div>
 
-                        {/* Reps */}
-                        <div className="col-4 col-md-2">
-                          <label className="form-label small mb-1">Reps</label>
+                        {/* Reps / Hold Time */}
+                        <div className={`col-6 ${isWeightHidden ? 'col-md-3' : 'col-4 col-md-2'}`}>
+                          <label className="form-label small mb-1">{fieldLabels.reps}</label>
                           <input
                             type="number"
                             min="1"
@@ -426,24 +572,26 @@ const WorkoutForm = () => {
                           />
                         </div>
 
-                        {/* Weight */}
-                        <div className="col-4 col-md-2">
-                          <label className="form-label small mb-1">Weight (kg)</label>
-                          <input
-                            type="number"
-                            min="0"
-                            step="0.5"
-                            className="form-control text-center"
-                            placeholder="0"
-                            value={ex.weight}
-                            onChange={(e) =>
-                              handleExerciseChange(index, 'weight', e.target.value)
-                            }
-                          />
-                        </div>
+                        {/* Weight (Hidden for Yoga & Cardio) */}
+                        {!isWeightHidden && (
+                          <div className="col-4 col-md-2">
+                            <label className="form-label small mb-1">{fieldLabels.weight}</label>
+                            <input
+                              type="number"
+                              min="0"
+                              step="0.5"
+                              className="form-control text-center"
+                              placeholder="0"
+                              value={ex.weight}
+                              onChange={(e) =>
+                                handleExerciseChange(index, 'weight', e.target.value)
+                              }
+                            />
+                          </div>
+                        )}
 
                         {/* Delete Row Action */}
-                        <div className="col-12 col-md-1 d-flex justify-content-end align-items-center">
+                        <div className={`col-12 col-md-1 d-flex justify-content-end align-items-center ${isWeightHidden ? 'pt-2 pt-md-0' : ''}`}>
                           <button
                             type="button"
                             onClick={() => handleRemoveExercise(index)}
@@ -455,8 +603,8 @@ const WorkoutForm = () => {
                         </div>
                       </div>
 
-                      {/* Subtotal volume indicator */}
-                      {subVolume > 0 && (
+                      {/* Subtotal volume indicator (only if weight > 0) */}
+                      {!isWeightHidden && subVolume > 0 && (
                         <div className="mt-2 text-end small text-muted font-monospace">
                           Subtotal Volume:{' '}
                           <span className="fw-semibold text-primary-custom">

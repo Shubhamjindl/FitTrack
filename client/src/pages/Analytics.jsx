@@ -28,13 +28,14 @@ const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const TYPE_COLORS = {
   Strength: '#10b981',
-  Cardio: '#38bdf8',
+  Bodyweight: '#0ea5e9',
+  Cardio: '#f59e0b',
+  Yoga: '#8b5cf6',
+  Other: '#94a3b8',
+  // Legacy mappings
+  Running: '#f59e0b',
   Cycling: '#0284c7',
   HIIT: '#ef4444',
-  Running: '#f59e0b',
-  Yoga: '#8b5cf6',
-  Bodyweight: '#64748b',
-  Other: '#94a3b8',
 };
 
 const DEFAULT_COLORS = ['#0284c7', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#06b6d4'];
@@ -291,88 +292,139 @@ const Analytics = () => {
 
       {/* Row 2: 2 Big Charts Side by Side (50% / 50%) */}
       <div className="row g-4 mb-4">
-        {/* Chart 3: Exercise Weight Progression */}
-        <div className="col-12 col-lg-6">
-          <div className="card card-fittrack p-4 h-100 d-flex flex-column justify-content-between">
-            <div>
-              <div className="d-flex justify-content-between align-items-start mb-3">
-                <div className="d-flex align-items-center" style={{ gap: '0.65rem' }}>
-                  <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 32, height: 32 }}>
-                    <DumbbellIcon size={16} />
+        {/* Chart 3: Adaptive Exercise Progression (Weight / Reps / Hold Time) */}
+        {(() => {
+          const hasWeight = exerciseProgress.some((p) => (Number(p.weight) || 0) > 0);
+          const isHoldExercise =
+            !hasWeight &&
+            selectedExercise &&
+            /(plank|hold|yoga|asana|dog|cobra|pose|namaskar|stretch|warrior)/i.test(selectedExercise);
+
+          let chartTitle = 'Exercise Weight Progression';
+          let chartSubtitle = 'Track progressive overload for a selected exercise';
+          let chartUnit = 'kg';
+          let chartColor = '#0284c7';
+          let dataKey = 'weight';
+          let tooltipLabel = 'Weight';
+          let domain = ['dataMin - 5', 'dataMax + 5'];
+
+          if (!hasWeight && isHoldExercise) {
+            chartTitle = 'Hold Duration & Stamina';
+            chartSubtitle = 'Track pose hold duration and stamina progression';
+            chartUnit = 's';
+            chartColor = '#8b5cf6';
+            dataKey = 'reps';
+            tooltipLabel = 'Hold Duration';
+            domain = [0, 'dataMax + 10'];
+          } else if (!hasWeight) {
+            chartTitle = 'Repetition & Volume Progression';
+            chartSubtitle = 'Track endurance and repetition progress over time';
+            chartUnit = ' reps';
+            chartColor = '#10b981';
+            dataKey = 'reps';
+            tooltipLabel = 'Max Reps';
+            domain = [0, 'dataMax + 5'];
+          }
+
+          return (
+            <div className="col-12 col-lg-6">
+              <div className="card card-fittrack p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <div className="d-flex justify-content-between align-items-start mb-3">
+                    <div className="d-flex align-items-center" style={{ gap: '0.65rem' }}>
+                      <div
+                        className="p-1.5 rounded-2 d-flex align-items-center justify-content-center flex-shrink-0"
+                        style={{ width: 32, height: 32, backgroundColor: `${chartColor}20`, color: chartColor }}
+                      >
+                        {hasWeight ? (
+                          <DumbbellIcon size={16} />
+                        ) : isHoldExercise ? (
+                          <ClockIcon size={16} />
+                        ) : (
+                          <ActivityIcon size={16} />
+                        )}
+                      </div>
+                      <div>
+                        <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
+                          {chartTitle}
+                        </h5>
+                        <p className="text-muted smaller mb-0">
+                          {chartSubtitle}
+                        </p>
+                      </div>
+                    </div>
+
+                    {distinctExercises.length > 0 && (
+                      <select
+                        className="form-select form-select-sm"
+                        style={{ maxWidth: 170, fontSize: '0.8rem' }}
+                        value={selectedExercise}
+                        onChange={(e) => handleExerciseChange(e.target.value)}
+                        disabled={loadingEx}
+                      >
+                        {distinctExercises.map((ex) => (
+                          <option key={ex} value={ex}>
+                            {ex}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                   </div>
-                  <div>
-                    <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
-                      Exercise Weight Progression
-                    </h5>
-                    <p className="text-muted smaller mb-0">
-                      Track progressive overload for a selected exercise
-                    </p>
+
+                  <div style={{ width: '100%', height: 260 }}>
+                    {exerciseProgress.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart
+                          data={exerciseProgress}
+                          margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
+                        >
+                          <defs>
+                            <linearGradient id="exProgGrad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor={chartColor} stopOpacity={0.25} />
+                              <stop offset="95%" stopColor={chartColor} stopOpacity={0} />
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
+                          <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
+                          <YAxis
+                            stroke="#94a3b8"
+                            fontSize={11}
+                            tickLine={false}
+                            domain={domain}
+                            unit={chartUnit}
+                          />
+                          <Tooltip formatter={(val) => [`${val} ${chartUnit}`, tooltipLabel]} />
+                          <Area
+                            type="monotone"
+                            dataKey={dataKey}
+                            stroke={chartColor}
+                            strokeWidth={2.5}
+                            fill="url(#exProgGrad)"
+                            dot={{ r: 4, fill: chartColor, strokeWidth: 2, stroke: '#fff' }}
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    ) : (
+                      <div className="h-100 d-flex flex-column align-items-center justify-content-center text-center p-3">
+                        <div className="p-3 rounded-circle bg-secondary-subtle text-muted mb-2">
+                          {hasWeight ? (
+                            <DumbbellIcon size={24} />
+                          ) : isHoldExercise ? (
+                            <ClockIcon size={24} />
+                          ) : (
+                            <ActivityIcon size={24} />
+                          )}
+                        </div>
+                        <span className="fw-semibold text-primary-custom small mb-1">No progression data</span>
+                        <span className="text-muted smaller">Record sessions with this movement to visualize progress</span>
+                      </div>
+                    )}
                   </div>
                 </div>
-
-                {distinctExercises.length > 0 && (
-                  <select
-                    className="form-select form-select-sm"
-                    style={{ maxWidth: 170, fontSize: '0.8rem' }}
-                    value={selectedExercise}
-                    onChange={(e) => handleExerciseChange(e.target.value)}
-                    disabled={loadingEx}
-                  >
-                    {distinctExercises.map((ex) => (
-                      <option key={ex} value={ex}>
-                        {ex}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
-
-              <div style={{ width: '100%', height: 260 }}>
-                {exerciseProgress.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart
-                      data={exerciseProgress}
-                      margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
-                    >
-                      <defs>
-                        <linearGradient id="exWeightGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#0284c7" stopOpacity={0.25} />
-                          <stop offset="95%" stopColor="#0284c7" stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
-                      <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                      <YAxis
-                        stroke="#94a3b8"
-                        fontSize={11}
-                        tickLine={false}
-                        domain={['dataMin - 5', 'dataMax + 5']}
-                        unit="kg"
-                      />
-                      <Tooltip formatter={(val) => [`${val} kg`, 'Max Weight']} />
-                      <Area
-                        type="monotone"
-                        dataKey="weight"
-                        stroke="#0284c7"
-                        strokeWidth={2.5}
-                        fill="url(#exWeightGrad)"
-                        dot={{ r: 4, fill: '#0284c7', strokeWidth: 2, stroke: '#fff' }}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <div className="h-100 d-flex flex-column align-items-center justify-content-center text-center p-3">
-                    <div className="p-3 rounded-circle bg-secondary-subtle text-muted mb-2">
-                      <DumbbellIcon size={24} />
-                    </div>
-                    <span className="fw-semibold text-primary-custom small mb-1">No strength progression data</span>
-                    <span className="text-muted smaller">Record exercises with weight sets to track progressive overload</span>
-                  </div>
-                )}
               </div>
             </div>
-          </div>
-        </div>
+          );
+        })()}
 
         {/* Chart 4: Workout Type Distribution Donut Chart */}
         <div className="col-12 col-lg-6">

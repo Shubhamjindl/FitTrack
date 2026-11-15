@@ -53,7 +53,17 @@ const getAnalytics = async (req, res) => {
       type: w.type,
     }));
 
-    // 2. Workout Type Distribution
+    // 2. Workout Type Distribution (Normalized into 4 Core Groups: Strength, Bodyweight, Cardio, Yoga, Other)
+    const normalizeCategory = (rawType = '') => {
+      if (['Running', 'Cycling', 'HIIT', 'Cardio'].includes(rawType)) {
+        return 'Cardio';
+      }
+      if (rawType === 'Strength') return 'Strength';
+      if (rawType === 'Bodyweight') return 'Bodyweight';
+      if (rawType === 'Yoga') return 'Yoga';
+      return 'Other';
+    };
+
     const typeCountMap = {};
     let totalWorkoutsCount = workouts.length;
     let totalDurationSum = 0;
@@ -66,7 +76,8 @@ const getAnalytics = async (req, res) => {
 
     workouts.forEach((w) => {
       totalDurationSum += w.duration || 0;
-      typeCountMap[w.type] = (typeCountMap[w.type] || 0) + 1;
+      const normalizedCat = normalizeCategory(w.type);
+      typeCountMap[normalizedCat] = (typeCountMap[normalizedCat] || 0) + 1;
 
       if (Array.isArray(w.exercises)) {
         w.exercises.forEach((ex) => {

@@ -35,15 +35,12 @@ import {
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const WORKOUT_TYPES = [
-  'All',
-  'Strength',
-  'Cardio',
-  'HIIT',
-  'Yoga',
-  'Running',
-  'Cycling',
-  'Bodyweight',
-  'Other',
+  { value: 'All', label: 'All Types' },
+  { value: 'Strength', label: 'Strength & Weights' },
+  { value: 'Bodyweight', label: 'Bodyweight & Calisthenics' },
+  { value: 'Cardio', label: 'Cardio & Conditioning' },
+  { value: 'Yoga', label: 'Yoga & Flexibility' },
+  { value: 'Other', label: 'Other / Sports' },
 ];
 
 const formatDate = (dateString) => {
@@ -739,10 +736,9 @@ const Workouts = () => {
               onChange={(e) => setSelectedType(e.target.value)}
               aria-label="Filter by type"
             >
-              <option value="All">All Types</option>
-              {WORKOUT_TYPES.filter((t) => t !== 'All').map((type) => (
-                <option key={type} value={type}>
-                  {type}
+              {WORKOUT_TYPES.map((t) => (
+                <option key={t.value} value={t.value}>
+                  {t.label}
                 </option>
               ))}
             </select>
