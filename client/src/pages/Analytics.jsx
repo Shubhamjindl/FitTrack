@@ -372,8 +372,8 @@ const Analytics = () => {
                         <button
                           type="button"
                           onClick={() => setExDropdownOpen((prev) => !prev)}
-                          className="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-between gap-2 px-2.5 py-1 rounded-3 text-truncate"
-                          style={{ maxWidth: 185, fontSize: '0.8rem', minHeight: 31 }}
+                          className="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-between gap-2 px-3 py-1.5 rounded-3 text-truncate"
+                          style={{ maxWidth: 200, fontSize: '0.85rem', minHeight: 34 }}
                           disabled={loadingEx}
                           title={selectedExercise}
                         >
@@ -388,16 +388,16 @@ const Analytics = () => {
                               position: 'absolute',
                               top: 'calc(100% + 4px)',
                               right: 0,
-                              width: 215,
-                              maxHeight: 195,
+                              width: 235,
+                              maxHeight: 200,
                               overflowY: 'auto',
                               overflowX: 'hidden',
                               backgroundColor: 'var(--bg-card)',
                               border: '1px solid var(--border-color)',
-                              borderRadius: 10,
+                              borderRadius: 12,
                               zIndex: 1050,
-                              padding: '4px 0',
-                              boxShadow: '0 10px 25px -5px rgba(0,0,0,0.2)',
+                              padding: '6px',
+                              boxShadow: '0 12px 30px -5px rgba(0,0,0,0.25)',
                             }}
                           >
                             {distinctExercises.map((ex) => (
@@ -407,19 +407,20 @@ const Analytics = () => {
                                   handleExerciseChange(ex);
                                   setExDropdownOpen(false);
                                 }}
-                                className={`px-3 py-1.5 small d-flex align-items-center justify-content-between ${
+                                className={`px-3 py-2 d-flex align-items-center justify-content-between rounded-2 mb-0.5 ${
                                   selectedExercise === ex
                                     ? 'bg-emerald-subtle text-emerald fw-semibold'
                                     : 'text-primary-custom hover-bg-subtle'
                                 }`}
                                 style={{
                                   cursor: 'pointer',
-                                  fontSize: '0.8rem',
+                                  fontSize: '0.86rem',
+                                  lineHeight: '1.35',
                                   transition: 'background-color 0.15s ease',
                                 }}
                               >
                                 <span className="text-truncate">{ex}</span>
-                                {selectedExercise === ex && <span className="ms-1.5 flex-shrink-0">✓</span>}
+                                {selectedExercise === ex && <span className="ms-2 flex-shrink-0">✓</span>}
                               </div>
                             ))}
                           </div>
