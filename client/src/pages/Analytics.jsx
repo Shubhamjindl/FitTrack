@@ -136,7 +136,7 @@ const Analytics = () => {
     <div className="container py-4 animate-fade-in">
       {/* Title Header */}
       <div className="mb-4">
-        <h1 className="fw-semibold text-white mb-1 h3" style={{ fontWeight: 600 }}>Progress Analytics</h1>
+        <h1 className="fw-semibold text-primary-custom mb-1 h3" style={{ fontWeight: 600 }}>Progress Analytics</h1>
         <p className="text-muted mb-0 small">
           Visualize workout frequency, duration trends, exercise strength progress, and category distribution
         </p>
@@ -199,7 +199,7 @@ const Analytics = () => {
                 <BarChartIcon size={16} />
               </div>
               <div>
-                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
+                <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
                   Workout Frequency (Last 6 Months)
                 </h5>
                 <p className="text-muted smaller mb-0">
@@ -236,7 +236,7 @@ const Analytics = () => {
                 <ClockIcon size={16} />
               </div>
               <div>
-                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
+                <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
                   Session Duration Trend
                 </h5>
                 <p className="text-muted smaller mb-0">
@@ -280,7 +280,7 @@ const Analytics = () => {
                   <div className="p-3 rounded-circle bg-secondary-subtle text-muted mb-2">
                     <ClockIcon size={24} />
                   </div>
-                  <span className="fw-semibold text-white small mb-1">No duration trends yet</span>
+                  <span className="fw-semibold text-primary-custom small mb-1">No duration trends yet</span>
                   <span className="text-muted smaller">Log workout sessions with active duration to visualize trends</span>
                 </div>
               )}
@@ -301,7 +301,7 @@ const Analytics = () => {
                     <DumbbellIcon size={16} />
                   </div>
                   <div>
-                    <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
+                    <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
                       Exercise Weight Progression
                     </h5>
                     <p className="text-muted smaller mb-0">
@@ -365,7 +365,7 @@ const Analytics = () => {
                     <div className="p-3 rounded-circle bg-secondary-subtle text-muted mb-2">
                       <DumbbellIcon size={24} />
                     </div>
-                    <span className="fw-semibold text-white small mb-1">No strength progression data</span>
+                    <span className="fw-semibold text-primary-custom small mb-1">No strength progression data</span>
                     <span className="text-muted smaller">Record exercises with weight sets to track progressive overload</span>
                   </div>
                 )}
@@ -383,7 +383,7 @@ const Analytics = () => {
                   <BarChartIcon size={16} />
                 </div>
                 <div>
-                  <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
+                  <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '0.98rem', fontWeight: 600 }}>
                     Workout Type Distribution
                   </h5>
                   <p className="text-muted smaller mb-0">
@@ -419,7 +419,7 @@ const Analytics = () => {
                     <div className="p-3 rounded-circle bg-secondary-subtle text-muted mb-2">
                       <BarChartIcon size={24} />
                     </div>
-                    <span className="fw-semibold text-white small mb-1">No workout categories yet</span>
+                    <span className="fw-semibold text-primary-custom small mb-1">No workout categories yet</span>
                     <span className="text-muted smaller">Log different workout types to view category breakdown</span>
                   </div>
                 )}

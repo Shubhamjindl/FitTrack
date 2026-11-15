@@ -1368,6 +1368,46 @@ a {
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
 }
 
+/* Overview Timeframe Select Dropdown (with green down chevron) */
+.overview-timeframe-select {
+  font-size: 0.72rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  width: auto;
+  cursor: pointer;
+  padding: 0.2rem 1.6rem 0.2rem 0.75rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2310b981' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.55rem center;
+  background-size: 10px 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.overview-timeframe-select:hover,
+.overview-timeframe-select:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+}
+
+[data-theme="dark"] .overview-timeframe-select {
+  background-color: #1f1f23;
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #f4f4f5;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2310b981' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.overview-timeframe-select option {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
 /* Fitness Snapshot Card */
 .fitness-snapshot-card {
   position: relative;

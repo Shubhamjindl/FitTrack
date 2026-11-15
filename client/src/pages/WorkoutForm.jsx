@@ -210,7 +210,7 @@ const WorkoutForm = () => {
     <div className="container py-4 animate-fade-in max-w-4xl">
       <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
         <div>
-          <h1 className="fw-bold text-dark mb-1 h2">
+          <h1 className="fw-bold text-primary-custom mb-1 h2">
             {isEditMode ? 'Edit Workout Session' : 'Log New Workout'}
           </h1>
           <p className="text-muted mb-0 small">
@@ -244,7 +244,7 @@ const WorkoutForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="card card-fittrack p-4 p-md-5 mb-4">
-          <h5 className="fw-bold text-dark mb-3">General Details</h5>
+          <h5 className="fw-bold text-primary-custom mb-3">General Details</h5>
 
           <div className="row g-3 mb-4">
             {/* Workout Name */}
@@ -345,7 +345,7 @@ const WorkoutForm = () => {
           <div className="pt-3 border-top">
             <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
               <div>
-                <h5 className="fw-bold text-dark mb-0">Exercises & Sets</h5>
+                <h5 className="fw-bold text-primary-custom mb-0">Exercises & Sets</h5>
                 <span className="text-muted small">
                   Track individual exercises with sets, repetitions, and weights
                 </span>
@@ -459,7 +459,7 @@ const WorkoutForm = () => {
                       {subVolume > 0 && (
                         <div className="mt-2 text-end small text-muted font-monospace">
                           Subtotal Volume:{' '}
-                          <span className="fw-semibold text-dark">
+                          <span className="fw-semibold text-primary-custom">
                             {subVolume.toLocaleString()} kg
                           </span>
                         </div>

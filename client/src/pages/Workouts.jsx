@@ -393,7 +393,7 @@ const Workouts = () => {
     <div className="container py-4 animate-fade-in">
       {/* Title Header */}
       <div className="mb-4">
-        <h1 className="fw-bold text-white mb-1 h3">Workout History</h1>
+        <h1 className="fw-bold text-primary-custom mb-1 h3">Workout History</h1>
         <p className="text-muted mb-0 small">
           Browse, search, and review all your logged workout sessions
         </p>
@@ -460,7 +460,7 @@ const Workouts = () => {
                 >
                   <DumbbellIcon size={16} />
                 </div>
-                <h6 className="fw-bold text-white mb-0 text-nowrap" style={{ fontSize: '0.95rem' }}>
+                <h6 className="fw-bold text-primary-custom mb-0 text-nowrap" style={{ fontSize: '0.95rem' }}>
                   Frequently Trained
                 </h6>
               </div>
@@ -474,16 +474,7 @@ const Workouts = () => {
                 <select
                   value={focusTimeframe}
                   onChange={(e) => setFocusTimeframe(e.target.value)}
-                  className="form-select form-select-sm text-white border-secondary border-opacity-30 py-0.5 px-2"
-                  style={{
-                    fontSize: '0.72rem',
-                    borderRadius: '9999px',
-                    width: 'auto',
-                    cursor: 'pointer',
-                    backgroundColor: '#1f1f23',
-                    borderColor: 'rgba(255, 255, 255, 0.18)',
-                    color: '#e4e4e7',
-                  }}
+                  className="overview-timeframe-select"
                   aria-label="Frequently trained timeframe filter"
                 >
                   <option value="all">All Time</option>
@@ -497,14 +488,14 @@ const Workouts = () => {
             <div className="d-flex flex-column gap-3 my-auto py-1">
               {muscleFocusStats.muscleFocus.map((m) => (
                 <div key={m.name} className="d-flex align-items-center justify-content-between gap-3">
-                  <span className="fw-semibold text-white smaller" style={{ minWidth: 72, fontSize: '0.84rem' }}>
+                  <span className="fw-semibold text-primary-custom smaller" style={{ minWidth: 72, fontSize: '0.84rem' }}>
                     {m.name}
                   </span>
                   <div
                     className="flex-grow-1 mx-3"
                     style={{
                       height: 8,
-                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      backgroundColor: 'var(--border-color)',
                       borderRadius: 9999,
                       overflow: 'hidden',
                     }}
@@ -520,7 +511,7 @@ const Workouts = () => {
                     />
                   </div>
                   <span className="text-muted smaller fw-medium text-end" style={{ minWidth: 72, fontSize: '0.84rem' }}>
-                    <strong className="text-white">{m.sessions}</strong> {m.sessions === 1 ? 'session' : 'sessions'}
+                    <strong className="text-primary-custom">{m.sessions}</strong> {m.sessions === 1 ? 'session' : 'sessions'}
                   </span>
                 </div>
               ))}
@@ -530,13 +521,13 @@ const Workouts = () => {
           {/* Footer with white and bold Primary Focus matching History Overview style */}
           <div
             className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center justify-content-between"
-            style={{ fontSize: '0.8rem', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+            style={{ fontSize: '0.8rem', borderColor: 'var(--border-color)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
               <CrosshairIcon size={14} className="text-muted flex-shrink-0" />
               <span>
                 <span className="text-muted">Primary Focus:&nbsp;</span>
-                <strong className="text-white fw-bold">{muscleFocusStats.primaryFocus}</strong>
+                <strong className="text-primary-custom fw-bold">{muscleFocusStats.primaryFocus}</strong>
               </span>
             </span>
             <span className="text-emerald fw-semibold d-inline-flex align-items-center text-nowrap" style={{ gap: '0.45rem' }}>
@@ -560,23 +551,14 @@ const Workouts = () => {
                 >
                   <BarChartIcon size={15} />
                 </div>
-                <h6 className="fw-bold text-white mb-0 text-nowrap" style={{ fontSize: '0.92rem' }}>
+                <h6 className="fw-bold text-primary-custom mb-0 text-nowrap" style={{ fontSize: '0.92rem' }}>
                   History Overview
                 </h6>
               </div>
               <select
                 value={historyTimeframe}
                 onChange={(e) => setHistoryTimeframe(e.target.value)}
-                className="form-select form-select-sm text-white border-secondary border-opacity-30 py-0.5 px-2 flex-shrink-0"
-                style={{
-                  fontSize: '0.72rem',
-                  borderRadius: '9999px',
-                  width: 'auto',
-                  cursor: 'pointer',
-                  backgroundColor: '#1f1f23',
-                  borderColor: 'rgba(255, 255, 255, 0.18)',
-                  color: '#e4e4e7',
-                }}
+                className="overview-timeframe-select flex-shrink-0"
                 aria-label="History overview timeframe filter"
               >
                 <option value="active">Last Active Period</option>
@@ -632,7 +614,7 @@ const Workouts = () => {
                     <LabelList
                       dataKey="sessions"
                       position="top"
-                      fill="#ffffff"
+                      fill="var(--text-primary)"
                       fontSize={11}
                       fontWeight={700}
                       offset={5}
@@ -646,13 +628,13 @@ const Workouts = () => {
           {/* Footer clean: Weekly Avg only */}
           <div
             className="smaller text-muted pt-2.5 mt-2.5 border-top d-flex align-items-center"
-            style={{ fontSize: '0.8rem', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+            style={{ fontSize: '0.8rem', borderColor: 'var(--border-color)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
               <TrendingUpIcon size={13} className="text-muted flex-shrink-0" />
               <span>
                 <span className="text-muted">Weekly Avg:&nbsp;</span>
-                <strong className="text-white fw-bold">{weeklyAvg} workouts</strong>
+                <strong className="text-primary-custom fw-bold">{weeklyAvg} workouts</strong>
               </span>
             </span>
           </div>
@@ -672,7 +654,7 @@ const Workouts = () => {
               >
                 <FlameIcon size={15} />
               </div>
-              <span className="fw-bold text-white mb-0 text-nowrap" style={{ fontSize: '0.88rem' }}>
+              <span className="fw-bold text-primary-custom mb-0 text-nowrap" style={{ fontSize: '0.88rem' }}>
                 Training Streak
               </span>
             </div>
@@ -693,7 +675,7 @@ const Workouts = () => {
                 >
                   {streakStats.currentStreak}
                 </span>
-                <span className="text-white fw-semibold" style={{ fontSize: '1.15rem' }}>
+                <span className="text-primary-custom fw-semibold" style={{ fontSize: '1.15rem' }}>
                   {streakStats.currentStreak === 1 ? 'day' : 'days'}
                 </span>
               </div>
@@ -715,13 +697,13 @@ const Workouts = () => {
           {/* Footer without Top 5% and without pipe */}
           <div
             className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center"
-            style={{ fontSize: '0.8rem', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+            style={{ fontSize: '0.8rem', borderColor: 'var(--border-color)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
               <TrophyIcon size={13} className="text-muted flex-shrink-0" />
               <span>
                 <span className="text-muted">Best:&nbsp;</span>
-                <strong className="text-white fw-bold">{streakStats.bestStreak} {streakStats.bestStreak === 1 ? 'day' : 'days'}</strong>
+                <strong className="text-primary-custom fw-bold">{streakStats.bestStreak} {streakStats.bestStreak === 1 ? 'day' : 'days'}</strong>
               </span>
             </span>
           </div>
@@ -814,7 +796,7 @@ const Workouts = () => {
             <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
               <CalendarIcon size={18} />
             </div>
-            <h5 className="fw-bold text-white mb-0" style={{ fontSize: '1rem' }}>
+            <h5 className="fw-bold text-primary-custom mb-0" style={{ fontSize: '1rem' }}>
               Workout Sessions ({workouts.length})
             </h5>
           </div>
@@ -839,7 +821,7 @@ const Workouts = () => {
             >
               <DumbbellIcon size={28} />
             </div>
-            <h6 className="fw-bold text-white mb-1">No workouts found</h6>
+            <h6 className="fw-bold text-primary-custom mb-1">No workouts found</h6>
             <p className="text-muted smaller mb-3">
               No sessions match your search or filter criteria.
             </p>

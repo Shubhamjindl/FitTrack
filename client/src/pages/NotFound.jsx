@@ -11,7 +11,7 @@ const NotFound = () => {
       >
         <DumbbellIcon size={36} />
       </div>
-      <h1 className="fw-bold text-dark display-5">404</h1>
+      <h1 className="fw-bold text-primary-custom display-5">404</h1>
       <h4 className="fw-semibold text-secondary mb-3">Page Not Found</h4>
       <p className="text-muted mb-4">
         The fitness tracking page or workout you are looking for does not exist.

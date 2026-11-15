@@ -113,7 +113,7 @@ const Profile = () => {
     <div className="container py-4 animate-fade-in max-w-4xl">
       {/* Page Title */}
       <div className="mb-4 pb-1">
-        <h1 className="fw-semibold text-white mb-1 h3">Athlete Profile</h1>
+        <h1 className="fw-semibold text-primary-custom mb-1 h3">Athlete Profile</h1>
         <p className="text-muted mb-0 small">
           Manage your account details and security settings
         </p>
@@ -127,7 +127,7 @@ const Profile = () => {
           </div>
 
           <div className="text-center text-sm-start flex-grow-1">
-            <h2 className="fw-semibold text-white mb-1 h4" style={{ fontWeight: 600 }}>{user?.name || 'Alex Morgan'}</h2>
+            <h2 className="fw-semibold text-primary-custom mb-1 h4" style={{ fontWeight: 600 }}>{user?.name || 'Alex Morgan'}</h2>
             <div className="d-flex flex-wrap justify-content-center justify-content-sm-start align-items-center text-muted small" style={{ gap: '0.85rem' }}>
               <span className="d-inline-flex align-items-center" style={{ gap: '0.45rem' }}>
                 <MailIcon size={14} className="text-muted flex-shrink-0" />
@@ -173,7 +173,7 @@ const Profile = () => {
                 <UserIcon size={18} />
               </div>
               <div>
-                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
+                <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                   Update Information
                 </h5>
                 <p className="text-muted smaller mb-0">
@@ -266,7 +266,7 @@ const Profile = () => {
                 <LockIcon size={18} />
               </div>
               <div>
-                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
+                <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                   Security & Password
                 </h5>
                 <p className="text-muted smaller mb-0">
@@ -299,7 +299,7 @@ const Profile = () => {
                 >
                   <LockIcon size={26} />
                 </div>
-                <h6 className="fw-bold text-dark mb-1">Credentials Locked</h6>
+                <h6 className="fw-bold text-primary-custom mb-1">Credentials Locked</h6>
                 <p className="smaller text-muted mb-3" style={{ maxWidth: 280 }}>
                   Password modifications are disabled for the public demo account to ensure continuous access.
                 </p>

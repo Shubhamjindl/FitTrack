@@ -104,7 +104,7 @@ const RecentWorkoutCard = ({ workout, onClick }) => {
           >
             {theme.icon}
           </div>
-          <div className="fw-bold text-dark text-truncate" style={{ fontSize: '0.92rem' }}>
+          <div className="fw-bold text-primary-custom text-truncate" style={{ fontSize: '0.92rem' }}>
             {workout.name}
           </div>
         </div>

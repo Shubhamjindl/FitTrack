@@ -49,7 +49,7 @@ const StatCard = ({
       </div>
       <div className="min-w-0 flex-grow-1">
         <div className="d-flex align-items-baseline gap-1">
-          <span className="stat-card-value text-white" style={{ fontSize: '1.42rem', lineHeight: 1.15, fontWeight: 600, letterSpacing: '-0.4px' }}>
+          <span className="stat-card-value text-primary-custom" style={{ fontSize: '1.42rem', lineHeight: 1.15, fontWeight: 600, letterSpacing: '-0.4px' }}>
             {value}
           </span>
           {unit && (

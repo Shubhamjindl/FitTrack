@@ -120,7 +120,7 @@ const Dashboard = () => {
     <div className="container py-3.5 animate-fade-in">
       {/* Welcome Header */}
       <div className="mb-3.5">
-        <h1 className="fw-bold text-white mb-1 h3">
+        <h1 className="fw-bold text-primary-custom mb-1 h3">
           Welcome back, {user?.name?.split(' ')[0] || 'Athlete'}! 👋
         </h1>
         <p className="text-muted mb-0 small">
@@ -131,7 +131,7 @@ const Dashboard = () => {
       {/* Motivational Hero Banner */}
       <div className="hero-card-v2 p-4 mb-4">
         <div className="hero-content">
-          <h2 className="hero-title fw-bold text-white mb-2">
+          <h2 className="hero-title fw-bold text-primary-custom mb-2">
             Stay Consistent. <span className="text-emerald">Get Stronger.</span>
           </h2>
           <p className="hero-subtitle mb-3">
@@ -231,7 +231,7 @@ const Dashboard = () => {
                   <BarChartIcon size={18} />
                 </div>
                 <div>
-                  <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
+                  <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                     Weekly Activity
                   </h5>
                   <p className="text-muted smaller mb-0">
@@ -307,7 +307,7 @@ const Dashboard = () => {
                 <div className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center">
                   <TargetIcon size={18} />
                 </div>
-                <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
+                <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                   Fitness Snapshot
                 </h5>
               </div>
@@ -318,7 +318,7 @@ const Dashboard = () => {
                   <LayersIcon size={20} />
                 </div>
                 <div>
-                  <div className="fw-semibold text-white mb-0" style={{ fontSize: '1.2rem', lineHeight: 1.15, fontWeight: 600 }}>
+                  <div className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '1.2rem', lineHeight: 1.15, fontWeight: 600 }}>
                     {(stats?.totalVolume || 0).toLocaleString()} <span className="smaller fw-normal text-muted">kg</span>
                   </div>
                   <div className="smaller text-muted">Total Volume Moved</div>
@@ -331,7 +331,7 @@ const Dashboard = () => {
                   <ClockIcon size={20} />
                 </div>
                 <div>
-                  <div className="fw-semibold text-white mb-0" style={{ fontSize: '1.2rem', lineHeight: 1.15, fontWeight: 600 }}>
+                  <div className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '1.2rem', lineHeight: 1.15, fontWeight: 600 }}>
                     {avgDuration} <span className="smaller fw-normal text-muted">min / workout</span>
                   </div>
                   <div className="smaller text-muted">Average Session</div>
@@ -383,7 +383,7 @@ const Dashboard = () => {
               <ClipboardIcon size={18} />
             </div>
             <div>
-              <h5 className="fw-semibold text-white mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
+              <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
                 Recent Workouts
               </h5>
               <p className="text-muted smaller mb-0">
@@ -419,7 +419,7 @@ const Dashboard = () => {
             >
               <DumbbellIcon size={28} />
             </div>
-            <h6 className="fw-bold text-dark mb-1">No workouts logged yet</h6>
+            <h6 className="fw-bold text-primary-custom mb-1">No workouts logged yet</h6>
             <p className="text-muted smaller mb-3">
               Start your fitness journey by recording your first workout session!
             </p>
