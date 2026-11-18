@@ -376,7 +376,7 @@ const Workouts = () => {
       }
     }
 
-    const bestStreak = Math.max(best, 8);
+    const bestStreak = Math.max(best, currentStreak);
 
     return {
       currentStreak,
