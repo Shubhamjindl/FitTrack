@@ -302,7 +302,7 @@ const Analytics = () => {
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
-                    <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
+                    <XAxis dataKey="date" stroke="#94a3b8" fontSize={10} tickLine={false} interval={0} />
                     <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
                     <Tooltip
                       formatter={(val) => [`${val} min`, 'Duration']}
@@ -493,7 +493,7 @@ const Analytics = () => {
                             </linearGradient>
                           </defs>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
-                          <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} tickLine={false} />
+                          <XAxis dataKey="date" stroke="#94a3b8" fontSize={10} tickLine={false} interval={0} />
                           <YAxis
                             stroke="#94a3b8"
                             fontSize={11}
