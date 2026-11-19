@@ -31,7 +31,11 @@ import {
   TrendingUpIcon,
   ActivityIcon,
 } from '../components/Icons';
-import { EXERCISE_DATABASE } from '../data/exercises';
+import {
+  EXERCISE_DATABASE,
+  findPresetExercise,
+  getPrimaryMuscleGroup,
+} from '../data/exercises';
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
@@ -221,34 +225,22 @@ const Workouts = () => {
         matched.add('Legs');
       }
       (w.exercises || []).forEach((ex) => {
-        // 1. Direct muscleGroup tag from user's custom saved exercise
-        if (ex.muscleGroup) {
-          if (ex.muscleGroup === 'Full Body') {
+        // Feed the FIRST tag (Primary Mover) into Frequently Trained
+        const primary = getPrimaryMuscleGroup(ex);
+        if (primary) {
+          if (primary === 'Full Body') {
             matched.add('Legs');
             matched.add('Back');
             matched.add('Chest');
-          } else if (muscleCounts[ex.muscleGroup] !== undefined) {
-            matched.add(ex.muscleGroup);
+          } else if (muscleCounts[primary] !== undefined) {
+            matched.add(primary);
           }
         } else {
-          // 2. Check preset library muscles metadata
-          const preset = EXERCISE_DATABASE.find(
-            (p) => p.name.toLowerCase() === (ex.name || '').trim().toLowerCase()
-          );
-          if (preset && preset.muscles) {
-            const mText = preset.muscles.toLowerCase();
-            if (mText.includes('chest') || mText.includes('pec')) matched.add('Chest');
-            if (mText.includes('back') || mText.includes('lat') || mText.includes('row')) matched.add('Back');
-            if (mText.includes('quad') || mText.includes('glute') || mText.includes('hamstring') || mText.includes('leg') || mText.includes('calf')) matched.add('Legs');
-            if (mText.includes('shoulder') || mText.includes('deltoid')) matched.add('Shoulders');
-            if (mText.includes('bicep') || mText.includes('tricep') || mText.includes('arm')) matched.add('Arms');
-            if (mText.includes('core') || mText.includes('ab')) matched.add('Core');
-          } else {
-            // 3. Fallback to name regex rules
-            for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
-              if (regexes.some((r) => r.test(ex.name || ''))) {
-                matched.add(muscle);
-              }
+          // Fallback to name regex rules on exercise name
+          for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
+            if (regexes.some((r) => r.test(ex.name || ''))) {
+              matched.add(muscle);
+              break;
             }
           }
         }

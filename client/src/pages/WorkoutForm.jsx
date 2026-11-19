@@ -15,6 +15,8 @@ import {
   EXERCISE_DATABASE,
   getExercisesByCategory,
   searchExercises,
+  findPresetExercise,
+  getPrimaryMuscleGroup,
 } from '../data/exercises';
 
 // API base URL: local Vite proxy or deployed Render backend
@@ -28,7 +30,7 @@ const WORKOUT_TYPES = [
   { value: 'Other', label: 'Hybrid & Sports' },
 ];
 
-const STRENGTH_MUSCLE_TAGS = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Full Body'];
+const TARGET_MUSCLE_TAGS = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Full Body'];
 
 const getTodayDateString = () => {
   const d = new Date();
@@ -104,16 +106,14 @@ const WorkoutForm = () => {
             (w.exercises || []).forEach((e) => {
               if (e.name) {
                 const trimmed = e.name.trim();
-                const isPreset = EXERCISE_DATABASE.some(
-                  (pe) => pe.name.toLowerCase() === trimmed.toLowerCase()
-                );
+                const isPreset = Boolean(findPresetExercise(trimmed));
                 if (!isPreset && !customMap.has(trimmed.toLowerCase())) {
                   customMap.set(trimmed.toLowerCase(), {
                     id: `custom-${trimmed.toLowerCase()}`,
                     name: trimmed,
                     category: w.type || 'Strength',
                     categoryLabel: 'Custom',
-                    muscles: e.muscleGroup || 'Custom',
+                    muscles: e.muscleGroup || '',
                     muscleGroup: e.muscleGroup || '',
                     isCustom: true,
                     defaultSets: e.sets || 3,
@@ -231,12 +231,12 @@ const WorkoutForm = () => {
 
   // Check if an exercise is preset in the library
   const isPresetExercise = (exerciseName) => {
-    if (!exerciseName) return false;
-    const trimmed = exerciseName.trim().toLowerCase();
-    return EXERCISE_DATABASE.some((e) => e.name.toLowerCase() === trimmed);
+    return Boolean(findPresetExercise(exerciseName));
   };
 
   // Dynamic Autocomplete suggestions (Presets + Saved Custom Exercises)
+  // When search query is empty: Curated presets with postures on top.
+  // When user is typing a query: Matched custom exercises on top for fast 1-tap select.
   const getSuggestions = (query, currentType) => {
     const q = (query || '').trim().toLowerCase();
     const presets = q
@@ -257,20 +257,21 @@ const WorkoutForm = () => {
       );
     });
 
-    return [...matchedCustom, ...presets];
+    return q ? [...matchedCustom, ...presets] : [...presets, ...matchedCustom];
   };
 
   // Select an exercise from Autocomplete (Presets or Custom)
   const handleSelectExercise = (index, selected) => {
+    const primaryTag = selected.muscleGroup || (selected.muscles && !selected.isCustom ? selected.muscles.split(',')[0].trim() : '');
     setExercises((prev) => {
       const next = [...prev];
       next[index] = {
         ...next[index],
         name: selected.name,
         sets: selected.defaultSets || 3,
-        reps: selected.defaultReps || 10,
+        reps: selected.defaultReps || (type === 'Yoga' ? 45 : 10),
         weight: selected.defaultWeight || 0,
-        muscleGroup: selected.muscleGroup || (selected.muscles && !selected.isCustom ? selected.muscles : ''),
+        muscleGroup: primaryTag,
       };
       return next;
     });
@@ -360,13 +361,16 @@ const WorkoutForm = () => {
     // Filter exercises that have names filled in
     const validExercises = exercises
       .filter((ex) => ex.name && ex.name.trim() !== '')
-      .map((ex) => ({
-        name: ex.name.trim(),
-        sets: Number(ex.sets) > 0 ? Number(ex.sets) : 1,
-        reps: Number(ex.reps) > 0 ? Number(ex.reps) : 1,
-        weight: Number(ex.weight) >= 0 ? Number(ex.weight) : 0,
-        muscleGroup: ex.muscleGroup ? ex.muscleGroup.trim() : '',
-      }));
+      .map((ex) => {
+        const primaryMuscle = getPrimaryMuscleGroup(ex) || (ex.muscleGroup ? ex.muscleGroup.trim() : '');
+        return {
+          name: ex.name.trim(),
+          sets: Number(ex.sets) > 0 ? Number(ex.sets) : 1,
+          reps: Number(ex.reps) > 0 ? Number(ex.reps) : 1,
+          weight: Number(ex.weight) >= 0 ? Number(ex.weight) : 0,
+          muscleGroup: primaryMuscle,
+        };
+      });
 
     const payload = {
       name: name.trim(),
@@ -643,7 +647,9 @@ const WorkoutForm = () => {
                                             ) : (
                                               <span className="badge bg-light-section text-muted me-1">{item.categoryLabel}</span>
                                             )}
-                                            <span>{item.muscles}</span>
+                                            {item.muscles && item.muscles !== 'Custom' && item.muscles !== item.muscleGroup && (
+                                              <span>{item.muscles}</span>
+                                            )}
                                           </div>
                                         </div>
                                       </div>
@@ -714,39 +720,69 @@ const WorkoutForm = () => {
                         </div>
                       </div>
 
-                      {/* Optional 1-Tap Muscle Group Tag for custom exercises */}
-                      {ex.name && ex.name.trim() !== '' && !isPresetExercise(ex.name) && (type === 'Strength' || type === 'Other' || type === 'Hybrid') && (
-                        <div
-                          className="mt-2.5 pt-2 d-flex flex-wrap align-items-center gap-1.5 animate-fade-in"
-                          style={{ borderTop: '1px dashed var(--border-color)' }}
-                        >
-                          <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
-                            Target Muscle (optional):
-                          </span>
-                          {STRENGTH_MUSCLE_TAGS.map((tag) => {
-                            const isSelected = ex.muscleGroup === tag;
-                            return (
-                              <button
-                                key={tag}
-                                type="button"
-                                onClick={() => handleExerciseChange(index, 'muscleGroup', isSelected ? '' : tag)}
-                                className={`badge border-0 px-2 py-1 rounded-pill ${
-                                  isSelected
-                                    ? 'bg-emerald text-white fw-bold shadow-sm'
-                                    : 'bg-light-section text-secondary-custom'
-                                }`}
-                                style={{
-                                  fontSize: '0.74rem',
-                                  cursor: 'pointer',
-                                  transition: 'all 0.15s ease',
-                                }}
-                              >
-                                {isSelected ? `✓ ${tag}` : tag}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
+                      {/* Target Muscle Row across ALL Workout Categories */}
+                      {ex.name && ex.name.trim() !== '' && (() => {
+                        const preset = findPresetExercise(ex.name);
+                        if (preset && preset.muscles) {
+                          const muscleTags = preset.muscles.split(',').map((m) => m.trim()).filter(Boolean);
+                          return (
+                            <div
+                              className="mt-2.5 pt-2 d-flex flex-wrap align-items-center gap-1.5 animate-fade-in"
+                              style={{ borderTop: '1px dashed var(--border-color)' }}
+                            >
+                              <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
+                                Target Muscles:
+                              </span>
+                              {muscleTags.map((tag, tIdx) => (
+                                <span
+                                  key={tag}
+                                  className="badge bg-emerald-subtle text-emerald border border-emerald-subtle px-2 py-1 rounded-pill fw-semibold"
+                                  style={{ fontSize: '0.74rem' }}
+                                >
+                                  ✓ {tag} {tIdx === 0 && <span className="opacity-75" style={{ fontSize: '0.68rem' }}>(Primary)</span>}
+                                </span>
+                              ))}
+                              <span className="badge bg-light-section text-muted px-2 py-0.5 rounded-pill ms-1" style={{ fontSize: '0.7rem' }}>
+                                Preset
+                              </span>
+                            </div>
+                          );
+                        }
+
+                        // Truly Custom Exercise: 1-Tap Single-Select Muscle Pills (Available for Strength, Bodyweight, Yoga, Cardio, Hybrid)
+                        return (
+                          <div
+                            className="mt-2.5 pt-2 d-flex flex-wrap align-items-center gap-1.5 animate-fade-in"
+                            style={{ borderTop: '1px dashed var(--border-color)' }}
+                          >
+                            <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
+                              Target Muscle (optional):
+                            </span>
+                            {TARGET_MUSCLE_TAGS.map((tag) => {
+                              const isSelected = ex.muscleGroup === tag;
+                              return (
+                                <button
+                                  key={tag}
+                                  type="button"
+                                  onClick={() => handleExerciseChange(index, 'muscleGroup', isSelected ? '' : tag)}
+                                  className={`badge border-0 px-2 py-1 rounded-pill ${
+                                    isSelected
+                                      ? 'bg-emerald text-white fw-bold shadow-sm'
+                                      : 'bg-light-section text-secondary-custom'
+                                  }`}
+                                  style={{
+                                    fontSize: '0.74rem',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.15s ease',
+                                  }}
+                                >
+                                  {isSelected ? `✓ ${tag}` : tag}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        );
+                      })()}
 
                       {/* Subtotal volume indicator (only if weight > 0) */}
                       {!isWeightHidden && subVolume > 0 && (
