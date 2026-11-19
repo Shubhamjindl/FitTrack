@@ -27,7 +27,7 @@ const WORKOUT_TYPES = [
   { value: 'Bodyweight', label: 'Bodyweight & Calisthenics' },
   { value: 'Cardio', label: 'Cardio & Conditioning (Running, Cycling, HIIT)' },
   { value: 'Yoga', label: 'Yoga & Flexibility' },
-  { value: 'Sports', label: 'Sports & Athletics (Swimming, Tennis, Boxing)' },
+  { value: 'Sports', label: 'Sports & Athletics (Football, Cricket, Badminton)' },
   { value: 'Hybrid', label: 'Hybrid & Mixed Training' },
 ];
 
@@ -317,7 +317,7 @@ const WorkoutForm = () => {
         sets: 'Rounds / Sets',
         reps: 'Duration (min) / Reps',
         weight: 'Added Wt (kg, optional)',
-        placeholder: 'e.g. Swimming Laps, Badminton, Boxing, Sports Agility Drills',
+        placeholder: 'e.g. Football, Cricket, Badminton, Swimming Laps, Boxing',
       };
     }
     if (type === 'Hybrid' || type === 'Other') {

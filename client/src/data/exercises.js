@@ -1,10 +1,10 @@
 /**
- * Curated list of 46 foundational exercises across 6 core categories:
+ * Curated list of 47 foundational exercises across 6 core categories:
  * - Strength (Gym & Weights - 21 exercises)
  * - Bodyweight (Calisthenics & Core - 7 exercises)
  * - Yoga (Asanas & Flexibility - 5 exercises)
  * - Cardio (Running, Cycling & Conditioning - 4 exercises)
- * - Sports (Sports & Athletics - 4 exercises)
+ * - Sports (Sports & Athletics - 5 exercises)
  * - Hybrid (Hybrid & Mixed Training - 4 exercises)
  */
 
@@ -644,6 +644,54 @@ export const EXERCISE_DATABASE = [
   },
   // ── 5. SPORTS (Sports & Athletics) ─────────────────────────
   {
+    id: 'badminton',
+    name: 'Badminton',
+    category: 'Sports',
+    categoryLabel: 'Sports & Athletics',
+    muscles: 'Legs, Shoulders, Arms, Core',
+    equipment: 'Racket & Shuttlecock',
+    mode: 'cardio',
+    defaultSets: 3,
+    defaultReps: 20,
+    defaultWeight: 0,
+    unit: 'min',
+    repsLabel: 'Duration (min)',
+    weightLabel: 'N/A',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="18" r="4" fill="currentColor"/><line x1="30" y1="22" x2="26" y2="38" stroke-width="3.5"/><polyline points="26,38 18,48 14,56" stroke-width="3"/><polyline points="26,38 34,46 38,54" stroke-width="3"/><line x1="28" y1="26" x2="40" y2="18"/><line x1="40" y1="18" x2="48" y2="12" stroke="#6366f1" stroke-width="2.5"/><circle cx="52" cy="8" r="4" stroke="#6366f1" stroke-width="2"/><path d="M42 28 L46 32 M44 34 L48 30" stroke="#6366f1"/></svg>`,
+  },
+  {
+    id: 'football',
+    name: 'Football',
+    category: 'Sports',
+    categoryLabel: 'Sports & Athletics',
+    muscles: 'Legs, Quads, Calves, Core',
+    equipment: 'Football & Pitch / Turf',
+    mode: 'cardio',
+    defaultSets: 2,
+    defaultReps: 45,
+    defaultWeight: 0,
+    unit: 'min',
+    repsLabel: 'Duration (min)',
+    weightLabel: 'N/A',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="16" r="4" fill="currentColor"/><line x1="28" y1="20" x2="32" y2="34" stroke-width="3.5"/><polyline points="32,34 22,42 18,54" stroke-width="3"/><polyline points="32,34 42,40 50,44" stroke-width="3.5"/><line x1="28" y1="24" x2="18" y2="30"/><circle cx="54" cy="46" r="5" fill="#6366f1"/><line x1="44" y1="52" x2="52" y2="52" stroke="#6366f1" stroke-dasharray="2 2"/></svg>`,
+  },
+  {
+    id: 'cricket',
+    name: 'Cricket',
+    category: 'Sports',
+    categoryLabel: 'Sports & Athletics',
+    muscles: 'Full Body, Shoulders, Core, Legs',
+    equipment: 'Cricket Bat, Ball & Pitch',
+    mode: 'cardio',
+    defaultSets: 1,
+    defaultReps: 60,
+    defaultWeight: 0,
+    unit: 'min',
+    repsLabel: 'Duration (min)',
+    weightLabel: 'N/A',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="16" r="4" fill="currentColor"/><line x1="28" y1="20" x2="34" y2="34" stroke-width="3.5"/><polyline points="34,34 42,44 48,54" stroke-width="3"/><polyline points="34,34 22,44 18,54" stroke-width="3"/><line x1="28" y1="24" x2="38" y2="34"/><line x1="38" y1="34" x2="48" y2="44" stroke="#6366f1" stroke-width="4"/><circle cx="54" cy="50" r="3" fill="#6366f1"/><line x1="12" y1="34" x2="12" y2="54" stroke="currentColor" stroke-width="2"/><line x1="15" y1="34" x2="15" y2="54" stroke="currentColor" stroke-width="2"/><line x1="18" y1="34" x2="18" y2="54" stroke="currentColor" stroke-width="2"/></svg>`,
+  },
+  {
     id: 'swimming-laps',
     name: 'Swimming Laps',
     category: 'Sports',
@@ -660,52 +708,20 @@ export const EXERCISE_DATABASE = [
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="20" cy="24" r="4" fill="currentColor"/><line x1="24" y1="26" x2="42" y2="30"/><line x1="42" y1="30" x2="52" y2="28"/><line x1="30" y1="28" x2="22" y2="36"/><path d="M12,42 Q20,38 28,42 T44,42 T60,42" stroke="#6366f1" stroke-width="2.5"/></svg>`,
   },
   {
-    id: 'sports-drills',
-    name: 'Sports Agility Drills',
+    id: 'boxing',
+    name: 'Boxing',
     category: 'Sports',
     categoryLabel: 'Sports & Athletics',
-    muscles: 'Legs, Calves, Agility, Quads',
-    equipment: 'Cones / Open Field',
-    mode: 'cardio',
-    defaultSets: 5,
-    defaultReps: 30,
-    defaultWeight: 0,
-    unit: 'sec',
-    repsLabel: 'Duration (sec)',
-    weightLabel: 'N/A',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="40" cy="18" r="4" fill="currentColor"/><polyline points="36,22 28,32 38,40 32,54"/><polyline points="28,32 18,36 14,46"/></svg>`,
-  },
-  {
-    id: 'badminton-tennis',
-    name: 'Badminton / Tennis',
-    category: 'Sports',
-    categoryLabel: 'Sports & Athletics',
-    muscles: 'Shoulders, Arms, Calves, Core',
-    equipment: 'Racket & Court',
+    muscles: 'Shoulders, Arms, Core, Back',
+    equipment: 'Gloves & Heavy Bag',
     mode: 'cardio',
     defaultSets: 3,
-    defaultReps: 15,
+    defaultReps: 3,
     defaultWeight: 0,
     unit: 'min',
-    repsLabel: 'Duration (min)',
+    repsLabel: 'Round Duration (min)',
     weightLabel: 'N/A',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="34" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="26" y2="38"/><line x1="26" y1="38" x2="16" y2="52"/><line x1="30" y1="28" x2="44" y2="20"/><circle cx="48" cy="16" r="5" stroke="#6366f1"/></svg>`,
-  },
-  {
-    id: 'boxing-bag',
-    name: 'Boxing / Heavy Bag',
-    category: 'Sports',
-    categoryLabel: 'Sports & Athletics',
-    muscles: 'Shoulders, Arms, Core, Lats',
-    equipment: 'Gloves / Heavy Bag',
-    mode: 'cardio',
-    defaultSets: 3,
-    defaultReps: 180,
-    defaultWeight: 0,
-    unit: 'sec',
-    repsLabel: 'Round Duration (sec)',
-    weightLabel: 'N/A',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="18" r="4" fill="currentColor"/><line x1="28" y1="22" x2="26" y2="38"/><polyline points="26,38 32,54"/><polyline points="26,28 38,24 46,24"/><circle cx="48" cy="24" r="3" fill="#6366f1"/></svg>`,
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="26" cy="18" r="4" fill="currentColor"/><line x1="26" y1="22" x2="26" y2="38" stroke-width="3.5"/><polyline points="26,38 20,52"/><polyline points="26,38 32,52"/><polyline points="26,26 36,22 46,22" stroke-width="3"/><circle cx="48" cy="22" r="4" fill="#6366f1"/><circle cx="34" cy="30" r="3" fill="#6366f1"/></svg>`,
   },
 
   // ── 6. HYBRID (Hybrid & Mixed Training) ────────────────────
