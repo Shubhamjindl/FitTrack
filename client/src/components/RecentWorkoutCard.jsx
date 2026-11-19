@@ -7,6 +7,7 @@ import {
   ClockIcon,
   CalendarIcon,
   LayersIcon,
+  TrophyIcon,
 } from './Icons';
 
 const getWorkoutTypeTheme = (type = 'Strength') => {
@@ -53,6 +54,13 @@ const getWorkoutTypeTheme = (type = 'Strength') => {
         bg: 'rgba(2, 132, 199, 0.12)',
         color: '#0369a1',
         icon: <ActivityIcon size={16} />,
+      };
+    case 'Sports':
+      return {
+        accent: '#6366f1',
+        bg: 'rgba(99, 102, 241, 0.12)',
+        color: '#4f46e5',
+        icon: <TrophyIcon size={16} />,
       };
     case 'Hybrid':
     case 'Other':

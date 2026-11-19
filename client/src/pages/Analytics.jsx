@@ -42,8 +42,9 @@ const TYPE_COLORS = {
   Bodyweight: '#0ea5e9',
   Cardio: '#f59e0b',
   Yoga: '#8b5cf6',
-  'Hybrid & Sports': '#06b6d4',
+  Sports: '#6366f1',
   Hybrid: '#06b6d4',
+  'Hybrid & Sports': '#06b6d4',
   Other: '#06b6d4',
   // Legacy mappings
   Running: '#f59e0b',
