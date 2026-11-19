@@ -632,7 +632,7 @@ const Workouts = () => {
           style={{ padding: '1.15rem 1.25rem' }}
         >
           <div>
-            <div className="d-flex align-items-center justify-content-between mb-2.5 gap-2">
+            <div className="d-flex align-items-center justify-content-between mb-3.5 gap-2">
               <div className="d-flex align-items-center gap-1.5 min-w-0">
                 <div
                   className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
@@ -682,7 +682,7 @@ const Workouts = () => {
             </div>
 
             {/* Generously Spaced Focus Rows: All bars same original green color */}
-            <div className={`d-flex flex-column ${muscleFocusStats.focusList.length >= 7 ? 'gap-2' : 'gap-2.5'} pt-0.5`}>
+            <div className={`d-flex flex-column ${muscleFocusStats.focusList.length >= 7 ? 'gap-2' : 'gap-2.5'} pt-1`}>
               {muscleFocusStats.focusList.map((m) => (
                 <div key={m.name} className="d-flex align-items-center justify-content-between gap-2.5">
                   <span
@@ -721,7 +721,7 @@ const Workouts = () => {
 
           {/* Footer with white and bold Primary Focus matching History Overview style */}
           <div
-            className="smaller text-muted pt-2.5 mt-2.5 border-top d-flex align-items-center justify-content-between"
+            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center justify-content-between"
             style={{ fontSize: '0.8rem', borderColor: 'var(--border-color)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
@@ -744,7 +744,7 @@ const Workouts = () => {
           style={{ padding: '1.15rem 1.25rem' }}
         >
           <div>
-            <div className="d-flex align-items-center justify-content-between mb-2">
+            <div className="d-flex align-items-center justify-content-between mb-2.5">
               <div className="d-flex align-items-center gap-1.5 min-w-0">
                 <div
                   className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
@@ -768,7 +768,7 @@ const Workouts = () => {
             </div>
 
             {/* Bar Chart with numbers on top of bars */}
-            <div style={{ width: '100%', height: 172 }}>
+            <div style={{ width: '100%', height: 176 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={historyOverviewData}
@@ -828,7 +828,7 @@ const Workouts = () => {
 
           {/* Footer clean: Weekly Avg only */}
           <div
-            className="smaller text-muted pt-2.5 mt-2.5 border-top d-flex align-items-center"
+            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center"
             style={{ fontSize: '0.8rem', borderColor: 'var(--border-color)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
