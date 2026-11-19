@@ -768,11 +768,11 @@ const Workouts = () => {
             </div>
 
             {/* Bar Chart with numbers on top of bars */}
-            <div style={{ width: '100%', height: 208 }}>
+            <div style={{ width: '100%', height: 180 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={historyOverviewData}
-                  margin={{ top: 18, right: 12, left: 0, bottom: 0 }}
+                  margin={{ top: 16, right: 10, left: 0, bottom: 0 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.12)" />
                   <XAxis
@@ -781,7 +781,8 @@ const Workouts = () => {
                     fontSize={10}
                     tickLine={false}
                     axisLine={{ stroke: 'rgba(148, 163, 184, 0.2)' }}
-                    dy={3}
+                    height={24}
+                    dy={2}
                   />
                   <YAxis
                     width={26}
