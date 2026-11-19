@@ -823,12 +823,13 @@ const matchesCategory = (ex, targetCat) => {
 
 /**
  * Filter exercises matching a specific category
- * For 'Hybrid' (Hybrid & Mixed Training), returns dedicated hybrid movements
+ * For 'Hybrid' (Hybrid & Mixed Training), lists all exercises with dedicated hybrid circuits on top!
  */
 export const getExercisesByCategory = (category = 'Strength') => {
   if (category === 'Hybrid' || category === 'Other') {
-    const hybridDirect = EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, 'Hybrid'));
-    return hybridDirect.length > 0 ? hybridDirect : EXERCISE_DATABASE;
+    const hybridExercises = EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, 'Hybrid'));
+    const others = EXERCISE_DATABASE.filter((ex) => !matchesCategory(ex, 'Hybrid'));
+    return [...hybridExercises, ...others];
   }
   return EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, category));
 };
@@ -843,6 +844,10 @@ export const searchExercises = (query = '', category = null) => {
   let list = EXERCISE_DATABASE;
   if (category && category !== 'Other' && category !== 'Hybrid') {
     list = EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, category));
+  } else if (category === 'Hybrid' || category === 'Other') {
+    const hybridExercises = EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, 'Hybrid'));
+    const others = EXERCISE_DATABASE.filter((ex) => !matchesCategory(ex, 'Hybrid'));
+    list = [...hybridExercises, ...others];
   }
 
   if (!q) {
