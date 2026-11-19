@@ -12,6 +12,7 @@ import {
   LockIcon,
 } from '../components/Icons';
 import {
+  EXERCISE_DATABASE,
   getExercisesByCategory,
   searchExercises,
 } from '../data/exercises';
@@ -24,8 +25,10 @@ const WORKOUT_TYPES = [
   { value: 'Bodyweight', label: 'Bodyweight & Calisthenics' },
   { value: 'Cardio', label: 'Cardio & Conditioning (Running, Cycling, HIIT)' },
   { value: 'Yoga', label: 'Yoga & Flexibility' },
-  { value: 'Other', label: 'Other / Sports' },
+  { value: 'Other', label: 'Hybrid & Sports' },
 ];
+
+const STRENGTH_MUSCLE_TAGS = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Full Body'];
 
 const getTodayDateString = () => {
   const d = new Date();
@@ -63,8 +66,9 @@ const WorkoutForm = () => {
   const [duration, setDuration] = useState(45);
   const [notes, setNotes] = useState('');
   const [exercises, setExercises] = useState([
-    { name: '', sets: 3, reps: 10, weight: 0 },
+    { name: '', sets: 3, reps: 10, weight: 0, muscleGroup: '' },
   ]);
+  const [customExercises, setCustomExercises] = useState([]);
 
   // Active autocomplete dropdown index
   const [activeDropdownIndex, setActiveDropdownIndex] = useState(null);
@@ -80,6 +84,56 @@ const WorkoutForm = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Fetch previous workouts to remember user's custom exercises
+  useEffect(() => {
+    if (!token) return;
+    const fetchUserCustomExercises = async () => {
+      try {
+        const res = await fetch(`${API_URL}/workouts?limit=100`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (res.ok) {
+          const json = await res.json();
+          const workoutsList = json.data || [];
+          const customMap = new Map();
+
+          workoutsList.forEach((w) => {
+            (w.exercises || []).forEach((e) => {
+              if (e.name) {
+                const trimmed = e.name.trim();
+                const isPreset = EXERCISE_DATABASE.some(
+                  (pe) => pe.name.toLowerCase() === trimmed.toLowerCase()
+                );
+                if (!isPreset && !customMap.has(trimmed.toLowerCase())) {
+                  customMap.set(trimmed.toLowerCase(), {
+                    id: `custom-${trimmed.toLowerCase()}`,
+                    name: trimmed,
+                    category: w.type || 'Strength',
+                    categoryLabel: 'Custom',
+                    muscles: e.muscleGroup || 'Custom',
+                    muscleGroup: e.muscleGroup || '',
+                    isCustom: true,
+                    defaultSets: e.sets || 3,
+                    defaultReps: e.reps || 10,
+                    defaultWeight: e.weight || 0,
+                    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="32" r="14" stroke="#10b981" stroke-dasharray="4 2"/><path d="M32 24v16M24 32h16" stroke="#10b981" stroke-width="3"/></svg>`,
+                  });
+                }
+              }
+            });
+          });
+
+          setCustomExercises(Array.from(customMap.values()));
+        }
+      } catch (err) {
+        console.error('Failed to load user custom exercises:', err);
+      }
+    };
+    fetchUserCustomExercises();
+  }, [token]);
 
   // Load existing workout if in edit mode
   useEffect(() => {
@@ -113,6 +167,7 @@ const WorkoutForm = () => {
               sets: e.sets,
               reps: e.reps,
               weight: e.weight,
+              muscleGroup: e.muscleGroup || '',
             }))
           );
         } else {
@@ -129,11 +184,34 @@ const WorkoutForm = () => {
     fetchWorkout();
   }, [id, isEditMode, token]);
 
+  // Handle Category Change (Instant reset to clean default template)
+  const handleTypeChange = (newType) => {
+    setType(newType);
+    if (!isEditMode) {
+      setExercises([
+        {
+          name: '',
+          sets: 3,
+          reps: newType === 'Yoga' ? 45 : 10,
+          weight: 0,
+          muscleGroup: '',
+        },
+      ]);
+      setActiveDropdownIndex(null);
+    }
+  };
+
   // Add exercise row
   const handleAddExercise = () => {
     setExercises((prev) => [
       ...prev,
-      { name: '', sets: 3, reps: 10, weight: 0 },
+      {
+        name: '',
+        sets: 3,
+        reps: type === 'Yoga' ? 45 : 10,
+        weight: 0,
+        muscleGroup: '',
+      },
     ]);
   };
 
@@ -151,16 +229,48 @@ const WorkoutForm = () => {
     });
   };
 
-  // Select an exercise from Smart Search Autocomplete
+  // Check if an exercise is preset in the library
+  const isPresetExercise = (exerciseName) => {
+    if (!exerciseName) return false;
+    const trimmed = exerciseName.trim().toLowerCase();
+    return EXERCISE_DATABASE.some((e) => e.name.toLowerCase() === trimmed);
+  };
+
+  // Dynamic Autocomplete suggestions (Presets + Saved Custom Exercises)
+  const getSuggestions = (query, currentType) => {
+    const q = (query || '').trim().toLowerCase();
+    const presets = q
+      ? searchExercises(q, currentType)
+      : getExercisesByCategory(currentType);
+
+    const matchedCustom = customExercises.filter((ce) => {
+      if (currentType !== 'Other' && currentType !== 'Hybrid') {
+        const ceCat = (ce.category || 'Strength').toLowerCase();
+        let targetNorm = currentType.toLowerCase();
+        if (['running', 'cycling', 'hiit'].includes(targetNorm)) targetNorm = 'cardio';
+        if (ceCat !== targetNorm && ceCat !== currentType.toLowerCase()) return false;
+      }
+      if (!q) return true;
+      return (
+        ce.name.toLowerCase().includes(q) ||
+        (ce.muscleGroup || '').toLowerCase().includes(q)
+      );
+    });
+
+    return [...matchedCustom, ...presets];
+  };
+
+  // Select an exercise from Autocomplete (Presets or Custom)
   const handleSelectExercise = (index, selected) => {
     setExercises((prev) => {
       const next = [...prev];
       next[index] = {
         ...next[index],
         name: selected.name,
-        sets: selected.defaultSets,
-        reps: selected.defaultReps,
-        weight: selected.defaultWeight,
+        sets: selected.defaultSets || 3,
+        reps: selected.defaultReps || 10,
+        weight: selected.defaultWeight || 0,
+        muscleGroup: selected.muscleGroup || (selected.muscles && !selected.isCustom ? selected.muscles : ''),
       };
       return next;
     });
@@ -199,13 +309,13 @@ const WorkoutForm = () => {
         placeholder: 'e.g. Standard Push-ups, Pull-ups, Forearm Plank',
       };
     }
-    if (type === 'Other') {
+    if (type === 'Other' || type === 'Hybrid') {
       return {
-        sectionDesc: 'Track sports drills, laps, or cross-training movements (optional)',
+        sectionDesc: 'Track hybrid workouts, cross-training, sports drills, or mixed disciplines',
         sets: 'Sets / Rounds',
         reps: 'Reps / Duration',
         weight: 'Weight (kg, optional)',
-        placeholder: 'e.g. Badminton Rally, Football Drills, Swimming Laps, Boxing',
+        placeholder: 'e.g. Clean & Jerk, Swimming Laps, Farmer Walk, Burpees',
       };
     }
     return {
@@ -255,6 +365,7 @@ const WorkoutForm = () => {
         sets: Number(ex.sets) > 0 ? Number(ex.sets) : 1,
         reps: Number(ex.reps) > 0 ? Number(ex.reps) : 1,
         weight: Number(ex.weight) >= 0 ? Number(ex.weight) : 0,
+        muscleGroup: ex.muscleGroup ? ex.muscleGroup.trim() : '',
       }));
 
     const payload = {
@@ -374,7 +485,7 @@ const WorkoutForm = () => {
                 id="workoutType"
                 className="form-select"
                 value={type}
-                onChange={(e) => setType(e.target.value)}
+                onChange={(e) => handleTypeChange(e.target.value)}
               >
                 {WORKOUT_TYPES.map((t) => (
                   <option key={t.value} value={t.value}>
@@ -471,14 +582,12 @@ const WorkoutForm = () => {
 
                   const isDropdownOpen = activeDropdownIndex === index;
                   const query = ex.name || '';
-                  const suggestions = query.trim()
-                    ? searchExercises(query, type)
-                    : getExercisesByCategory(type);
+                  const suggestions = getSuggestions(query, type);
 
                   return (
                     <div key={index} className="exercise-row-card position-relative">
                       <div className="row g-2 align-items-end">
-                        {/* Exercise Name (Smart Search for Strength, Bodyweight, Cardio, Yoga; Freeform for Other) */}
+                        {/* Exercise Name (Autocomplete enabled for all categories with Category-Strict Filtering) */}
                         <div className={`col-12 ${isWeightHidden ? 'col-md-5' : 'col-md-5'} position-relative`}>
                           <label className="form-label small mb-1 fw-semibold text-primary-custom">
                             Exercise #{index + 1} Name
@@ -489,18 +598,16 @@ const WorkoutForm = () => {
                               className="form-control"
                               placeholder={fieldLabels.placeholder}
                               value={ex.name}
-                              onFocus={() => {
-                                if (type !== 'Other') setActiveDropdownIndex(index);
-                              }}
+                              onFocus={() => setActiveDropdownIndex(index)}
                               onChange={(e) => {
                                 handleExerciseChange(index, 'name', e.target.value);
-                                if (type !== 'Other') setActiveDropdownIndex(index);
+                                setActiveDropdownIndex(index);
                               }}
                               autoComplete="off"
                             />
 
-                            {/* Smart Search Dropdown Menu (Direct list without header, height ~3 items) */}
-                            {isDropdownOpen && type !== 'Other' && (
+                            {/* Smart Autocomplete Dropdown Menu */}
+                            {isDropdownOpen && (
                               <div
                                 ref={dropdownRef}
                                 className="smart-exercise-dropdown shadow-lg animate-fade-in"
@@ -529,7 +636,13 @@ const WorkoutForm = () => {
                                             {item.name}
                                           </div>
                                           <div className="text-muted smaller text-truncate">
-                                            <span className="badge bg-light-section text-muted me-1">{item.categoryLabel}</span>
+                                            {item.isCustom ? (
+                                              <span className="badge bg-emerald-subtle text-emerald me-1 fw-bold">
+                                                Custom{item.muscleGroup ? ` · ${item.muscleGroup}` : ''}
+                                              </span>
+                                            ) : (
+                                              <span className="badge bg-light-section text-muted me-1">{item.categoryLabel}</span>
+                                            )}
                                             <span>{item.muscles}</span>
                                           </div>
                                         </div>
@@ -600,6 +713,40 @@ const WorkoutForm = () => {
                           </button>
                         </div>
                       </div>
+
+                      {/* Optional 1-Tap Muscle Group Tag for custom exercises */}
+                      {ex.name && ex.name.trim() !== '' && !isPresetExercise(ex.name) && (type === 'Strength' || type === 'Other' || type === 'Hybrid') && (
+                        <div
+                          className="mt-2.5 pt-2 d-flex flex-wrap align-items-center gap-1.5 animate-fade-in"
+                          style={{ borderTop: '1px dashed var(--border-color)' }}
+                        >
+                          <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
+                            Target Muscle (optional):
+                          </span>
+                          {STRENGTH_MUSCLE_TAGS.map((tag) => {
+                            const isSelected = ex.muscleGroup === tag;
+                            return (
+                              <button
+                                key={tag}
+                                type="button"
+                                onClick={() => handleExerciseChange(index, 'muscleGroup', isSelected ? '' : tag)}
+                                className={`badge border-0 px-2 py-1 rounded-pill ${
+                                  isSelected
+                                    ? 'bg-emerald text-white fw-bold shadow-sm'
+                                    : 'bg-light-section text-secondary-custom'
+                                }`}
+                                style={{
+                                  fontSize: '0.74rem',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.15s ease',
+                                }}
+                              >
+                                {isSelected ? `✓ ${tag}` : tag}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
 
                       {/* Subtotal volume indicator (only if weight > 0) */}
                       {!isWeightHidden && subVolume > 0 && (

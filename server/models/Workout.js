@@ -23,6 +23,11 @@ const exerciseSchema = new mongoose.Schema({
     min: [0, 'Weight cannot be negative'],
     default: 0,
   },
+  muscleGroup: {
+    type: String,
+    trim: true,
+    default: '',
+  },
 });
 
 const workoutSchema = new mongoose.Schema(
@@ -57,6 +62,7 @@ const workoutSchema = new mongoose.Schema(
         'Cycling',
         'Bodyweight',
         'Other',
+        'Hybrid',
       ],
       default: 'Strength',
       index: true,

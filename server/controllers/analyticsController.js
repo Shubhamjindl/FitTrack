@@ -54,7 +54,7 @@ const getAnalytics = async (req, res) => {
       type: w.type,
     }));
 
-    // 2. Workout Type Distribution (Normalized into 4 Core Groups: Strength, Bodyweight, Cardio, Yoga, Other)
+    // 2. Workout Type Distribution (Normalized into 5 Core Groups: Strength, Bodyweight, Cardio, Yoga, Hybrid & Sports)
     const normalizeCategory = (rawType = '') => {
       if (['Running', 'Cycling', 'HIIT', 'Cardio'].includes(rawType)) {
         return 'Cardio';
@@ -62,7 +62,7 @@ const getAnalytics = async (req, res) => {
       if (rawType === 'Strength') return 'Strength';
       if (rawType === 'Bodyweight') return 'Bodyweight';
       if (rawType === 'Yoga') return 'Yoga';
-      return 'Other';
+      return 'Hybrid & Sports';
     };
 
     const typeCountMap = {};

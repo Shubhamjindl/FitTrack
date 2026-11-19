@@ -80,7 +80,7 @@ const WorkoutModal = ({ workout, onClose }) => {
         <div className="modal-header border-bottom px-4 py-3 bg-light-section position-relative d-flex align-items-center pe-5">
           <div className="d-flex align-items-center gap-2.5 pe-4 me-auto">
             <span className={`badge-type badge-type-${workout.type || 'Other'}`}>
-              {workout.type}
+              {workout.type === 'Other' ? 'Hybrid' : (workout.type || 'Strength')}
             </span>
             <h5 className="modal-title fw-bold text-primary-custom mb-0 text-truncate">{workout.name}</h5>
           </div>

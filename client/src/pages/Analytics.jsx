@@ -15,6 +15,7 @@ import {
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import StatCard from '../components/StatCard';
+import { EXERCISE_DATABASE } from '../data/exercises';
 import {
   BarChartIcon,
   ClockIcon,
@@ -41,7 +42,9 @@ const TYPE_COLORS = {
   Bodyweight: '#0ea5e9',
   Cardio: '#f59e0b',
   Yoga: '#8b5cf6',
-  Other: '#94a3b8',
+  'Hybrid & Sports': '#06b6d4',
+  Hybrid: '#06b6d4',
+  Other: '#06b6d4',
   // Legacy mappings
   Running: '#f59e0b',
   Cycling: '#0284c7',
@@ -333,29 +336,45 @@ const Analytics = () => {
         {/* Chart 3: Adaptive Exercise Progression (Weight / Reps / Hold Time) */}
         {(() => {
           const hasWeight = exerciseProgress.some((p) => (Number(p.weight) || 0) > 0);
+          const matchedPreset = selectedExercise
+            ? EXERCISE_DATABASE.find(
+                (e) => e.name.toLowerCase() === selectedExercise.toLowerCase()
+              )
+            : null;
+
           const isHoldExercise =
             !hasWeight &&
-            selectedExercise &&
-            /(plank|hold|yoga|asana|dog|cobra|pose|namaskar|stretch|warrior)/i.test(selectedExercise);
+            (matchedPreset?.mode === 'hold' ||
+              matchedPreset?.category === 'Yoga' ||
+              (Array.isArray(matchedPreset?.category) && matchedPreset.category.includes('Yoga')) ||
+              (selectedExercise && /(plank|hold|yoga|asana|stretch|surya)/i.test(selectedExercise)));
 
-          let chartTitle = 'Exercise Weight Progression';
-          let chartSubtitle = 'Track progressive overload for a selected exercise';
+          let chartTitle = 'Exercise Progression';
+          let chartSubtitle = 'Track progressive overload & max weight over time';
           let chartUnit = 'kg';
           let chartColor = '#0284c7';
           let dataKey = 'weight';
-          let tooltipLabel = 'Weight';
+          let tooltipLabel = 'Max Weight';
           let domain = ['dataMin - 5', 'dataMax + 5'];
 
-          if (!hasWeight && isHoldExercise) {
-            chartTitle = 'Hold Duration & Stamina';
+          if (hasWeight) {
+            chartTitle = 'Exercise Progression';
+            chartSubtitle = 'Track progressive overload & max weight over time';
+            chartUnit = 'kg';
+            chartColor = '#0284c7';
+            dataKey = 'weight';
+            tooltipLabel = 'Max Weight';
+            domain = ['dataMin - 5', 'dataMax + 5'];
+          } else if (isHoldExercise) {
+            chartTitle = 'Exercise Progression';
             chartSubtitle = 'Track pose hold duration and stamina progression';
             chartUnit = 's';
             chartColor = '#8b5cf6';
             dataKey = 'reps';
             tooltipLabel = 'Hold Duration';
             domain = [0, 'dataMax + 10'];
-          } else if (!hasWeight) {
-            chartTitle = 'Repetition & Volume Progression';
+          } else {
+            chartTitle = 'Exercise Progression';
             chartSubtitle = 'Track endurance and repetition progress over time';
             chartUnit = ' reps';
             chartColor = '#10b981';
@@ -363,6 +382,11 @@ const Analytics = () => {
             tooltipLabel = 'Max Reps';
             domain = [0, 'dataMax + 5'];
           }
+
+          // Filter out 0-weight entries when tracking weight progression so empty sets do not drag down the curve
+          const displayProgress = hasWeight
+            ? formattedExerciseProgress.filter((p) => (Number(p.weight) || 0) > 0)
+            : formattedExerciseProgress;
 
           return (
             <div className="col-12 col-lg-6">
@@ -455,10 +479,10 @@ const Analytics = () => {
                   </div>
 
                   <div style={{ width: '100%', height: 260 }}>
-                    {exerciseProgress.length > 0 ? (
+                    {displayProgress.length > 0 ? (
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart
-                          data={formattedExerciseProgress}
+                          data={displayProgress}
                           margin={{ top: 15, right: 15, left: -5, bottom: 0 }}
                         >
                           <defs>

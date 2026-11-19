@@ -49,16 +49,17 @@ const getWorkoutTypeTheme = (type = 'Strength') => {
       };
     case 'Cycling':
       return {
+        accent: '#0284c7',
+        bg: 'rgba(2, 132, 199, 0.12)',
+        color: '#0369a1',
+        icon: <ActivityIcon size={16} />,
+      };
+    case 'Hybrid':
+    case 'Other':
+      return {
         accent: '#06b6d4',
         bg: 'rgba(6, 182, 212, 0.12)',
         color: '#0891b2',
-        icon: <ActivityIcon size={16} />,
-      };
-    case 'Other':
-      return {
-        accent: '#64748b',
-        bg: 'rgba(100, 116, 139, 0.12)',
-        color: '#475569',
         icon: <ActivityIcon size={16} />,
       };
     default:
@@ -131,7 +132,7 @@ const RecentWorkoutCard = ({ workout, onClick }) => {
             color: theme.color,
           }}
         >
-          {workout.type || 'Workout'}
+          {workout.type === 'Other' ? 'Hybrid' : (workout.type || 'Workout')}
         </span>
 
         <span className="pill-stat-badge">

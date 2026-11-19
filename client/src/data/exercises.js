@@ -1,9 +1,10 @@
 /**
- * Curated list of 21 foundational exercises across 4 core categories:
- * - Strength (Gym & Weights)
- * - Bodyweight (Calisthenics & Core)
- * - Yoga (Asanas & Flexibility)
- * - Cardio (Running, Cycling & Conditioning)
+ * Curated list of 36 foundational exercises across 5 core categories:
+ * - Strength (Gym & Weights - 16 exercises)
+ * - Bodyweight (Calisthenics & Core - 6 exercises)
+ * - Yoga (Asanas & Flexibility - 5 exercises)
+ * - Cardio (Running, Cycling & Conditioning - 4 exercises)
+ * - Hybrid & Sports (Sports & Cross-Training - 5 exercises)
  */
 
 export const EXERCISE_DATABASE = [
@@ -104,13 +105,173 @@ export const EXERCISE_DATABASE = [
     weightLabel: 'Weight (kg)',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="18" y="38" width="28" height="18" rx="2" fill="currentColor" fill-opacity="0.18"/><circle cx="32" cy="22" r="4" fill="currentColor"/><line x1="32" y1="26" x2="32" y2="40" stroke-width="3"/><polyline points="32,30 22,20 18,16"/><polyline points="32,30 42,20 46,16"/><line x1="12" y1="16" x2="52" y2="16" stroke="#10b981" stroke-width="3"/><line x1="32" y1="8" x2="32" y2="16" stroke="#10b981"/></svg>`,
   },
+  {
+    id: 'incline-dumbbell-press',
+    name: 'Incline Dumbbell Press',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Upper Chest, Anterior Deltoids, Triceps',
+    equipment: 'Incline Bench & Dumbbells',
+    mode: 'weight',
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 22,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="48" x2="44" y2="28" stroke="currentColor" stroke-width="3"/><circle cx="28" cy="24" r="4" fill="currentColor"/><line x1="28" y1="28" x2="38" y2="40" stroke-width="3.5"/><line x1="18" y1="18" x2="26" y2="28"/><circle cx="16" cy="16" r="2.5" fill="#10b981"/><line x1="32" y1="20" x2="40" y2="30"/><circle cx="42" cy="18" r="2.5" fill="#10b981"/></svg>`,
+  },
+  {
+    id: 'cable-chest-flyes',
+    name: 'Cable Chest Flyes',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Pectoralis Major, Sternal Chest',
+    equipment: 'Cable Crossover Machine',
+    mode: 'weight',
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 15,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="32" y2="40" stroke-width="3.5"/><polyline points="32,40 26,54"/><polyline points="32,40 38,54"/><path d="M12 20 Q 24 28 30 30" stroke="#10b981" stroke-width="2.5"/><path d="M52 20 Q 40 28 34 30" stroke="#10b981" stroke-width="2.5"/><circle cx="12" cy="20" r="2.5" fill="#10b981"/><circle cx="52" cy="20" r="2.5" fill="#10b981"/></svg>`,
+  },
+  {
+    id: 'barbell-bent-over-row',
+    name: 'Barbell Bent-Over Row',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Upper Back, Lats, Rhomboids, Biceps',
+    equipment: 'Barbell & Plates',
+    mode: 'weight',
+    defaultSets: 4,
+    defaultReps: 8,
+    defaultWeight: 55,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="22" cy="22" r="4" fill="currentColor"/><line x1="24" y1="26" x2="38" y2="34" stroke-width="3.5"/><polyline points="38,34 34,44 40,54" stroke-width="3"/><polyline points="28,28 32,38 32,46"/><line x1="16" y1="46" x2="48" y2="46" stroke="#10b981" stroke-width="3"/></svg>`,
+  },
+  {
+    id: 'seated-cable-row',
+    name: 'Seated Cable Row',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Middle Back, Lats, Biceps',
+    equipment: 'Low Cable Row Machine',
+    mode: 'weight',
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 50,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="10" y="44" width="22" height="6" rx="2" fill="currentColor" fill-opacity="0.18"/><circle cx="22" cy="24" r="4" fill="currentColor"/><line x1="22" y1="28" x2="22" y2="44" stroke-width="3.5"/><polyline points="22,44 32,44 42,44"/><line x1="22" y1="32" x2="34" y2="34"/><line x1="34" y1="34" x2="52" y2="34" stroke="#10b981" stroke-width="2.5"/></svg>`,
+  },
+  {
+    id: 'lateral-dumbbell-raise',
+    name: 'Lateral Dumbbell Raise',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Lateral Deltoids (Side Shoulders)',
+    equipment: 'Dumbbells',
+    mode: 'weight',
+    defaultSets: 3,
+    defaultReps: 15,
+    defaultWeight: 10,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="32" y2="42" stroke-width="3.5"/><polyline points="32,42 26,56"/><polyline points="32,42 38,56"/><line x1="14" y1="28" x2="50" y2="28" stroke="#10b981" stroke-width="3"/><circle cx="12" cy="28" r="2.5" fill="#10b981"/><circle cx="52" cy="28" r="2.5" fill="#10b981"/></svg>`,
+  },
+  {
+    id: 'triceps-rope-pushdown',
+    name: 'Triceps Rope Pushdown',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Triceps (Lateral & Medial Heads)',
+    equipment: 'Cable Machine & Rope',
+    mode: 'weight',
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 22,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="18" r="4" fill="currentColor"/><line x1="28" y1="22" x2="28" y2="42" stroke-width="3.5"/><polyline points="28,42 24,56"/><polyline points="28,42 32,56"/><polyline points="28,26 36,32 38,44"/><line x1="42" y1="12" x2="38" y2="44" stroke="#10b981" stroke-width="2.5"/></svg>`,
+  },
+  {
+    id: 'leg-press',
+    name: 'Leg Press (45° Incline)',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Quads, Glutes, Hamstrings',
+    equipment: '45° Leg Press Machine',
+    mode: 'weight',
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeight: 140,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="52" x2="48" y2="28" stroke="currentColor" stroke-width="3"/><circle cx="20" cy="40" r="4" fill="currentColor"/><polyline points="24,42 32,38 42,26" stroke-width="3.5"/><line x1="38" y1="20" x2="48" y2="34" stroke="#10b981" stroke-width="4"/></svg>`,
+  },
+  {
+    id: 'romanian-deadlift',
+    name: 'Romanian Deadlift (RDL)',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Hamstrings, Glutes, Lower Back',
+    equipment: 'Barbell or Dumbbells',
+    mode: 'weight',
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeight: 65,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="24" cy="20" r="4" fill="currentColor"/><line x1="26" y1="24" x2="38" y2="34" stroke-width="3.5"/><polyline points="38,34 38,46 38,54" stroke-width="3"/><line x1="30" y1="26" x2="36" y2="42"/><line x1="22" y1="42" x2="50" y2="42" stroke="#10b981" stroke-width="3"/></svg>`,
+  },
+  {
+    id: 'lying-leg-curl',
+    name: 'Lying Leg Curl',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Hamstrings, Calves',
+    equipment: 'Lying Leg Curl Machine',
+    mode: 'weight',
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeight: 35,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="10" y="38" width="44" height="6" rx="2" fill="currentColor" fill-opacity="0.18"/><circle cx="18" cy="30" r="4" fill="currentColor"/><line x1="22" y1="34" x2="38" y2="34" stroke-width="3.5"/><polyline points="38,34 46,26 44,18" stroke-width="3"/><circle cx="44" cy="18" r="3" fill="#10b981"/></svg>`,
+  },
+  {
+    id: 'standing-calf-raise',
+    name: 'Standing Calf Raise',
+    category: 'Strength',
+    categoryLabel: 'Strength & Weights',
+    muscles: 'Gastrocnemius, Soleus (Calves)',
+    equipment: 'Calf Machine or Dumbbells',
+    mode: 'weight',
+    defaultSets: 4,
+    defaultReps: 15,
+    defaultWeight: 45,
+    unit: 'kg',
+    repsLabel: 'Reps',
+    weightLabel: 'Weight (kg)',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="16" r="4" fill="currentColor"/><line x1="32" y1="20" x2="32" y2="38" stroke-width="3.5"/><polyline points="32,38 28,48 30,54"/><polyline points="32,38 36,48 34,54"/><line x1="18" y1="56" x2="46" y2="56" stroke="currentColor" stroke-width="3"/><polyline points="28,54 32,50 34,54" stroke="#10b981" stroke-width="2.5"/></svg>`,
+  },
 
   // ── 2. BODYWEIGHT (Calisthenics & Core) ────────────────────────
   {
     id: 'standard-pushups',
     name: 'Standard Push-ups',
-    category: 'Bodyweight',
-    categoryLabel: 'Bodyweight & Calisthenics',
+    category: ['Bodyweight', 'Strength'],
+    categoryLabel: 'Bodyweight & Strength',
     muscles: 'Chest, Triceps, Shoulders, Core',
     equipment: 'Floor / Bodyweight',
     mode: 'reps',
@@ -125,8 +286,8 @@ export const EXERCISE_DATABASE = [
   {
     id: 'pullups',
     name: 'Pull-ups',
-    category: 'Bodyweight',
-    categoryLabel: 'Bodyweight & Calisthenics',
+    category: ['Bodyweight', 'Strength'],
+    categoryLabel: 'Bodyweight & Strength',
     muscles: 'Lats, Upper Back, Biceps',
     equipment: 'Pull-up Bar',
     mode: 'reps',
@@ -141,8 +302,8 @@ export const EXERCISE_DATABASE = [
   {
     id: 'parallel-bar-dips',
     name: 'Parallel Bar Dips',
-    category: 'Bodyweight',
-    categoryLabel: 'Bodyweight & Calisthenics',
+    category: ['Bodyweight', 'Strength'],
+    categoryLabel: 'Bodyweight & Strength',
     muscles: 'Chest, Triceps, Anterior Deltoid',
     equipment: 'Dip Bars',
     mode: 'reps',
@@ -305,8 +466,8 @@ export const EXERCISE_DATABASE = [
   {
     id: 'full-body-burpees',
     name: 'Full Body Burpees',
-    category: 'Cardio',
-    categoryLabel: 'Cardio & Conditioning',
+    category: ['Cardio', 'Bodyweight'],
+    categoryLabel: 'Cardio & Bodyweight',
     muscles: 'Full Body, Heart Rate, Quads, Chest',
     equipment: 'Floor / Bodyweight',
     mode: 'cardio',
@@ -337,8 +498,8 @@ export const EXERCISE_DATABASE = [
   {
     id: 'mountain-climbers',
     name: 'Mountain Climbers',
-    category: 'Cardio',
-    categoryLabel: 'Cardio & Conditioning',
+    category: ['Cardio', 'Bodyweight'],
+    categoryLabel: 'Cardio & Bodyweight',
     muscles: 'Core, Hip Flexors, Cardiovascular',
     equipment: 'Floor / Mat',
     mode: 'cardio',
@@ -351,12 +512,12 @@ export const EXERCISE_DATABASE = [
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="48" cy="30" r="4" fill="currentColor"/><polyline points="44,34 32,38 18,46"/><polyline points="32,38 30,30 24,34"/></svg>`,
   },
 
-  // --- SPORTS & CROSS-TRAINING (5 Movements) ---
+  // --- HYBRID & SPORTS (5 Movements) ---
   {
     id: 'swimming-laps',
     name: 'Swimming Laps (Freestyle / Mixed)',
     category: 'Other',
-    categoryLabel: 'Other / Sports',
+    categoryLabel: 'Hybrid & Sports',
     muscles: 'Full Body, Lats, Shoulders, Core',
     equipment: 'Pool',
     mode: 'cardio',
@@ -372,7 +533,7 @@ export const EXERCISE_DATABASE = [
     id: 'sports-drills',
     name: 'Sports Agility & Sprint Drills',
     category: 'Other',
-    categoryLabel: 'Other / Sports',
+    categoryLabel: 'Hybrid & Sports',
     muscles: 'Quads, Calves, Agility, Cardiovascular',
     equipment: 'Cones / Open Field',
     mode: 'cardio',
@@ -388,7 +549,7 @@ export const EXERCISE_DATABASE = [
     id: 'badminton-tennis',
     name: 'Racket Sport Rally & Footwork',
     category: 'Other',
-    categoryLabel: 'Other / Sports',
+    categoryLabel: 'Hybrid & Sports',
     muscles: 'Shoulders, Forearms, Calves, Core',
     equipment: 'Racket & Court',
     mode: 'cardio',
@@ -404,7 +565,7 @@ export const EXERCISE_DATABASE = [
     id: 'boxing-bag',
     name: 'Shadow Boxing / Heavy Bag Rounds',
     category: 'Other',
-    categoryLabel: 'Other / Sports',
+    categoryLabel: 'Hybrid & Sports',
     muscles: 'Shoulders, Core, Lats, Cardiovascular',
     equipment: 'Gloves / Heavy Bag',
     mode: 'cardio',
@@ -420,7 +581,7 @@ export const EXERCISE_DATABASE = [
     id: 'dynamic-mobility',
     name: 'Dynamic Mobility & Sports Recovery',
     category: 'Other',
-    categoryLabel: 'Other / Sports',
+    categoryLabel: 'Hybrid & Sports',
     muscles: 'Hips, Hamstrings, Thoracic Spine, Full Body',
     equipment: 'Floor / Mat',
     mode: 'hold',
@@ -435,40 +596,41 @@ export const EXERCISE_DATABASE = [
 ];
 
 /**
- * Filter exercises matching a specific category
+ * Helper to check if an exercise belongs to a target category
  */
-export const getExercisesByCategory = (category = 'Strength') => {
-  if (category === 'Other') {
-    return [];
+const matchesCategory = (ex, targetCat) => {
+  if (!targetCat || targetCat === 'all' || targetCat === 'Other' || targetCat === 'Hybrid') {
+    return true;
   }
-
-  // Normalize legacy categories
-  let normalized = category;
-  if (['Running', 'Cycling', 'HIIT'].includes(category)) {
+  let normalized = targetCat;
+  if (['Running', 'Cycling', 'HIIT'].includes(targetCat)) {
     normalized = 'Cardio';
   }
-  return EXERCISE_DATABASE.filter(
-    (ex) => ex.category.toLowerCase() === normalized.toLowerCase()
-  );
+  const cats = Array.isArray(ex.category) ? ex.category : [ex.category];
+  return cats.some((c) => c.toLowerCase() === normalized.toLowerCase());
+};
+
+/**
+ * Filter exercises matching a specific category
+ * For 'Other' / 'Hybrid' (Hybrid & Sports), returns all exercises!
+ */
+export const getExercisesByCategory = (category = 'Strength') => {
+  if (category === 'Other' || category === 'Hybrid') {
+    return EXERCISE_DATABASE;
+  }
+  return EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, category));
 };
 
 /**
  * Search exercises across name, muscles, equipment, and category
+ * Category-strict: if in Strength, only searches Strength; if in Hybrid/Other, searches all
  */
 export const searchExercises = (query = '', category = null) => {
   const q = query.trim().toLowerCase();
-  let list = EXERCISE_DATABASE;
 
-  if (category && category !== 'Other') {
-    let normalized = category;
-    if (['Running', 'Cycling', 'HIIT'].includes(category)) {
-      normalized = 'Cardio';
-    }
-    // Prioritize selected category
-    list = [
-      ...EXERCISE_DATABASE.filter((e) => e.category.toLowerCase() === normalized.toLowerCase()),
-      ...EXERCISE_DATABASE.filter((e) => e.category.toLowerCase() !== normalized.toLowerCase()),
-    ];
+  let list = EXERCISE_DATABASE;
+  if (category && category !== 'Other' && category !== 'Hybrid') {
+    list = EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, category));
   }
 
   if (!q) {
