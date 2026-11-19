@@ -5,7 +5,7 @@
  * - Yoga (Asanas & Flexibility - 5 exercises)
  * - Cardio (Running, Cycling & Conditioning - 4 exercises)
  * - Sports (Sports & Athletics - 4 exercises)
- * - Hybrid (Hybrid & Cross-Training - 4 exercises)
+ * - Hybrid (Hybrid & Mixed Training - 4 exercises)
  */
 
 export const EXERCISE_DATABASE = [
@@ -708,12 +708,12 @@ export const EXERCISE_DATABASE = [
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="18" r="4" fill="currentColor"/><line x1="28" y1="22" x2="26" y2="38"/><polyline points="26,38 32,54"/><polyline points="26,28 38,24 46,24"/><circle cx="48" cy="24" r="3" fill="#6366f1"/></svg>`,
   },
 
-  // ── 6. HYBRID (Hybrid & Cross-Training) ─────────────────────
+  // ── 6. HYBRID (Hybrid & Mixed Training) ────────────────────
   {
     id: 'kettlebell-swings',
     name: 'Kettlebell Swings',
     category: ['Hybrid', 'Strength', 'Cardio'],
-    categoryLabel: 'Hybrid & Cross-Training',
+    categoryLabel: 'Hybrid & Mixed Training',
     muscles: 'Full Body, Glutes, Hamstrings, Core',
     equipment: 'Kettlebell',
     mode: 'cardio',
@@ -729,7 +729,7 @@ export const EXERCISE_DATABASE = [
     id: 'dumbbell-thrusters',
     name: 'Dumbbell Thrusters',
     category: ['Hybrid', 'Strength'],
-    categoryLabel: 'Hybrid & Cross-Training',
+    categoryLabel: 'Hybrid & Mixed Training',
     muscles: 'Full Body, Shoulders, Quads, Core',
     equipment: 'Dumbbells',
     mode: 'weight',
@@ -745,7 +745,7 @@ export const EXERCISE_DATABASE = [
     id: 'wall-balls',
     name: 'Wall Balls',
     category: ['Hybrid', 'Cardio'],
-    categoryLabel: 'Hybrid & Cross-Training',
+    categoryLabel: 'Hybrid & Mixed Training',
     muscles: 'Full Body, Shoulders, Quads, Core',
     equipment: 'Medicine Ball & Wall Target',
     mode: 'weight',
@@ -761,7 +761,7 @@ export const EXERCISE_DATABASE = [
     id: 'dynamic-mobility',
     name: 'Dynamic Mobility & Stretching',
     category: ['Hybrid', 'Yoga'],
-    categoryLabel: 'Hybrid & Cross-Training',
+    categoryLabel: 'Hybrid & Mixed Training',
     muscles: 'Full Body, Hips, Hamstrings, Back',
     equipment: 'Floor / Mat',
     mode: 'hold',
@@ -824,7 +824,7 @@ const matchesCategory = (ex, targetCat) => {
 
 /**
  * Filter exercises matching a specific category
- * For 'Hybrid' (Hybrid & Cross-Training), returns dedicated hybrid movements
+ * For 'Hybrid' (Hybrid & Mixed Training), returns dedicated hybrid movements
  */
 export const getExercisesByCategory = (category = 'Strength') => {
   if (category === 'Hybrid' || category === 'Other') {

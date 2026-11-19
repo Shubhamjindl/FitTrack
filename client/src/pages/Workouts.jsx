@@ -46,7 +46,7 @@ const WORKOUT_TYPES = [
   { value: 'Cardio', label: 'Cardio & Conditioning' },
   { value: 'Yoga', label: 'Yoga & Flexibility' },
   { value: 'Sports', label: 'Sports & Athletics' },
-  { value: 'Hybrid', label: 'Hybrid & Cross-Training' },
+  { value: 'Hybrid', label: 'Hybrid & Mixed Training' },
 ];
 
 const formatDate = (dateString) => {

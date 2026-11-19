@@ -28,7 +28,7 @@ const WORKOUT_TYPES = [
   { value: 'Cardio', label: 'Cardio & Conditioning (Running, Cycling, HIIT)' },
   { value: 'Yoga', label: 'Yoga & Flexibility' },
   { value: 'Sports', label: 'Sports & Athletics (Swimming, Tennis, Boxing)' },
-  { value: 'Hybrid', label: 'Hybrid & Cross-Training (Metcons, HYROX)' },
+  { value: 'Hybrid', label: 'Hybrid & Mixed Training' },
 ];
 
 const TARGET_MUSCLE_TAGS = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Full Body'];
@@ -322,11 +322,11 @@ const WorkoutForm = () => {
     }
     if (type === 'Hybrid' || type === 'Other') {
       return {
-        sectionDesc: 'Track cross-training circuits, HYROX events, or multi-discipline metcons',
+        sectionDesc: 'Track workouts that combine weights, bodyweight, and cardio in one session',
         sets: 'Sets / Rounds',
         reps: 'Reps / Duration',
         weight: 'Weight (kg, optional)',
-        placeholder: 'e.g. Kettlebell Swings, Dumbbell Thrusters, Wall Balls, Burpees',
+        placeholder: 'e.g. Kettlebell Swings, Dumbbell Thrusters, Circuit Training, Burpees',
       };
     }
     return {
