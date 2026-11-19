@@ -721,7 +721,7 @@ const Workouts = () => {
 
           {/* Footer with white and bold Primary Focus matching History Overview style */}
           <div
-            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center justify-content-between"
+            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center"
             style={{ fontSize: '0.8rem', borderColor: 'var(--border-color)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
@@ -730,10 +730,6 @@ const Workouts = () => {
                 <span className="text-muted">Primary Focus:&nbsp;</span>
                 <strong className="text-primary-custom fw-bold">{muscleFocusStats.primaryFocus}</strong>
               </span>
-            </span>
-            <span className="text-emerald fw-semibold d-inline-flex align-items-center text-nowrap" style={{ gap: '0.45rem' }}>
-              <CalendarIcon size={13} className="text-emerald flex-shrink-0" />
-              <span>{muscleFocusStats.totalSessions} Sessions</span>
             </span>
           </div>
         </div>
