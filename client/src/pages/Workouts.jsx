@@ -629,32 +629,32 @@ const Workouts = () => {
         {/* Card 1: Frequently Trained */}
         <div
           className="card card-fittrack h-100 d-flex flex-column justify-content-between"
-          style={{ padding: '1.25rem 1.4rem' }}
+          style={{ padding: '1.15rem 1.25rem' }}
         >
           <div>
-            <div className="d-flex align-items-center justify-content-between mb-3 gap-2">
-              <div className="d-flex align-items-center gap-2 min-w-0">
+            <div className="d-flex align-items-center justify-content-between mb-2.5 gap-2">
+              <div className="d-flex align-items-center gap-1.5 min-w-0">
                 <div
-                  className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
-                  style={{ width: 32, height: 32 }}
+                  className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
+                  style={{ width: 28, height: 28 }}
                 >
                   {focusCategory === 'Yoga' ? (
-                    <ActivityIcon size={16} />
+                    <ActivityIcon size={15} />
                   ) : focusCategory === 'Cardio' ? (
-                    <FlameIcon size={16} />
+                    <FlameIcon size={15} />
                   ) : focusCategory === 'Sports' ? (
-                    <TrophyIcon size={16} />
+                    <TrophyIcon size={15} />
                   ) : focusCategory === 'Bodyweight' ? (
-                    <ZapIcon size={16} />
+                    <ZapIcon size={15} />
                   ) : (
-                    <DumbbellIcon size={16} />
+                    <DumbbellIcon size={15} />
                   )}
                 </div>
-                <h6 className="fw-bold text-primary-custom mb-0 text-nowrap" style={{ fontSize: '0.95rem' }}>
+                <h6 className="fw-bold text-primary-custom mb-0 text-nowrap" style={{ fontSize: '0.92rem' }}>
                   Frequently Trained
                 </h6>
               </div>
-              <div className="d-flex align-items-center gap-2 flex-shrink-0">
+              <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
                 <select
                   value={focusCategory}
                   onChange={(e) => setFocusCategory(e.target.value)}
@@ -675,14 +675,14 @@ const Workouts = () => {
                   aria-label="Frequently trained timeframe filter"
                 >
                   <option value="all">All Time</option>
-                  <option value="30days">Last 30 Days</option>
-                  <option value="90days">Last 90 Days</option>
+                  <option value="30days">30 Days</option>
+                  <option value="90days">90 Days</option>
                 </select>
               </div>
             </div>
 
             {/* Generously Spaced Focus Rows: All bars same original green color */}
-            <div className={`d-flex flex-column ${muscleFocusStats.focusList.length >= 7 ? 'gap-2' : 'gap-2.5'} my-auto py-1`}>
+            <div className={`d-flex flex-column ${muscleFocusStats.focusList.length >= 7 ? 'gap-2' : 'gap-2.5'} pt-0.5`}>
               {muscleFocusStats.focusList.map((m) => (
                 <div key={m.name} className="d-flex align-items-center justify-content-between gap-2.5">
                   <span
@@ -721,7 +721,7 @@ const Workouts = () => {
 
           {/* Footer with white and bold Primary Focus matching History Overview style */}
           <div
-            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center justify-content-between"
+            className="smaller text-muted pt-2.5 mt-2.5 border-top d-flex align-items-center justify-content-between"
             style={{ fontSize: '0.8rem', borderColor: 'var(--border-color)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
@@ -741,16 +741,16 @@ const Workouts = () => {
         {/* Card 2: History Overview (Wider) */}
         <div
           className="card card-fittrack h-100 d-flex flex-column justify-content-between"
-          style={{ padding: '1.25rem 1.4rem' }}
+          style={{ padding: '1.15rem 1.25rem' }}
         >
           <div>
             <div className="d-flex align-items-center justify-content-between mb-2">
-              <div className="d-flex align-items-center gap-2 min-w-0">
+              <div className="d-flex align-items-center gap-1.5 min-w-0">
                 <div
-                  className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
-                  style={{ width: 30, height: 30 }}
+                  className="p-1 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
+                  style={{ width: 28, height: 28 }}
                 >
-                  <BarChartIcon size={15} />
+                  <BarChartIcon size={14} />
                 </div>
                 <h6 className="fw-bold text-primary-custom mb-0 text-nowrap" style={{ fontSize: '0.92rem' }}>
                   History Overview
@@ -768,11 +768,11 @@ const Workouts = () => {
             </div>
 
             {/* Bar Chart with numbers on top of bars */}
-            <div style={{ width: '100%', height: 236 }}>
+            <div style={{ width: '100%', height: 172 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={historyOverviewData}
-                  margin={{ top: 20, right: 12, left: 0, bottom: 2 }}
+                  margin={{ top: 18, right: 12, left: 0, bottom: 0 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.12)" />
                   <XAxis
@@ -828,7 +828,7 @@ const Workouts = () => {
 
           {/* Footer clean: Weekly Avg only */}
           <div
-            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center"
+            className="smaller text-muted pt-2.5 mt-2.5 border-top d-flex align-items-center"
             style={{ fontSize: '0.8rem', borderColor: 'var(--border-color)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
@@ -844,7 +844,7 @@ const Workouts = () => {
         {/* Card 3: Training Streak (Compact) */}
         <div
           className="card card-fittrack h-100 d-flex flex-column justify-content-between"
-          style={{ padding: '1.25rem 1.15rem' }}
+          style={{ padding: '1.15rem 1.15rem' }}
         >
           {/* Header */}
           <div className="d-flex align-items-center justify-content-between">
