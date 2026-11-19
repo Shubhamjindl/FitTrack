@@ -10,6 +10,10 @@ import {
   CalendarIcon,
   CheckIcon,
   LockIcon,
+  EyeIcon,
+  CloseIcon,
+  TargetIcon,
+  ZapIcon,
 } from '../components/Icons';
 import {
   EXERCISE_DATABASE,
@@ -73,8 +77,9 @@ const WorkoutForm = () => {
   ]);
   const [customExercises, setCustomExercises] = useState([]);
 
-  // Active autocomplete dropdown index
+  // Active autocomplete dropdown index & enlarged posture guide modal
   const [activeDropdownIndex, setActiveDropdownIndex] = useState(null);
+  const [selectedGuideExercise, setSelectedGuideExercise] = useState(null);
   const dropdownRef = useRef(null);
 
   // Click outside listener to dismiss smart dropdown
@@ -277,6 +282,75 @@ const WorkoutForm = () => {
       return next;
     });
     setActiveDropdownIndex(null);
+  };
+
+  // Curated form cues for exercises & postures
+  const getExerciseFormCues = (exercise) => {
+    if (!exercise) return [];
+    const n = (exercise.name || '').toLowerCase();
+    const cat = exercise.category || '';
+
+    if (n.includes('bench press')) {
+      return [
+        'Maintain 5 points of contact: head, shoulders, glutes on bench, and feet planted flat.',
+        'Tuck elbows at ~45°–70° from torso to protect rotator cuffs.',
+        'Control the descent to lower chest, then exhale and drive smoothly upward.',
+      ];
+    }
+    if (n.includes('squat')) {
+      return [
+        'Keep chest elevated, core braced tightly, and knees tracking in line with toes.',
+        'Descend until thighs reach parallel or below while keeping spine completely neutral.',
+        'Drive forcefully through midfoot and heels back to full standing extension.',
+      ];
+    }
+    if (n.includes('deadlift')) {
+      return [
+        'Hinge hips back with bar grazing shins; engage lats and lock spine in neutral.',
+        'Push the floor away through feet before driving hips forward to stand tall.',
+        'Avoid hyperextending lower back at the lockout; lower under full control.',
+      ];
+    }
+    if (n.includes('shoulder') || n.includes('overhead')) {
+      return [
+        'Squeeze glutes and brace core tightly to avoid excessive lumbar arching.',
+        'Press directly vertical, tilting head back slightly as the bar/weight passes.',
+        'Lock out overhead with bicep aligned directly next to ears.',
+      ];
+    }
+    if (n.includes('curl')) {
+      return [
+        'Pin elbows firmly at sides without swinging arms forward for momentum.',
+        'Squeeze biceps hard for 1 second at the peak of contraction.',
+        'Lower weight under a 2-3 second controlled eccentric tempo.',
+      ];
+    }
+    if (n.includes('row') || n.includes('pulldown') || n.includes('pull-up')) {
+      return [
+        'Initiate the pull by retracting and depressing scapulae (shoulder blades).',
+        'Drive elbows down and back toward your hip pockets; avoid shrugging.',
+        'Control the negative stretch without letting shoulders roll forward.',
+      ];
+    }
+    if (cat === 'Yoga') {
+      return [
+        'Coordinate movement with calm diaphragmatic breath (inhale expand, exhale deepen).',
+        'Elongate spine from tailbone through crown; avoid compressing cervical vertebrae.',
+        'Honor your natural joint range of motion; never force into sharp strain.',
+      ];
+    }
+    if (cat === 'Cardio' || cat === 'Sports') {
+      return [
+        'Maintain upright posture with engaged core, relaxed neck, and light shoulders.',
+        'Maintain steady breathing cadence synchronized with footwork or movement pace.',
+        'Stay hydrated and track pacing inside your target aerobic heart rate zone.',
+      ];
+    }
+    return [
+      'Maintain solid core bracing and neutral spine throughout every repetition.',
+      'Control the eccentric (lowering) phase for 2 seconds to maximize time under tension.',
+      'Drive through target muscles smoothly without relying on body momentum.',
+    ];
   };
 
   // Determine if weight is hidden based on workout category
@@ -645,7 +719,13 @@ const WorkoutForm = () => {
                                     >
                                       <div className="d-flex align-items-center gap-2.5 min-w-0 w-100">
                                         <div
-                                          className="exercise-posture-thumb flex-shrink-0"
+                                          className="exercise-posture-thumb exercise-posture-thumb-clickable flex-shrink-0"
+                                          title="Click thumbnail to view full posture & form guide"
+                                          onMouseDown={(e) => {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+                                            setSelectedGuideExercise(item);
+                                          }}
                                           dangerouslySetInnerHTML={{ __html: item.svg }}
                                         />
                                         <div className="min-w-0 text-start flex-grow-1">
@@ -665,6 +745,19 @@ const WorkoutForm = () => {
                                             )}
                                           </div>
                                         </div>
+                                        <button
+                                          type="button"
+                                          className="btn btn-sm p-1 text-muted border-0 flex-shrink-0 hover-emerald"
+                                          title="View Form & Posture Guide"
+                                          style={{ background: 'transparent' }}
+                                          onMouseDown={(e) => {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+                                            setSelectedGuideExercise(item);
+                                          }}
+                                        >
+                                          <EyeIcon size={16} />
+                                        </button>
                                       </div>
                                     </div>
                                   ))
@@ -740,26 +833,58 @@ const WorkoutForm = () => {
                           const muscleTags = preset.muscles.split(',').map((m) => m.trim()).filter(Boolean);
                           return (
                             <div
-                              className="mt-2.5 pt-2 d-flex flex-wrap align-items-center gap-1.5 animate-fade-in"
+                              className="mt-2.5 pt-2 d-flex align-items-center gap-3 animate-fade-in"
                               style={{ borderTop: '1px dashed var(--border-color)' }}
                             >
-                              <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
-                                Target Focus:
-                              </span>
-                              {muscleTags.map((tag, tIdx) => (
-                                <span
-                                  key={tag}
-                                  className="badge px-2 py-1 rounded-pill fw-semibold"
-                                  style={{
-                                    fontSize: '0.74rem',
-                                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-                                    color: 'var(--primary-green)',
-                                    border: '1px solid rgba(16, 185, 129, 0.25)',
-                                  }}
+                              <div
+                                className="exercise-posture-thumb exercise-posture-thumb-clickable flex-shrink-0"
+                                style={{ width: '48px', height: '48px' }}
+                                title="Click to view large Exercise Form & Posture Guide"
+                                onClick={() => setSelectedGuideExercise(preset)}
+                                dangerouslySetInnerHTML={{ __html: preset.svg }}
+                              />
+                              <div className="flex-grow-1 min-w-0">
+                                <div className="d-flex flex-wrap align-items-center gap-1.5 mb-1">
+                                  <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
+                                    Target Focus:
+                                  </span>
+                                  {muscleTags.map((tag, tIdx) => (
+                                    <span
+                                      key={tag}
+                                      className="badge px-2 py-1 rounded-pill fw-semibold"
+                                      style={{
+                                        fontSize: '0.74rem',
+                                        backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                                        color: 'var(--primary-green)',
+                                        border: '1px solid rgba(16, 185, 129, 0.25)',
+                                      }}
+                                    >
+                                      ✓ {tag} {tIdx === 0 && <span className="opacity-75" style={{ fontSize: '0.68rem' }}>(Primary)</span>}
+                                    </span>
+                                  ))}
+                                  {preset.equipment && (
+                                    <span
+                                      className="badge px-2 py-1 rounded-pill fw-normal text-muted"
+                                      style={{
+                                        fontSize: '0.74rem',
+                                        backgroundColor: 'var(--bg-section)',
+                                        border: '1px solid var(--border-color)',
+                                      }}
+                                    >
+                                      {preset.equipment}
+                                    </span>
+                                  )}
+                                </div>
+                                <button
+                                  type="button"
+                                  className="btn btn-link btn-sm p-0 text-decoration-none d-inline-flex align-items-center gap-1 fw-medium"
+                                  style={{ fontSize: '0.75rem', color: 'var(--primary-green)' }}
+                                  onClick={() => setSelectedGuideExercise(preset)}
                                 >
-                                  ✓ {tag} {tIdx === 0 && <span className="opacity-75" style={{ fontSize: '0.68rem' }}>(Primary)</span>}
-                                </span>
-                              ))}
+                                  <EyeIcon size={13} />
+                                  <span>View Large Posture & Form Guide</span>
+                                </button>
+                              </div>
                             </div>
                           );
                         }
@@ -857,6 +982,158 @@ const WorkoutForm = () => {
           )}
         </div>
       </form>
+
+      {/* Exercise Form & Posture Guide Modal */}
+      {selectedGuideExercise && (
+        <div
+          className="modal fade show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.72)', zIndex: 1060 }}
+          onClick={() => setSelectedGuideExercise(null)}
+        >
+          <div
+            className="modal-dialog modal-dialog-centered"
+            style={{ maxWidth: '480px' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              className="modal-content border-0 shadow-lg overflow-hidden"
+              style={{
+                borderRadius: '20px',
+                backgroundColor: 'var(--bg-card)',
+                color: 'var(--text-primary)',
+              }}
+            >
+              {/* Header */}
+              <div
+                className="modal-header border-bottom py-3 px-4 position-relative"
+                style={{ borderColor: 'var(--border-color)' }}
+              >
+                <div className="pe-4">
+                  <div className="d-flex align-items-center gap-2 mb-1">
+                    <span
+                      className="badge px-2 py-0.5 rounded-pill fw-semibold"
+                      style={{
+                        fontSize: '0.72rem',
+                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        color: 'var(--primary-green)',
+                        border: '1px solid rgba(16, 185, 129, 0.3)',
+                      }}
+                    >
+                      {selectedGuideExercise.categoryLabel || selectedGuideExercise.category || 'Exercise'}
+                    </span>
+                    {selectedGuideExercise.equipment && (
+                      <span
+                        className="badge px-2 py-0.5 rounded-pill text-muted fw-normal"
+                        style={{
+                          fontSize: '0.72rem',
+                          backgroundColor: 'var(--bg-section)',
+                          border: '1px solid var(--border-color)',
+                        }}
+                      >
+                        {selectedGuideExercise.equipment}
+                      </span>
+                    )}
+                  </div>
+                  <h5 className="modal-title fw-bold text-primary-custom mb-0" style={{ fontSize: '1.22rem' }}>
+                    {selectedGuideExercise.name}
+                  </h5>
+                </div>
+                <button
+                  type="button"
+                  className="btn-close-custom"
+                  aria-label="Close"
+                  onClick={() => setSelectedGuideExercise(null)}
+                >
+                  <CloseIcon size={16} />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="modal-body p-4 text-center">
+                {/* Large 170px Vector Posture Box */}
+                <div
+                  className="exercise-posture-preview-box"
+                  dangerouslySetInnerHTML={{ __html: selectedGuideExercise.svg }}
+                />
+
+                {/* Target Muscle Groups */}
+                <div
+                  className="p-3 rounded-3 text-start mb-3"
+                  style={{
+                    backgroundColor: 'var(--bg-section)',
+                    border: '1px solid var(--border-color)',
+                  }}
+                >
+                  <div className="small fw-bold text-primary-custom mb-2 d-flex align-items-center gap-1.5">
+                    <TargetIcon size={16} className="text-emerald" />
+                    <span>Target Muscle Groups</span>
+                  </div>
+                  <div className="d-flex flex-wrap gap-1.5">
+                    {selectedGuideExercise.muscles ? (
+                      selectedGuideExercise.muscles.split(',').map((m, idx) => (
+                        <span
+                          key={m}
+                          className="badge px-2.5 py-1 rounded-pill fw-semibold"
+                          style={{
+                            fontSize: '0.76rem',
+                            backgroundColor: idx === 0 ? 'rgba(16, 185, 129, 0.16)' : 'var(--bg-card)',
+                            color: idx === 0 ? 'var(--primary-green)' : 'var(--text-muted)',
+                            border: idx === 0 ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid var(--border-color)',
+                          }}
+                        >
+                          {idx === 0 ? `★ ${m.trim()} (Primary)` : m.trim()}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-muted smaller">Custom movement</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Form & Posture Cues */}
+                <div
+                  className="p-3 rounded-3 text-start"
+                  style={{
+                    backgroundColor: 'var(--bg-section)',
+                    border: '1px solid var(--border-color)',
+                  }}
+                >
+                  <div className="small fw-bold text-primary-custom mb-2 d-flex align-items-center gap-1.5">
+                    <ZapIcon size={16} className="text-emerald" />
+                    <span>Form & Posture Cues</span>
+                  </div>
+                  <ul className="list-unstyled mb-0 d-flex flex-column gap-2 smaller text-muted" style={{ fontSize: '0.82rem' }}>
+                    {getExerciseFormCues(selectedGuideExercise).map((cue, cIdx) => (
+                      <li key={cIdx} className="d-flex align-items-start gap-2">
+                        <span className="text-emerald fw-bold mt-0.5">✓</span>
+                        <span>{cue}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div
+                className="modal-footer border-top py-2.5 px-4 d-flex justify-content-between align-items-center"
+                style={{ borderColor: 'var(--border-color)' }}
+              >
+                <span className="smaller text-muted" style={{ fontSize: '0.76rem' }}>
+                  Interactive Posture System · UpToFit
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-primary-green btn-sm px-4 fw-semibold"
+                  onClick={() => setSelectedGuideExercise(null)}
+                >
+                  Got It
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
