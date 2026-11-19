@@ -299,7 +299,7 @@ const WorkoutForm = () => {
         sets: 'Rounds / Intervals',
         reps: 'Duration (sec) / Reps',
         weight: 'N/A',
-        placeholder: 'e.g. Running, Burpees, Jump Rope, Mountain Climbers',
+        placeholder: 'e.g. Treadmill, Cycling, Jump Rope, Burpees',
       };
     }
     if (type === 'Bodyweight') {

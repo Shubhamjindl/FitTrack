@@ -543,14 +543,14 @@ export const EXERCISE_DATABASE = [
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="20" cy="40" r="4" fill="currentColor"/><path d="M22,42 Q30,34 38,42 L42,48" stroke-width="3.5"/><line x1="22" y1="44" x2="12" y2="46"/><line x1="10" y1="48" x2="52" y2="48" stroke="currentColor" stroke-opacity="0.3"/></svg>`,
   },
 
-  // ── 4. CARDIO (Running, Cycling & Conditioning) ───────────────
+  // ── 4. CARDIO (Treadmill, Cycling & Conditioning) ────────────
   {
-    id: 'running-treadmill',
-    name: 'Running / Treadmill',
+    id: 'treadmill',
+    name: 'Treadmill',
     category: 'Cardio',
     categoryLabel: 'Cardio & Conditioning',
     muscles: 'Legs, Cardiovascular, Calves, Quads',
-    equipment: 'Treadmill / Track',
+    equipment: 'Treadmill',
     mode: 'cardio',
     defaultSets: 1,
     defaultReps: 25,
@@ -558,11 +558,11 @@ export const EXERCISE_DATABASE = [
     unit: 'min',
     repsLabel: 'Duration (Minutes)',
     weightLabel: 'N/A',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="36" cy="16" r="4" fill="currentColor"/><line x1="34" y1="20" x2="30" y2="34" stroke-width="3"/><polyline points="30,34 22,38 18,52"/><polyline points="30,34 38,40 44,48"/><polyline points="32,24 24,28 20,34"/><polyline points="32,24 40,26 44,22"/></svg>`,
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="36" cy="16" r="4" fill="currentColor"/><line x1="34" y1="20" x2="30" y2="34" stroke-width="3"/><polyline points="30,34 22,38 18,52"/><polyline points="30,34 38,40 44,48"/><polyline points="32,24 24,28 20,34"/><polyline points="32,24 40,26 44,22"/><line x1="12" y1="54" x2="52" y2="54" stroke="#f59e0b" stroke-width="3"/></svg>`,
   },
   {
-    id: 'cycling-spin',
-    name: 'Cycling / Spin Bike',
+    id: 'cycling',
+    name: 'Cycling',
     category: 'Cardio',
     categoryLabel: 'Cardio & Conditioning',
     muscles: 'Legs, Quads, Hamstrings, Cardiovascular',
@@ -625,23 +625,6 @@ export const EXERCISE_DATABASE = [
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="48" cy="30" r="4" fill="currentColor"/><polyline points="44,34 32,38 18,46"/><polyline points="32,38 30,30 24,34"/></svg>`,
   },
 
-  // --- HYBRID & SPORTS (6 Movements) ---
-  {
-    id: 'kettlebell-swings',
-    name: 'Kettlebell Swings',
-    category: ['Cardio', 'Strength'],
-    categoryLabel: 'Cardio & Strength',
-    muscles: 'Full Body, Glutes, Hamstrings, Core',
-    equipment: 'Kettlebell',
-    mode: 'cardio',
-    defaultSets: 4,
-    defaultReps: 20,
-    defaultWeight: 20,
-    unit: 'kg',
-    repsLabel: 'Reps',
-    weightLabel: 'Weight (kg)',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="18" r="4" fill="currentColor"/><line x1="28" y1="22" x2="32" y2="38" stroke-width="3.5"/><polyline points="32,38 28,52"/><polyline points="32,38 38,52"/><line x1="28" y1="26" x2="44" y2="28" stroke-width="2.5"/><circle cx="48" cy="28" r="4" fill="#f59e0b"/></svg>`,
-  },
   // ── 5. SPORTS (Sports & Athletics) ─────────────────────────
   {
     id: 'badminton',
