@@ -654,13 +654,7 @@ const Workouts = () => {
                   Frequently Trained
                 </h6>
               </div>
-              <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
-                <span
-                  className="badge rounded-pill border border-secondary border-opacity-30 text-muted px-2 py-0.5 smaller fw-medium bg-transparent d-none d-sm-inline text-nowrap"
-                  style={{ fontSize: '0.72rem' }}
-                >
-                  {muscleFocusStats.badgeLabel}
-                </span>
+              <div className="d-flex align-items-center gap-2 flex-shrink-0">
                 <select
                   value={focusCategory}
                   onChange={(e) => setFocusCategory(e.target.value)}
@@ -774,11 +768,11 @@ const Workouts = () => {
             </div>
 
             {/* Bar Chart with numbers on top of bars */}
-            <div style={{ width: '100%', height: 168 }}>
+            <div style={{ width: '100%', height: 236 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={historyOverviewData}
-                  margin={{ top: 18, right: 12, left: 0, bottom: 0 }}
+                  margin={{ top: 20, right: 12, left: 0, bottom: 2 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.12)" />
                   <XAxis
@@ -834,7 +828,7 @@ const Workouts = () => {
 
           {/* Footer clean: Weekly Avg only */}
           <div
-            className="smaller text-muted pt-2.5 mt-2.5 border-top d-flex align-items-center"
+            className="smaller text-muted pt-3 mt-3 border-top d-flex align-items-center"
             style={{ fontSize: '0.8rem', borderColor: 'var(--border-color)' }}
           >
             <span className="d-inline-flex align-items-center text-nowrap" style={{ gap: '0.5rem' }}>
