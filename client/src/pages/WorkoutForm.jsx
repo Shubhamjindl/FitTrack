@@ -17,6 +17,7 @@ import {
   searchExercises,
   findPresetExercise,
   getPrimaryMuscleGroup,
+  getCategoryFallbackSvg,
 } from '../data/exercises';
 
 // API base URL: local Vite proxy or deployed Render backend
@@ -119,7 +120,7 @@ const WorkoutForm = () => {
                     defaultSets: e.sets || 3,
                     defaultReps: e.reps || 10,
                     defaultWeight: e.weight || 0,
-                    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="32" r="14" stroke="#10b981" stroke-dasharray="4 2"/><path d="M32 24v16M24 32h16" stroke="#10b981" stroke-width="3"/></svg>`,
+                    svg: getCategoryFallbackSvg(w.type || 'Strength'),
                   });
                 }
               }
@@ -720,66 +721,83 @@ const WorkoutForm = () => {
                         </div>
                       </div>
 
-                      {/* Target Muscle Row across ALL Workout Categories */}
+                      {/* Target Muscle Row across ALL Workout Categories with Silhouette Posture View */}
                       {ex.name && ex.name.trim() !== '' && (() => {
                         const preset = findPresetExercise(ex.name);
                         if (preset && preset.muscles) {
                           const muscleTags = preset.muscles.split(',').map((m) => m.trim()).filter(Boolean);
                           return (
                             <div
-                              className="mt-2.5 pt-2 d-flex flex-wrap align-items-center gap-1.5 animate-fade-in"
+                              className="mt-2.5 pt-2 d-flex align-items-center gap-2.5 animate-fade-in"
                               style={{ borderTop: '1px dashed var(--border-color)' }}
                             >
-                              <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
-                                Target Muscles:
-                              </span>
-                              {muscleTags.map((tag, tIdx) => (
-                                <span
-                                  key={tag}
-                                  className="badge bg-emerald-subtle text-emerald border border-emerald-subtle px-2 py-1 rounded-pill fw-semibold"
-                                  style={{ fontSize: '0.74rem' }}
-                                >
-                                  ✓ {tag} {tIdx === 0 && <span className="opacity-75" style={{ fontSize: '0.68rem' }}>(Primary)</span>}
+                              <div
+                                className="exercise-posture-thumb flex-shrink-0"
+                                style={{ width: 36, height: 36 }}
+                                title={`${preset.name} Silhouette View`}
+                                dangerouslySetInnerHTML={{ __html: preset.svg }}
+                              />
+                              <div className="d-flex flex-wrap align-items-center gap-1.5 flex-grow-1 min-w-0">
+                                <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
+                                  Target Muscles:
                                 </span>
-                              ))}
-                              <span className="badge bg-light-section text-muted px-2 py-0.5 rounded-pill ms-1" style={{ fontSize: '0.7rem' }}>
-                                Preset
-                              </span>
+                                {muscleTags.map((tag, tIdx) => (
+                                  <span
+                                    key={tag}
+                                    className="badge bg-emerald-subtle text-emerald border border-emerald-subtle px-2 py-1 rounded-pill fw-semibold"
+                                    style={{ fontSize: '0.74rem' }}
+                                  >
+                                    ✓ {tag} {tIdx === 0 && <span className="opacity-75" style={{ fontSize: '0.68rem' }}>(Primary)</span>}
+                                  </span>
+                                ))}
+                                <span className="badge bg-light-section text-muted px-2 py-0.5 rounded-pill ms-1" style={{ fontSize: '0.7rem' }}>
+                                  Preset
+                                </span>
+                              </div>
                             </div>
                           );
                         }
 
-                        // Truly Custom Exercise: 1-Tap Single-Select Muscle Pills (Available for Strength, Bodyweight, Yoga, Cardio, Hybrid)
+                        // Truly Custom Exercise: 1-Tap Single-Select Muscle Pills with Category Silhouette
+                        const customSvg = getCategoryFallbackSvg(type);
                         return (
                           <div
-                            className="mt-2.5 pt-2 d-flex flex-wrap align-items-center gap-1.5 animate-fade-in"
+                            className="mt-2.5 pt-2 d-flex align-items-center gap-2.5 animate-fade-in"
                             style={{ borderTop: '1px dashed var(--border-color)' }}
                           >
-                            <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
-                              Target Muscle (optional):
-                            </span>
-                            {TARGET_MUSCLE_TAGS.map((tag) => {
-                              const isSelected = ex.muscleGroup === tag;
-                              return (
-                                <button
-                                  key={tag}
-                                  type="button"
-                                  onClick={() => handleExerciseChange(index, 'muscleGroup', isSelected ? '' : tag)}
-                                  className={`badge border-0 px-2 py-1 rounded-pill ${
-                                    isSelected
-                                      ? 'bg-emerald text-white fw-bold shadow-sm'
-                                      : 'bg-light-section text-secondary-custom'
-                                  }`}
-                                  style={{
-                                    fontSize: '0.74rem',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.15s ease',
-                                  }}
-                                >
-                                  {isSelected ? `✓ ${tag}` : tag}
-                                </button>
-                              );
-                            })}
+                            <div
+                              className="exercise-posture-thumb flex-shrink-0"
+                              style={{ width: 36, height: 36 }}
+                              title="Custom Exercise Posture"
+                              dangerouslySetInnerHTML={{ __html: customSvg }}
+                            />
+                            <div className="d-flex flex-wrap align-items-center gap-1.5 flex-grow-1 min-w-0">
+                              <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
+                                Target Muscle (optional):
+                              </span>
+                              {TARGET_MUSCLE_TAGS.map((tag) => {
+                                const isSelected = ex.muscleGroup === tag;
+                                return (
+                                  <button
+                                    key={tag}
+                                    type="button"
+                                    onClick={() => handleExerciseChange(index, 'muscleGroup', isSelected ? '' : tag)}
+                                    className={`badge border-0 px-2 py-1 rounded-pill ${
+                                      isSelected
+                                        ? 'bg-emerald text-white fw-bold shadow-sm'
+                                        : 'bg-light-section text-secondary-custom'
+                                    }`}
+                                    style={{
+                                      fontSize: '0.74rem',
+                                      cursor: 'pointer',
+                                      transition: 'all 0.15s ease',
+                                    }}
+                                  >
+                                    {isSelected ? `✓ ${tag}` : tag}
+                                  </button>
+                                );
+                              })}
+                            </div>
                           </div>
                         );
                       })()}

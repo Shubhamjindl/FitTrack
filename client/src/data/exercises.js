@@ -55,6 +55,7 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    aliases: ['Deadlift', 'Deadlifts', 'Barbell Deadlifts'],
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="34" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="26" y2="38" stroke-width="3.5"/><polyline points="26,38 20,44 24,54" stroke-width="3"/><line x1="28" y1="24" x2="26" y2="44"/><line x1="10" y1="44" x2="46" y2="44" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -151,6 +152,7 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    aliases: ['Barbell Bent-Over Row', 'Bent Over Row', 'Bent-Over Row'],
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="22" cy="22" r="4" fill="currentColor"/><line x1="24" y1="26" x2="38" y2="34" stroke-width="3.5"/><polyline points="38,34 34,44 40,54" stroke-width="3"/><polyline points="28,28 32,38 32,46"/><line x1="16" y1="46" x2="48" y2="46" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -231,6 +233,7 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    aliases: ['RDL', 'Romanian Deadlifts'],
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="24" cy="20" r="4" fill="currentColor"/><line x1="26" y1="24" x2="38" y2="34" stroke-width="3.5"/><polyline points="38,34 38,46 38,54" stroke-width="3"/><line x1="30" y1="26" x2="36" y2="42"/><line x1="22" y1="42" x2="50" y2="42" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -279,6 +282,7 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    aliases: ['Deadlift', 'Deadlifts'],
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="34" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="26" y2="38" stroke-width="3.5"/><polyline points="26,38 20,44 24,54" stroke-width="3"/><line x1="28" y1="24" x2="26" y2="44"/><line x1="10" y1="44" x2="46" y2="44" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -377,6 +381,7 @@ export const EXERCISE_DATABASE = [
     unit: 'reps',
     repsLabel: 'Reps',
     weightLabel: 'Added Wt (kg)',
+    aliases: ['Push-ups', 'Pushups', 'Push Up', 'Push-up'],
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="48" cy="30" r="4" fill="currentColor"/><line x1="44" y1="32" x2="18" y2="42" stroke-width="3.5"/><polyline points="18,42 16,50"/><polyline points="40,34 38,44 42,48"/></svg>`,
   },
   {
@@ -475,6 +480,7 @@ export const EXERCISE_DATABASE = [
     unit: 'cycles',
     repsLabel: 'Cycles / Rounds',
     weightLabel: 'N/A',
+    aliases: ['Sun Salutations', 'Sun Salutation'],
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="14" r="4" fill="currentColor"/><line x1="32" y1="18" x2="32" y2="38" stroke-width="3"/><polyline points="32,38 28,48 26,56"/><polyline points="32,38 36,48 38,56"/><polyline points="32,22 26,16 32,8 38,16 32,22" stroke="#8b5cf6"/></svg>`,
   },
   {
@@ -541,6 +547,23 @@ export const EXERCISE_DATABASE = [
     weightLabel: 'N/A',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="20" cy="40" r="4" fill="currentColor"/><path d="M22,42 Q30,34 38,42 L42,48" stroke-width="3.5"/><line x1="22" y1="44" x2="12" y2="46"/><line x1="10" y1="48" x2="52" y2="48" stroke="currentColor" stroke-opacity="0.3"/></svg>`,
   },
+  {
+    id: 'pigeon-pose',
+    name: 'Pigeon Pose',
+    category: 'Yoga',
+    categoryLabel: 'Yoga & Flexibility',
+    muscles: 'Legs, Hips, Glutes, Back',
+    equipment: 'Yoga Mat',
+    mode: 'hold',
+    defaultSets: 3,
+    defaultReps: 45,
+    defaultWeight: 0,
+    unit: 'sec',
+    repsLabel: 'Hold per side (s)',
+    weightLabel: 'N/A',
+    aliases: ['pigeon', 'kapotasana', 'king pigeon'],
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="22" cy="24" r="4" fill="currentColor"/><path d="M24,28 Q30,34 36,42 L52,48" stroke-width="3.5"/><polyline points="24,32 32,44 18,48" stroke-width="3"/><line x1="12" y1="48" x2="56" y2="48" stroke="currentColor" stroke-opacity="0.3"/></svg>`,
+  },
 
   // ── 4. CARDIO (Running, Cycling & Conditioning) ───────────────
   {
@@ -557,6 +580,7 @@ export const EXERCISE_DATABASE = [
     unit: 'min',
     repsLabel: 'Duration (Minutes)',
     weightLabel: 'N/A',
+    aliases: ['Outdoor Running', 'Running', 'Treadmill', 'Jogging', 'Trail Run'],
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="36" cy="16" r="4" fill="currentColor"/><line x1="34" y1="20" x2="30" y2="34" stroke-width="3"/><polyline points="30,34 22,38 18,52"/><polyline points="30,34 38,40 44,48"/><polyline points="32,24 24,28 20,34"/><polyline points="32,24 40,26 44,22"/></svg>`,
   },
   {
@@ -573,6 +597,7 @@ export const EXERCISE_DATABASE = [
     unit: 'min',
     repsLabel: 'Duration (Minutes)',
     weightLabel: 'N/A',
+    aliases: ['Stationary / Road Cycling', 'Road Cycling', 'Cycling', 'Spin Bike', 'Stationary Bike', 'Biking'],
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="20" cy="44" r="8"/><circle cx="44" cy="44" r="8"/><polyline points="20,44 32,44 26,28 40,28 44,44"/><circle cx="34" cy="18" r="3.5" fill="currentColor"/><line x1="34" y1="22" x2="28" y2="32" stroke-width="3"/><polyline points="30,22 40,24"/></svg>`,
   },
   {
@@ -589,6 +614,7 @@ export const EXERCISE_DATABASE = [
     unit: 'reps',
     repsLabel: 'Reps',
     weightLabel: 'N/A',
+    aliases: ['Burpees', 'Burpee'],
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="36" cy="14" r="4" fill="currentColor"/><line x1="36" y1="18" x2="28" y2="32" stroke-width="3"/><polyline points="28,32 18,36 14,48"/><polyline points="32,22 44,14"/></svg>`,
   },
   {
@@ -739,20 +765,59 @@ export const normalizeExerciseName = (name = '') => {
  */
 export const findPresetExercise = (name = '') => {
   if (!name) return null;
-  const direct = EXERCISE_DATABASE.find(
-    (e) => e.name.toLowerCase() === name.trim().toLowerCase()
-  );
-  if (direct) return direct;
-
+  const trimmedLower = name.trim().toLowerCase();
   const normalized = normalizeExerciseName(name);
-  if (!normalized) return null;
+
+  // 1. Direct match on name
+  let found = EXERCISE_DATABASE.find(
+    (e) => e.name.toLowerCase() === trimmedLower
+  );
+  if (found) return found;
+
+  // 2. Exact match on normalized name (ignores spaces, punctuation, hyphens)
+  found = EXERCISE_DATABASE.find(
+    (e) => normalizeExerciseName(e.name) === normalized
+  );
+  if (found) return found;
+
+  // 3. Exact match on aliases (direct or normalized)
+  found = EXERCISE_DATABASE.find((e) =>
+    (e.aliases || []).some(
+      (a) =>
+        a.toLowerCase() === trimmedLower ||
+        normalizeExerciseName(a) === normalized
+    )
+  );
+  if (found) return found;
+
+  // 4. Substring fallback if query is at least 3 characters
+  if (!normalized || normalized.length < 3) return null;
 
   return (
     EXERCISE_DATABASE.find((e) => {
       const eNorm = normalizeExerciseName(e.name);
-      return eNorm === normalized || eNorm.includes(normalized) || normalized.includes(eNorm);
+      return eNorm.includes(normalized) || normalized.includes(eNorm);
     }) || null
   );
+};
+
+/**
+ * Category-specific silhouette fallback for custom exercises
+ * Ensures that even custom exercises display an athletic silhouette instead of a generic plus icon.
+ */
+export const getCategoryFallbackSvg = (category = 'Strength') => {
+  const norm = (category || 'Strength').toLowerCase();
+  if (norm.includes('yoga')) {
+    return `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="18" r="4" fill="currentColor"/><path d="M32 22v14M22 36l10-6 10 6M20 46l12-4 12 4M32 36v10" stroke-width="2.5"/><circle cx="32" cy="32" r="14" stroke="#8b5cf6" stroke-opacity="0.3" stroke-dasharray="3 3"/></svg>`;
+  }
+  if (norm.includes('cardio') || norm.includes('running') || norm.includes('cycling')) {
+    return `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="36" cy="16" r="4" fill="currentColor"/><line x1="34" y1="20" x2="30" y2="34" stroke-width="3"/><polyline points="30,34 22,38 18,50"/><polyline points="30,34 38,40 44,48"/><polyline points="32,24 24,28 20,34"/><polyline points="32,24 40,26 44,22"/><circle cx="32" cy="32" r="14" stroke="#f59e0b" stroke-opacity="0.3" stroke-dasharray="3 3"/></svg>`;
+  }
+  if (norm.includes('bodyweight') || norm.includes('calisthenic')) {
+    return `<svg viewBox="0 0 64 64" class="w-10 h-10 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="48" cy="30" r="4" fill="currentColor"/><line x1="44" y1="32" x2="18" y2="42" stroke-width="3.5"/><polyline points="18,42 16,50"/><polyline points="40,34 38,44 42,48"/><circle cx="32" cy="32" r="14" stroke="#0ea5e9" stroke-opacity="0.3" stroke-dasharray="3 3"/></svg>`;
+  }
+  // Strength / Weights / Hybrid default
+  return `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="32" y2="40" stroke-width="3.5"/><polyline points="32,40 24,54"/><polyline points="32,40 40,54"/><line x1="14" y1="26" x2="50" y2="26" stroke="#10b981" stroke-width="3"/><circle cx="14" cy="26" r="3" fill="#10b981"/><circle cx="50" cy="26" r="3" fill="#10b981"/><circle cx="32" cy="32" r="14" stroke="#10b981" stroke-opacity="0.25" stroke-dasharray="3 3"/></svg>`;
 };
 
 /**

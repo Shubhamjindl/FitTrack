@@ -9,6 +9,7 @@ import {
   DumbbellIcon,
   EditIcon,
 } from './Icons';
+import { findPresetExercise, getCategoryFallbackSvg } from '../data/exercises';
 
 const WorkoutModal = ({ workout, onClose }) => {
   const { user, isDemo: authDemo } = useAuth();
@@ -162,13 +163,23 @@ const WorkoutModal = ({ workout, onClose }) => {
                   <tbody>
                     {exercises.map((ex, idx) => {
                       const setVolume = (ex.sets || 0) * (ex.reps || 0) * (ex.weight || 0);
+                      const preset = findPresetExercise(ex.name);
+                      const svg = preset?.svg || getCategoryFallbackSvg(workout.type);
                       return (
                         <tr key={idx}>
                           <td className="ps-3 fw-semibold text-primary-custom">
-                            <span className="badge bg-light-section text-muted me-2 font-monospace">
-                              #{idx + 1}
-                            </span>
-                            {ex.name}
+                            <div className="d-flex align-items-center gap-2">
+                              <span className="badge bg-light-section text-muted font-monospace">
+                                #{idx + 1}
+                              </span>
+                              <div
+                                className="exercise-posture-thumb flex-shrink-0"
+                                style={{ width: 28, height: 28 }}
+                                title={`${ex.name} Silhouette View`}
+                                dangerouslySetInnerHTML={{ __html: svg }}
+                              />
+                              <span className="text-truncate">{ex.name}</span>
+                            </div>
                           </td>
                           <td className="text-center font-monospace">{ex.sets}</td>
                           <td className="text-center font-monospace">{ex.reps}</td>
