@@ -744,20 +744,22 @@ const WorkoutForm = () => {
                               style={{ borderTop: '1px dashed var(--border-color)' }}
                             >
                               <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
-                                Target Muscles:
+                                Target Focus:
                               </span>
                               {muscleTags.map((tag, tIdx) => (
                                 <span
                                   key={tag}
-                                  className="badge bg-emerald-subtle text-emerald border border-emerald-subtle px-2 py-1 rounded-pill fw-semibold"
-                                  style={{ fontSize: '0.74rem' }}
+                                  className="badge px-2 py-1 rounded-pill fw-semibold"
+                                  style={{
+                                    fontSize: '0.74rem',
+                                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                                    color: 'var(--primary-green)',
+                                    border: '1px solid rgba(16, 185, 129, 0.25)',
+                                  }}
                                 >
                                   ✓ {tag} {tIdx === 0 && <span className="opacity-75" style={{ fontSize: '0.68rem' }}>(Primary)</span>}
                                 </span>
                               ))}
-                              <span className="badge bg-light-section text-muted px-2 py-0.5 rounded-pill ms-1" style={{ fontSize: '0.7rem' }}>
-                                Preset
-                              </span>
                             </div>
                           );
                         }
@@ -769,7 +771,7 @@ const WorkoutForm = () => {
                             style={{ borderTop: '1px dashed var(--border-color)' }}
                           >
                             <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
-                              Target Muscle (optional):
+                              Target Focus (optional):
                             </span>
                             {TARGET_MUSCLE_TAGS.map((tag) => {
                               const isSelected = ex.muscleGroup === tag;
@@ -778,16 +780,7 @@ const WorkoutForm = () => {
                                   key={tag}
                                   type="button"
                                   onClick={() => handleExerciseChange(index, 'muscleGroup', isSelected ? '' : tag)}
-                                  className={`badge border-0 px-2 py-1 rounded-pill ${
-                                    isSelected
-                                      ? 'bg-emerald text-white fw-bold shadow-sm'
-                                      : 'bg-light-section text-secondary-custom'
-                                  }`}
-                                  style={{
-                                    fontSize: '0.74rem',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.15s ease',
-                                  }}
+                                  className={`target-tag-pill ${isSelected ? 'active' : ''}`}
                                 >
                                   {isSelected ? `✓ ${tag}` : tag}
                                 </button>

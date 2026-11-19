@@ -467,7 +467,7 @@ export const EXERCISE_DATABASE = [
     name: 'Surya Namaskar',
     category: 'Yoga',
     categoryLabel: 'Yoga & Flexibility',
-    muscles: 'Full Body, Spine, Core, Hamstrings',
+    muscles: 'Spine & Mobility, Full Body, Flexibility, Core',
     equipment: 'Yoga Mat',
     mode: 'hold',
     defaultSets: 5,
@@ -483,7 +483,7 @@ export const EXERCISE_DATABASE = [
     name: 'Downward Dog',
     category: 'Yoga',
     categoryLabel: 'Yoga & Flexibility',
-    muscles: 'Back, Hamstrings, Calves, Shoulders',
+    muscles: 'Flexibility, Spine & Mobility, Hamstrings, Shoulders',
     equipment: 'Yoga Mat',
     mode: 'hold',
     defaultSets: 3,
@@ -499,7 +499,7 @@ export const EXERCISE_DATABASE = [
     name: 'Warrior II Pose',
     category: 'Yoga',
     categoryLabel: 'Yoga & Flexibility',
-    muscles: 'Legs, Hips, Quads, Balance',
+    muscles: 'Balance & Stability, Legs, Hips, Core',
     equipment: 'Yoga Mat',
     mode: 'hold',
     defaultSets: 3,
@@ -515,7 +515,7 @@ export const EXERCISE_DATABASE = [
     name: 'Cobra Pose',
     category: 'Yoga',
     categoryLabel: 'Yoga & Flexibility',
-    muscles: 'Back, Spine, Chest, Core',
+    muscles: 'Spine & Mobility, Chest, Back, Core',
     equipment: 'Yoga Mat',
     mode: 'hold',
     defaultSets: 3,
@@ -531,7 +531,7 @@ export const EXERCISE_DATABASE = [
     name: 'Child\'s Pose',
     category: 'Yoga',
     categoryLabel: 'Yoga & Flexibility',
-    muscles: 'Back, Hips, Spine, Recovery',
+    muscles: 'Restoration & Recovery, Spine, Hips, Mobility',
     equipment: 'Yoga Mat',
     mode: 'hold',
     defaultSets: 2,
@@ -549,7 +549,7 @@ export const EXERCISE_DATABASE = [
     name: 'Treadmill',
     category: 'Cardio',
     categoryLabel: 'Cardio & Conditioning',
-    muscles: 'Legs, Cardiovascular, Calves, Quads',
+    muscles: 'Legs & Endurance, Cardiovascular, Calves, Quads',
     equipment: 'Treadmill',
     mode: 'cardio',
     defaultSets: 1,
@@ -565,7 +565,7 @@ export const EXERCISE_DATABASE = [
     name: 'Cycling',
     category: 'Cardio',
     categoryLabel: 'Cardio & Conditioning',
-    muscles: 'Legs, Quads, Hamstrings, Cardiovascular',
+    muscles: 'Legs & Endurance, Quads, Hamstrings, Cardiovascular',
     equipment: 'Stationary Bike',
     mode: 'cardio',
     defaultSets: 1,
@@ -581,7 +581,7 @@ export const EXERCISE_DATABASE = [
     name: 'Full Body Burpees',
     category: ['Cardio', 'Bodyweight'],
     categoryLabel: 'Cardio & Bodyweight',
-    muscles: 'Full Body, Cardiovascular, Quads, Chest',
+    muscles: 'Full Body Conditioning, Cardiovascular, Quads, Chest',
     equipment: 'Floor / Bodyweight',
     mode: 'cardio',
     defaultSets: 3,
@@ -597,7 +597,7 @@ export const EXERCISE_DATABASE = [
     name: 'Jump Rope',
     category: 'Cardio',
     categoryLabel: 'Cardio & Conditioning',
-    muscles: 'Legs, Calves, Footwork, Cardiovascular',
+    muscles: 'Legs & Endurance, Calves, Footwork, Cardiovascular',
     equipment: 'Jump Rope',
     mode: 'cardio',
     defaultSets: 3,
@@ -613,7 +613,7 @@ export const EXERCISE_DATABASE = [
     name: 'Mountain Climbers',
     category: ['Cardio', 'Bodyweight'],
     categoryLabel: 'Cardio & Bodyweight',
-    muscles: 'Core, Hip Flexors, Cardiovascular',
+    muscles: 'Core & Stamina, Hip Flexors, Cardiovascular',
     equipment: 'Floor / Mat',
     mode: 'cardio',
     defaultSets: 3,
@@ -631,7 +631,7 @@ export const EXERCISE_DATABASE = [
     name: 'Badminton',
     category: 'Sports',
     categoryLabel: 'Sports & Athletics',
-    muscles: 'Legs, Shoulders, Arms, Core',
+    muscles: 'Legs & Speed, Shoulders & Power, Core & Agility',
     equipment: 'Racket & Shuttlecock',
     mode: 'cardio',
     defaultSets: 3,
@@ -647,7 +647,7 @@ export const EXERCISE_DATABASE = [
     name: 'Football',
     category: 'Sports',
     categoryLabel: 'Sports & Athletics',
-    muscles: 'Legs, Quads, Calves, Core',
+    muscles: 'Legs & Speed, Core & Agility, Stamina',
     equipment: 'Football & Pitch / Turf',
     mode: 'cardio',
     defaultSets: 2,
@@ -663,7 +663,7 @@ export const EXERCISE_DATABASE = [
     name: 'Cricket',
     category: 'Sports',
     categoryLabel: 'Sports & Athletics',
-    muscles: 'Full Body, Shoulders, Core, Legs',
+    muscles: 'Full Body Conditioning, Shoulders & Power, Core, Legs',
     equipment: 'Cricket Bat, Ball & Pitch',
     mode: 'cardio',
     defaultSets: 1,
@@ -679,7 +679,7 @@ export const EXERCISE_DATABASE = [
     name: 'Swimming Laps',
     category: 'Sports',
     categoryLabel: 'Sports & Athletics',
-    muscles: 'Full Body, Back, Shoulders, Core',
+    muscles: 'Full Body Conditioning, Back & Stamina, Shoulders',
     equipment: 'Pool',
     mode: 'cardio',
     defaultSets: 4,
@@ -695,7 +695,7 @@ export const EXERCISE_DATABASE = [
     name: 'Boxing',
     category: 'Sports',
     categoryLabel: 'Sports & Athletics',
-    muscles: 'Shoulders, Arms, Core, Back',
+    muscles: 'Shoulders & Power, Core & Agility, Arms, Back',
     equipment: 'Gloves & Heavy Bag',
     mode: 'cardio',
     defaultSets: 3,
@@ -792,7 +792,7 @@ export const searchExercises = (query = '', category = null) => {
 };
 
 /**
- * Canonical helper to retrieve the primary muscle group of an exercise.
+ * Canonical helper to retrieve the primary muscle group / focus area of an exercise.
  * If user set an explicit muscleGroup (e.g. from 1-tap pills), uses that.
  * Otherwise, checks preset database and extracts the FIRST tag.
  */
@@ -805,14 +805,6 @@ export const getPrimaryMuscleGroup = (ex) => {
   const preset = findPresetExercise(exName);
   if (preset && preset.muscles) {
     const firstTag = preset.muscles.split(',')[0].trim();
-    const lower = firstTag.toLowerCase();
-    if (lower.includes('chest') || lower.includes('pec')) return 'Chest';
-    if (lower.includes('back') || lower.includes('lat') || lower.includes('row') || lower.includes('spine')) return 'Back';
-    if (lower.includes('leg') || lower.includes('quad') || lower.includes('hamstring') || lower.includes('glute') || lower.includes('calf')) return 'Legs';
-    if (lower.includes('shoulder') || lower.includes('deltoid')) return 'Shoulders';
-    if (lower.includes('arm') || lower.includes('bicep') || lower.includes('tricep') || lower.includes('forearm')) return 'Arms';
-    if (lower.includes('core') || lower.includes('ab') || lower.includes('plank')) return 'Core';
-    if (lower.includes('full body')) return 'Full Body';
     return firstTag;
   }
   return null;

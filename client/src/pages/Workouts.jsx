@@ -72,9 +72,10 @@ const Workouts = () => {
   const [sortBy, setSortBy] = useState('date-desc');
   const [timeRange, setTimeRange] = useState('all');
 
-  // Overview cards interactive timeframe filters
+  // Overview cards interactive timeframe & category filters
   const [historyTimeframe, setHistoryTimeframe] = useState('active'); // 'active' (Last Active Period) | 'recent4' (Last 4 Weeks Live)
   const [focusTimeframe, setFocusTimeframe] = useState('all'); // 'all' (All Time / App Start) | '30days' | '90days'
+  const [focusCategory, setFocusCategory] = useState('all'); // 'all' | 'Strength' | 'Bodyweight' | 'Yoga' | 'Cardio' | 'Sports'
 
   // Modal state
   const [activeModalWorkout, setActiveModalWorkout] = useState(null);
@@ -178,19 +179,45 @@ const Workouts = () => {
     Core: [/core/i, /ab/i, /plank/i, /crunch/i, /climber/i],
   };
 
-  // 1. Frequently Trained Dynamic Focus Areas Calculation
+  // 1. Frequently Trained Dynamic Category-Aware Focus Areas Calculation
   const muscleFocusStats = useMemo(() => {
+    // Configurations for each category
+    const CATEGORY_CONFIGS = {
+      all: {
+        badge: '7 Areas',
+        areas: ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Full Body'],
+      },
+      Strength: {
+        badge: '7 Areas',
+        areas: ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Full Body'],
+      },
+      Bodyweight: {
+        badge: '6 Areas',
+        areas: ['Core', 'Arms', 'Chest', 'Back', 'Legs', 'Full Body'],
+      },
+      Yoga: {
+        badge: '5 Focus Areas',
+        areas: ['Spine & Mobility', 'Flexibility', 'Balance & Stability', 'Core & Alignment', 'Restoration & Recovery'],
+      },
+      Cardio: {
+        badge: '3 Focus Areas',
+        areas: ['Legs & Endurance', 'Core & Stamina', 'Full Body Conditioning'],
+      },
+      Sports: {
+        badge: '5 Focus Areas',
+        areas: ['Legs & Speed', 'Shoulders & Power', 'Core & Agility', 'Full Body Conditioning', 'Back & Stamina'],
+      },
+    };
+
+    const config = CATEGORY_CONFIGS[focusCategory] || CATEGORY_CONFIGS.all;
+    const targetAreas = config.areas;
+
     if (!workouts || workouts.length === 0) {
       return {
-        muscleFocus: [
-          { name: 'Legs', sessions: 0, barPercent: 0 },
-          { name: 'Chest', sessions: 0, barPercent: 0 },
-          { name: 'Back', sessions: 0, barPercent: 0 },
-          { name: 'Shoulders', sessions: 0, barPercent: 0 },
-          { name: 'Arms', sessions: 0, barPercent: 0 },
-        ],
-        focusAreaCount: 0,
-        primaryFocus: 'None',
+        focusList: targetAreas.map((name) => ({ name, sessions: 0, barPercent: 0 })),
+        focusAreaCount: targetAreas.length,
+        badgeLabel: config.badge,
+        primaryFocus: 'None Yet',
         totalSessions: 0,
       };
     }
@@ -206,79 +233,215 @@ const Workouts = () => {
       focusWorkouts = workouts.filter((w) => new Date(w.date) >= cutoff);
     }
 
-    const muscleCounts = {
-      Legs: 0,
-      Chest: 0,
-      Back: 0,
-      Shoulders: 0,
-      Arms: 0,
-      Core: 0,
-    };
+    // Initialize area counts
+    const areaCounts = {};
+    targetAreas.forEach((area) => {
+      areaCounts[area] = 0;
+    });
+
+    let matchedWorkoutCount = 0;
 
     focusWorkouts.forEach((w) => {
-      const matched = new Set();
-      for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
-        if (regexes.some((r) => r.test(w.name || ''))) {
-          matched.add(muscle);
-        }
+      const matchedInWorkout = new Set();
+      const wType = w.type || 'Strength';
+
+      // Check if this workout is eligible for the selected category
+      let isEligible = false;
+      if (focusCategory === 'all') {
+        isEligible = true;
+      } else if (focusCategory === 'Strength') {
+        isEligible = wType === 'Strength' || wType === 'Hybrid';
+      } else if (focusCategory === 'Bodyweight') {
+        isEligible = wType === 'Bodyweight' || wType === 'Hybrid';
+      } else if (focusCategory === 'Yoga') {
+        isEligible = wType === 'Yoga' || wType === 'Hybrid';
+      } else if (focusCategory === 'Cardio') {
+        isEligible = ['Cardio', 'Running', 'Cycling', 'HIIT'].includes(wType) || wType === 'Hybrid';
+      } else if (focusCategory === 'Sports') {
+        isEligible = wType === 'Sports' || wType === 'Hybrid';
       }
-      if (w.type === 'Running' || w.type === 'Cycling') {
-        matched.add('Legs');
-      }
+
+      if (!isEligible) return;
+
+      // Process exercises
       (w.exercises || []).forEach((ex) => {
-        // Feed the FIRST tag (Primary Mover) into Frequently Trained
-        const primary = getPrimaryMuscleGroup(ex);
-        if (primary) {
-          if (primary === 'Full Body') {
-            matched.add('Legs');
-            matched.add('Back');
-            matched.add('Chest');
-          } else if (muscleCounts[primary] !== undefined) {
-            matched.add(primary);
+        const rawPrimary = getPrimaryMuscleGroup(ex) || (ex.muscleGroup ? ex.muscleGroup.trim() : '');
+        const preset = findPresetExercise(ex.name || '');
+
+        if (focusCategory === 'all') {
+          // Map to 7 Anatomical Areas
+          if (targetAreas.includes(rawPrimary)) {
+            matchedInWorkout.add(rawPrimary);
+          } else if (rawPrimary.includes('Legs') || wType === 'Running' || wType === 'Cycling') {
+            matchedInWorkout.add('Legs');
+          } else if (rawPrimary.includes('Shoulders')) {
+            matchedInWorkout.add('Shoulders');
+          } else if (rawPrimary.includes('Core')) {
+            matchedInWorkout.add('Core');
+          } else if (rawPrimary.includes('Spine') || rawPrimary.includes('Back')) {
+            matchedInWorkout.add('Back');
+          } else if (rawPrimary.includes('Flexibility') || rawPrimary.includes('Full Body')) {
+            matchedInWorkout.add('Full Body');
+          } else {
+            // Regex fallback
+            for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
+              if (regexes.some((r) => r.test(ex.name || ''))) {
+                matchedInWorkout.add(muscle);
+                break;
+              }
+            }
           }
-        } else {
-          // Fallback to name regex rules on exercise name
-          for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
-            if (regexes.some((r) => r.test(ex.name || ''))) {
-              matched.add(muscle);
-              break;
+        } else if (focusCategory === 'Strength') {
+          // Only strength exercises or hybrid weights
+          const isStrengthEx =
+            wType === 'Strength' ||
+            (preset &&
+              (preset.category === 'Strength' ||
+                (Array.isArray(preset.category) && preset.category.includes('Strength')))) ||
+            targetAreas.includes(rawPrimary);
+          if (isStrengthEx) {
+            if (targetAreas.includes(rawPrimary)) {
+              matchedInWorkout.add(rawPrimary);
+            } else {
+              for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
+                if (regexes.some((r) => r.test(ex.name || ''))) {
+                  matchedInWorkout.add(muscle);
+                  break;
+                }
+              }
+            }
+          }
+        } else if (focusCategory === 'Bodyweight') {
+          const isBwEx =
+            wType === 'Bodyweight' ||
+            (preset &&
+              (preset.category === 'Bodyweight' ||
+                (Array.isArray(preset.category) && preset.category.includes('Bodyweight')))) ||
+            targetAreas.includes(rawPrimary);
+          if (isBwEx) {
+            if (targetAreas.includes(rawPrimary)) {
+              matchedInWorkout.add(rawPrimary);
+            } else {
+              for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
+                if (regexes.some((r) => r.test(ex.name || ''))) {
+                  matchedInWorkout.add(muscle);
+                  break;
+                }
+              }
+            }
+          }
+        } else if (focusCategory === 'Yoga') {
+          const isYogaEx =
+            wType === 'Yoga' ||
+            (preset &&
+              (preset.category === 'Yoga' ||
+                (Array.isArray(preset.category) && preset.category.includes('Yoga'))));
+          if (isYogaEx) {
+            if (targetAreas.includes(rawPrimary)) {
+              matchedInWorkout.add(rawPrimary);
+            } else {
+              const lower = (ex.name || '').toLowerCase();
+              if (lower.includes('surya') || lower.includes('cobra')) matchedInWorkout.add('Spine & Mobility');
+              else if (lower.includes('downward') || lower.includes('dog') || lower.includes('stretch')) matchedInWorkout.add('Flexibility');
+              else if (lower.includes('warrior') || lower.includes('balance')) matchedInWorkout.add('Balance & Stability');
+              else if (lower.includes('child') || lower.includes('rest')) matchedInWorkout.add('Restoration & Recovery');
+              else matchedInWorkout.add('Spine & Mobility');
+            }
+          }
+        } else if (focusCategory === 'Cardio') {
+          const isCardioEx =
+            ['Cardio', 'Running', 'Cycling', 'HIIT'].includes(wType) ||
+            (preset &&
+              (preset.category === 'Cardio' ||
+                (Array.isArray(preset.category) && preset.category.includes('Cardio'))));
+          if (isCardioEx) {
+            if (targetAreas.includes(rawPrimary)) {
+              matchedInWorkout.add(rawPrimary);
+            } else {
+              const lower = (ex.name || '').toLowerCase();
+              if (lower.includes('burpee') || lower.includes('circuit') || lower.includes('hiit')) matchedInWorkout.add('Full Body Conditioning');
+              else if (lower.includes('climber') || lower.includes('sprint')) matchedInWorkout.add('Core & Stamina');
+              else matchedInWorkout.add('Legs & Endurance');
+            }
+          }
+        } else if (focusCategory === 'Sports') {
+          const isSportsEx =
+            wType === 'Sports' ||
+            (preset &&
+              (preset.category === 'Sports' ||
+                (Array.isArray(preset.category) && preset.category.includes('Sports'))));
+          if (isSportsEx) {
+            if (targetAreas.includes(rawPrimary)) {
+              matchedInWorkout.add(rawPrimary);
+            } else {
+              const lower = (ex.name || '').toLowerCase();
+              if (lower.includes('boxing')) matchedInWorkout.add('Shoulders & Power');
+              else if (lower.includes('football') || lower.includes('badminton')) matchedInWorkout.add('Legs & Speed');
+              else if (lower.includes('swimming') || lower.includes('cricket')) matchedInWorkout.add('Full Body Conditioning');
+              else matchedInWorkout.add('Legs & Speed');
             }
           }
         }
       });
-      matched.forEach((m) => {
-        if (muscleCounts[m] !== undefined) {
-          muscleCounts[m] += 1;
+
+      // Workout-level fallback if exercises didn't match anything yet
+      if (matchedInWorkout.size === 0) {
+        if (focusCategory === 'Cardio' && ['Running', 'Cycling', 'Cardio'].includes(wType)) {
+          matchedInWorkout.add('Legs & Endurance');
+        } else if (focusCategory === 'Sports' && wType === 'Sports') {
+          matchedInWorkout.add('Legs & Speed');
+        } else if (focusCategory === 'Yoga' && wType === 'Yoga') {
+          matchedInWorkout.add('Spine & Mobility');
+        } else if ((focusCategory === 'Strength' && wType === 'Strength') || focusCategory === 'all') {
+          for (const [muscle, regexes] of Object.entries(MUSCLE_RULES)) {
+            if (regexes.some((r) => r.test(w.name || ''))) {
+              matchedInWorkout.add(muscle);
+            }
+          }
         }
-      });
+      }
+
+      if (matchedInWorkout.size > 0 || isEligible) {
+        matchedWorkoutCount += 1;
+        matchedInWorkout.forEach((area) => {
+          if (areaCounts[area] !== undefined) {
+            areaCounts[area] += 1;
+          }
+        });
+      }
     });
 
-    const sorted = Object.entries(muscleCounts)
-      .filter(([_, count]) => count > 0)
-      .sort((a, b) => b[1] - a[1]);
+    // Create focus items list
+    const maxVal = Math.max(...Object.values(areaCounts), 1);
+    const focusList = targetAreas.map((name) => {
+      const count = areaCounts[name] || 0;
+      return {
+        name,
+        sessions: count,
+        barPercent: count === 0 ? 0 : Math.max(12, Math.round((count / maxVal) * 88)),
+      };
+    });
 
-    const activeList = sorted.length > 0 ? sorted : Object.entries(muscleCounts).slice(0, 5);
-    const maxVal = Math.max(...activeList.map(([_, c]) => c), 1);
+    // Stable sort: areas with sessions appear first (highest count first), zero-session areas keep original order
+    focusList.sort((a, b) => {
+      if (b.sessions !== a.sessions) {
+        return b.sessions - a.sessions;
+      }
+      return targetAreas.indexOf(a.name) - targetAreas.indexOf(b.name);
+    });
 
-    const muscleFocus = activeList.slice(0, 5).map(([name, sessions]) => ({
-      name,
-      sessions,
-      barPercent: Math.max(12, Math.round((sessions / maxVal) * 88)),
-    }));
-
-    const topTwo = muscleFocus
-      .filter((m) => m.sessions > 0)
-      .slice(0, 2)
-      .map((m) => m.name);
+    const activeAreas = focusList.filter((m) => m.sessions > 0);
+    const topTwo = activeAreas.slice(0, 2).map((m) => m.name);
     const primaryFocus = topTwo.length > 0 ? topTwo.join(' & ') : 'General Fitness';
 
     return {
-      muscleFocus,
-      focusAreaCount: muscleFocus.filter((m) => m.sessions > 0).length,
+      focusList,
+      focusAreaCount: targetAreas.length,
+      badgeLabel: config.badge,
       primaryFocus,
-      totalSessions: focusWorkouts.length,
+      totalSessions: matchedWorkoutCount,
     };
-  }, [workouts, focusTimeframe]);
+  }, [workouts, focusTimeframe, focusCategory]);
 
   // 2. History Overview Dynamic 4-Week Bar Chart & Average
   const { historyOverviewData, weeklyAvg } = useMemo(() => {
@@ -475,7 +638,17 @@ const Workouts = () => {
                   className="p-1.5 rounded-2 bg-emerald-subtle text-emerald d-flex align-items-center justify-content-center flex-shrink-0"
                   style={{ width: 32, height: 32 }}
                 >
-                  <DumbbellIcon size={16} />
+                  {focusCategory === 'Yoga' ? (
+                    <ActivityIcon size={16} />
+                  ) : focusCategory === 'Cardio' ? (
+                    <FlameIcon size={16} />
+                  ) : focusCategory === 'Sports' ? (
+                    <TrophyIcon size={16} />
+                  ) : focusCategory === 'Bodyweight' ? (
+                    <ZapIcon size={16} />
+                  ) : (
+                    <DumbbellIcon size={16} />
+                  )}
                 </div>
                 <h6 className="fw-bold text-primary-custom mb-0 text-nowrap" style={{ fontSize: '0.95rem' }}>
                   Frequently Trained
@@ -486,8 +659,21 @@ const Workouts = () => {
                   className="badge rounded-pill border border-secondary border-opacity-30 text-muted px-2 py-0.5 smaller fw-medium bg-transparent d-none d-sm-inline text-nowrap"
                   style={{ fontSize: '0.72rem' }}
                 >
-                  {muscleFocusStats.focusAreaCount} Areas
+                  {muscleFocusStats.badgeLabel}
                 </span>
+                <select
+                  value={focusCategory}
+                  onChange={(e) => setFocusCategory(e.target.value)}
+                  className="overview-timeframe-select"
+                  aria-label="Frequently trained category filter"
+                >
+                  <option value="all">All Categories</option>
+                  <option value="Strength">Strength</option>
+                  <option value="Bodyweight">Bodyweight</option>
+                  <option value="Yoga">Yoga</option>
+                  <option value="Cardio">Cardio</option>
+                  <option value="Sports">Sports</option>
+                </select>
                 <select
                   value={focusTimeframe}
                   onChange={(e) => setFocusTimeframe(e.target.value)}
@@ -501,17 +687,21 @@ const Workouts = () => {
               </div>
             </div>
 
-            {/* Generously Spaced Muscle Rows: All bars same original green color */}
-            <div className="d-flex flex-column gap-3 my-auto py-1">
-              {muscleFocusStats.muscleFocus.map((m) => (
-                <div key={m.name} className="d-flex align-items-center justify-content-between gap-3">
-                  <span className="fw-semibold text-primary-custom smaller" style={{ minWidth: 72, fontSize: '0.84rem' }}>
+            {/* Generously Spaced Focus Rows: All bars same original green color */}
+            <div className={`d-flex flex-column ${muscleFocusStats.focusList.length >= 7 ? 'gap-2' : 'gap-2.5'} my-auto py-1`}>
+              {muscleFocusStats.focusList.map((m) => (
+                <div key={m.name} className="d-flex align-items-center justify-content-between gap-2.5">
+                  <span
+                    className="fw-semibold text-primary-custom smaller text-truncate"
+                    style={{ minWidth: 88, maxWidth: 135, fontSize: '0.82rem' }}
+                    title={m.name}
+                  >
                     {m.name}
                   </span>
                   <div
-                    className="flex-grow-1 mx-3"
+                    className="flex-grow-1 mx-2"
                     style={{
-                      height: 8,
+                      height: 7,
                       backgroundColor: 'var(--border-color)',
                       borderRadius: 9999,
                       overflow: 'hidden',
@@ -527,7 +717,7 @@ const Workouts = () => {
                       }}
                     />
                   </div>
-                  <span className="text-muted smaller fw-medium text-end" style={{ minWidth: 72, fontSize: '0.84rem' }}>
+                  <span className="text-muted smaller fw-medium text-end flex-shrink-0" style={{ minWidth: 68, fontSize: '0.82rem' }}>
                     <strong className="text-primary-custom">{m.sessions}</strong> {m.sessions === 1 ? 'session' : 'sessions'}
                   </span>
                 </div>

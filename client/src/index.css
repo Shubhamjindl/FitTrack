@@ -368,6 +368,32 @@ a {
   border: 1px solid #c7d2fe;
 }
 
+/* Target Focus 1-Tap Pills (High contrast in Light & Dark modes) */
+.target-tag-pill {
+  font-size: 0.74rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 9999px;
+  padding: 0.22rem 0.65rem;
+  border: 1px solid #cbd5e1;
+  background-color: #f1f5f9;
+  color: #334155 !important;
+  transition: all 0.15s ease;
+  line-height: 1.25;
+}
+.target-tag-pill:hover {
+  border-color: #10b981;
+  color: #059669 !important;
+  background-color: #e2e8f0;
+}
+.target-tag-pill.active {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #059669 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.3);
+}
+
 /* Stat Pill Component */
 .stat-pill {
   font-size: 0.78rem;
@@ -809,6 +835,24 @@ a {
   background-color: #27272a;
   color: #e4e4e7;
   border-color: #3f3f46;
+}
+
+[data-theme="dark"] .target-tag-pill {
+  background-color: #27272a;
+  color: #f4f4f5 !important;
+  border-color: #52525b;
+}
+
+[data-theme="dark"] .target-tag-pill:hover {
+  background-color: #3f3f46;
+  border-color: #34d399;
+  color: #34d399 !important;
+}
+
+[data-theme="dark"] .target-tag-pill.active {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
 }
 
 [data-theme="dark"] .exercise-chip {
