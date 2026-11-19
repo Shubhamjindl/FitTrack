@@ -353,6 +353,90 @@ const WorkoutForm = () => {
     ];
   };
 
+  // Curated movement demonstration GIFs from CDN
+  const getExerciseGifUrl = (exercise) => {
+    if (!exercise) return null;
+    const name = (exercise.name || '').toLowerCase();
+
+    if (name.includes('bench press')) {
+      if (name.includes('incline')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/dumbbell-incline-bench-press.gif';
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/barbell-bench-press.gif';
+    }
+    if (name.includes('squat')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/barbell-full-squat.gif';
+    }
+    if (name.includes('deadlift')) {
+      if (name.includes('romanian')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/barbell-romanian-deadlift.gif';
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/barbell-deadlift.gif';
+    }
+    if (name.includes('shoulder press') || name.includes('overhead')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/delts/barbell-seated-overhead-press.gif';
+    }
+    if (name.includes('bicep curl') || name.includes('curl')) {
+      if (name.includes('incline')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/biceps/dumbbell-incline-biceps-curl.gif';
+      if (name.includes('leg curl')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/hamstrings/lever-lying-leg-curl.gif';
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/biceps/barbell-curl.gif';
+    }
+    if (name.includes('lat pulldown') || name.includes('pulldown')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/lats/cable-lat-pulldown-full-range-of-motion.gif';
+    }
+    if (name.includes('fly')) {
+      if (name.includes('cable')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/cable-standing-fly.gif';
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/dumbbell-fly.gif';
+    }
+    if (name.includes('row')) {
+      if (name.includes('bent over')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/upper-back/barbell-bent-over-row.gif';
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/upper-back/cable-seated-row.gif';
+    }
+    if (name.includes('lateral raise')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/delts/dumbbell-lateral-raise.gif';
+    }
+    if (name.includes('pushdown') || name.includes('triceps')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/triceps/cable-pushdown-with-rope-attachment.gif';
+    }
+    if (name.includes('leg press')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/sled-45-leg-press.gif';
+    }
+    if (name.includes('calf raise')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/calves/barbell-standing-calf-raise.gif';
+    }
+    if (name.includes('lunge')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/walking-lunge.gif';
+    }
+    if (name.includes('push-up')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/push-up.gif';
+    }
+    if (name.includes('pull-up')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/lats/pull-up.gif';
+    }
+    if (name.includes('dip')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/chest-dip.gif';
+    }
+    if (name.includes('leg raise')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/abs/hanging-leg-raise.gif';
+    }
+    if (name.includes('plank')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/abs/weighted-front-plank.gif';
+    }
+    if (name.includes('burpee')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/burpee.gif';
+    }
+    if (name.includes('jump rope') || name.includes('rope')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/jump-rope.gif';
+    }
+    if (name.includes('mountain climber')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/mountain-climber.gif';
+    }
+    if (name.includes('treadmill') || name.includes('running')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/run-equipment.gif';
+    }
+    if (name.includes('cycling')) {
+      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/cycle-cross-trainer.gif';
+    }
+
+    return exercise.gifUrl || null;
+  };
+
   // Determine if weight is hidden based on workout category
   const isWeightHidden = ['Yoga', 'Cardio', 'Running', 'Cycling', 'HIIT'].includes(type);
 
@@ -984,156 +1068,129 @@ const WorkoutForm = () => {
       </form>
 
       {/* Exercise Form & Posture Guide Modal */}
-      {selectedGuideExercise && (
-        <div
-          className="modal fade show d-block"
-          tabIndex="-1"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.72)', zIndex: 1060 }}
-          onClick={() => setSelectedGuideExercise(null)}
-        >
+      {selectedGuideExercise && (() => {
+        const gifUrl = getExerciseGifUrl(selectedGuideExercise);
+        return (
           <div
-            className="modal-dialog modal-dialog-centered"
-            style={{ maxWidth: '480px' }}
-            onClick={(e) => e.stopPropagation()}
+            className="modal fade show d-block"
+            tabIndex="-1"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.72)', zIndex: 1060 }}
+            onClick={() => setSelectedGuideExercise(null)}
           >
             <div
-              className="modal-content border-0 shadow-lg overflow-hidden"
-              style={{
-                borderRadius: '20px',
-                backgroundColor: 'var(--bg-card)',
-                color: 'var(--text-primary)',
-              }}
+              className="modal-dialog modal-dialog-centered"
+              style={{ maxWidth: '440px' }}
+              onClick={(e) => e.stopPropagation()}
             >
-              {/* Header */}
               <div
-                className="modal-header border-bottom py-3 px-4 position-relative"
-                style={{ borderColor: 'var(--border-color)' }}
+                className="modal-content border-0 shadow-lg overflow-hidden"
+                style={{
+                  borderRadius: '20px',
+                  backgroundColor: 'var(--bg-card)',
+                  color: 'var(--text-primary)',
+                }}
               >
-                <div className="pe-4">
-                  <div className="d-flex align-items-center gap-2 mb-1">
-                    <span
-                      className="badge px-2 py-0.5 rounded-pill fw-semibold"
-                      style={{
-                        fontSize: '0.72rem',
-                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
-                        color: 'var(--primary-green)',
-                        border: '1px solid rgba(16, 185, 129, 0.3)',
-                      }}
-                    >
-                      {selectedGuideExercise.categoryLabel || selectedGuideExercise.category || 'Exercise'}
-                    </span>
-                    {selectedGuideExercise.equipment && (
+                {/* Header */}
+                <div
+                  className="modal-header border-bottom py-3 px-4 position-relative"
+                  style={{ borderColor: 'var(--border-color)' }}
+                >
+                  <div className="pe-4">
+                    <div className="d-flex align-items-center gap-2 mb-1">
                       <span
-                        className="badge px-2 py-0.5 rounded-pill text-muted fw-normal"
+                        className="badge px-2 py-0.5 rounded-pill fw-semibold"
                         style={{
                           fontSize: '0.72rem',
-                          backgroundColor: 'var(--bg-section)',
-                          border: '1px solid var(--border-color)',
+                          backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                          color: 'var(--primary-green)',
+                          border: '1px solid rgba(16, 185, 129, 0.3)',
                         }}
                       >
-                        {selectedGuideExercise.equipment}
+                        {selectedGuideExercise.categoryLabel || selectedGuideExercise.category || 'Exercise'}
                       </span>
-                    )}
-                  </div>
-                  <h5 className="modal-title fw-bold text-primary-custom mb-0" style={{ fontSize: '1.22rem' }}>
-                    {selectedGuideExercise.name}
-                  </h5>
-                </div>
-                <button
-                  type="button"
-                  className="btn-close-custom"
-                  aria-label="Close"
-                  onClick={() => setSelectedGuideExercise(null)}
-                >
-                  <CloseIcon size={16} />
-                </button>
-              </div>
-
-              {/* Body */}
-              <div className="modal-body p-4 text-center">
-                {/* Large 170px Vector Posture Box */}
-                <div
-                  className="exercise-posture-preview-box"
-                  dangerouslySetInnerHTML={{ __html: selectedGuideExercise.svg }}
-                />
-
-                {/* Target Muscle Groups */}
-                <div
-                  className="p-3 rounded-3 text-start mb-3"
-                  style={{
-                    backgroundColor: 'var(--bg-section)',
-                    border: '1px solid var(--border-color)',
-                  }}
-                >
-                  <div className="small fw-bold text-primary-custom mb-2 d-flex align-items-center gap-1.5">
-                    <TargetIcon size={16} className="text-emerald" />
-                    <span>Target Muscle Groups</span>
-                  </div>
-                  <div className="d-flex flex-wrap gap-1.5">
-                    {selectedGuideExercise.muscles ? (
-                      selectedGuideExercise.muscles.split(',').map((m, idx) => (
+                      {selectedGuideExercise.equipment && (
                         <span
-                          key={m}
-                          className="badge px-2.5 py-1 rounded-pill fw-semibold"
+                          className="badge px-2 py-0.5 rounded-pill text-muted fw-normal"
                           style={{
-                            fontSize: '0.76rem',
-                            backgroundColor: idx === 0 ? 'rgba(16, 185, 129, 0.16)' : 'var(--bg-card)',
-                            color: idx === 0 ? 'var(--primary-green)' : 'var(--text-muted)',
-                            border: idx === 0 ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid var(--border-color)',
+                            fontSize: '0.72rem',
+                            backgroundColor: 'var(--bg-section)',
+                            border: '1px solid var(--border-color)',
                           }}
                         >
-                          {idx === 0 ? `★ ${m.trim()} (Primary)` : m.trim()}
+                          {selectedGuideExercise.equipment}
                         </span>
-                      ))
-                    ) : (
-                      <span className="text-muted smaller">Custom movement</span>
-                    )}
+                      )}
+                    </div>
+                    <h5 className="modal-title fw-bold text-primary-custom mb-0" style={{ fontSize: '1.22rem' }}>
+                      {selectedGuideExercise.name}
+                    </h5>
                   </div>
+                  <button
+                    type="button"
+                    className="btn-close-custom"
+                    aria-label="Close"
+                    onClick={() => setSelectedGuideExercise(null)}
+                  >
+                    <CloseIcon size={16} />
+                  </button>
                 </div>
 
-                {/* Form & Posture Cues */}
-                <div
-                  className="p-3 rounded-3 text-start"
-                  style={{
-                    backgroundColor: 'var(--bg-section)',
-                    border: '1px solid var(--border-color)',
-                  }}
-                >
-                  <div className="small fw-bold text-primary-custom mb-2 d-flex align-items-center gap-1.5">
-                    <ZapIcon size={16} className="text-emerald" />
-                    <span>Form & Posture Cues</span>
+                {/* Body */}
+                <div className="modal-body p-4 text-center">
+                  {/* Movement Demonstration GIF / Vector Posture Fallback */}
+                  <div className="exercise-movement-gif-container mx-auto mb-3">
+                    {gifUrl ? (
+                      <img
+                        src={gifUrl}
+                        alt={selectedGuideExercise.name}
+                        className="exercise-movement-gif-img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          const fb = e.target.nextElementSibling;
+                          if (fb) fb.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div
+                      className="exercise-posture-preview-box mb-0"
+                      style={{
+                        display: gifUrl ? 'none' : 'flex',
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '14px',
+                      }}
+                      dangerouslySetInnerHTML={{ __html: selectedGuideExercise.svg }}
+                    />
                   </div>
-                  <ul className="list-unstyled mb-0 d-flex flex-column gap-2 smaller text-muted" style={{ fontSize: '0.82rem' }}>
-                    {getExerciseFormCues(selectedGuideExercise).map((cue, cIdx) => (
-                      <li key={cIdx} className="d-flex align-items-start gap-2">
-                        <span className="text-emerald fw-bold mt-0.5">✓</span>
-                        <span>{cue}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
 
-              {/* Footer */}
-              <div
-                className="modal-footer border-top py-2.5 px-4 d-flex justify-content-between align-items-center"
-                style={{ borderColor: 'var(--border-color)' }}
-              >
-                <span className="smaller text-muted" style={{ fontSize: '0.76rem' }}>
-                  Interactive Posture System · UpToFit
-                </span>
-                <button
-                  type="button"
-                  className="btn btn-primary-green btn-sm px-4 fw-semibold"
-                  onClick={() => setSelectedGuideExercise(null)}
-                >
-                  Got It
-                </button>
+                  {/* Form & Posture Tips (Only Tips) */}
+                  <div
+                    className="p-3 rounded-3 text-start"
+                    style={{
+                      backgroundColor: 'var(--bg-section)',
+                      border: '1px solid var(--border-color)',
+                    }}
+                  >
+                    <div className="small fw-bold text-primary-custom mb-2 d-flex align-items-center gap-1.5">
+                      <ZapIcon size={16} className="text-emerald" />
+                      <span>Form & Posture Tips</span>
+                    </div>
+                    <ul className="list-unstyled mb-0 d-flex flex-column gap-2 smaller text-muted" style={{ fontSize: '0.82rem' }}>
+                      {getExerciseFormCues(selectedGuideExercise).map((cue, cIdx) => (
+                        <li key={cIdx} className="d-flex align-items-start gap-2">
+                          <span className="text-emerald fw-bold mt-0.5">✓</span>
+                          <span>{cue}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 };
