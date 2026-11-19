@@ -1,11 +1,11 @@
 /**
- * Curated list of 47 foundational exercises across 6 core categories:
+ * Curated list of 43 foundational exercises across 5 core disciplines:
  * - Strength (Gym & Weights - 21 exercises)
  * - Bodyweight (Calisthenics & Core - 7 exercises)
  * - Yoga (Asanas & Flexibility - 5 exercises)
- * - Cardio (Running, Cycling & Conditioning - 4 exercises)
+ * - Cardio (Treadmill, Cycling & Conditioning - 5 exercises)
  * - Sports (Sports & Athletics - 5 exercises)
- * - Hybrid (Hybrid & Mixed Training - 4 exercises)
+ * (Hybrid & Mixed Training draws seamlessly from all disciplines)
  */
 
 export const EXERCISE_DATABASE = [
@@ -706,72 +706,6 @@ export const EXERCISE_DATABASE = [
     weightLabel: 'N/A',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="26" cy="18" r="4" fill="currentColor"/><line x1="26" y1="22" x2="26" y2="38" stroke-width="3.5"/><polyline points="26,38 20,52"/><polyline points="26,38 32,52"/><polyline points="26,26 36,22 46,22" stroke-width="3"/><circle cx="48" cy="22" r="4" fill="#6366f1"/><circle cx="34" cy="30" r="3" fill="#6366f1"/></svg>`,
   },
-
-  // ── 6. HYBRID (Hybrid & Mixed Training) ────────────────────
-  {
-    id: 'kettlebell-swings',
-    name: 'Kettlebell Swings',
-    category: ['Hybrid', 'Strength', 'Cardio'],
-    categoryLabel: 'Hybrid & Mixed Training',
-    muscles: 'Full Body, Glutes, Hamstrings, Core',
-    equipment: 'Kettlebell',
-    mode: 'cardio',
-    defaultSets: 4,
-    defaultReps: 20,
-    defaultWeight: 20,
-    unit: 'kg',
-    repsLabel: 'Reps',
-    weightLabel: 'Weight (kg)',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-cyan-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="18" r="4" fill="currentColor"/><line x1="28" y1="22" x2="32" y2="38" stroke-width="3.5"/><polyline points="32,38 28,52"/><polyline points="32,38 38,52"/><line x1="28" y1="26" x2="44" y2="28" stroke-width="2.5"/><circle cx="48" cy="28" r="4" fill="#06b6d4"/></svg>`,
-  },
-  {
-    id: 'dumbbell-thrusters',
-    name: 'Dumbbell Thrusters',
-    category: ['Hybrid', 'Strength'],
-    categoryLabel: 'Hybrid & Mixed Training',
-    muscles: 'Full Body, Shoulders, Quads, Core',
-    equipment: 'Dumbbells',
-    mode: 'weight',
-    defaultSets: 4,
-    defaultReps: 12,
-    defaultWeight: 16,
-    unit: 'kg',
-    repsLabel: 'Reps',
-    weightLabel: 'Weight (kg)',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-cyan-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="14" r="4" fill="currentColor"/><line x1="32" y1="18" x2="32" y2="36" stroke-width="3.5"/><polyline points="32,36 24,46 22,54"/><polyline points="32,36 40,46 42,54"/><line x1="18" y1="12" x2="28" y2="20"/><line x1="46" y1="12" x2="36" y2="20"/><circle cx="16" cy="12" r="3" fill="#06b6d4"/><circle cx="48" cy="12" r="3" fill="#06b6d4"/></svg>`,
-  },
-  {
-    id: 'wall-balls',
-    name: 'Wall Balls',
-    category: ['Hybrid', 'Cardio'],
-    categoryLabel: 'Hybrid & Mixed Training',
-    muscles: 'Full Body, Shoulders, Quads, Core',
-    equipment: 'Medicine Ball & Wall Target',
-    mode: 'weight',
-    defaultSets: 4,
-    defaultReps: 15,
-    defaultWeight: 9,
-    unit: 'kg',
-    repsLabel: 'Reps',
-    weightLabel: 'Weight (kg)',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-cyan-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="22" r="4" fill="currentColor"/><line x1="28" y1="26" x2="24" y2="38" stroke-width="3.5"/><polyline points="24,38 16,46 20,54"/><polyline points="28,28 38,20 44,14"/><circle cx="46" cy="12" r="5" fill="#06b6d4"/><line x1="56" y1="8" x2="56" y2="54" stroke="currentColor" stroke-width="2"/></svg>`,
-  },
-  {
-    id: 'dynamic-mobility',
-    name: 'Dynamic Mobility & Stretching',
-    category: ['Hybrid', 'Yoga'],
-    categoryLabel: 'Hybrid & Mixed Training',
-    muscles: 'Full Body, Hips, Hamstrings, Back',
-    equipment: 'Floor / Mat',
-    mode: 'hold',
-    defaultSets: 3,
-    defaultReps: 45,
-    defaultWeight: 0,
-    unit: 'sec',
-    repsLabel: 'Hold / Flow Duration (sec)',
-    weightLabel: 'N/A',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-cyan-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="24" cy="20" r="4" fill="currentColor"/><polyline points="24,24 28,38 42,42 50,54"/><polyline points="28,32 38,28 48,32"/></svg>`,
-  },
 ];
 
 /**
@@ -823,13 +757,11 @@ const matchesCategory = (ex, targetCat) => {
 
 /**
  * Filter exercises matching a specific category
- * For 'Hybrid' (Hybrid & Mixed Training), lists all exercises with dedicated hybrid circuits on top!
+ * For 'Hybrid' (Hybrid & Mixed Training) or 'Other', draws from the full foundational library
  */
 export const getExercisesByCategory = (category = 'Strength') => {
   if (category === 'Hybrid' || category === 'Other') {
-    const hybridExercises = EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, 'Hybrid'));
-    const others = EXERCISE_DATABASE.filter((ex) => !matchesCategory(ex, 'Hybrid'));
-    return [...hybridExercises, ...others];
+    return EXERCISE_DATABASE;
   }
   return EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, category));
 };
@@ -844,10 +776,6 @@ export const searchExercises = (query = '', category = null) => {
   let list = EXERCISE_DATABASE;
   if (category && category !== 'Other' && category !== 'Hybrid') {
     list = EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, category));
-  } else if (category === 'Hybrid' || category === 'Other') {
-    const hybridExercises = EXERCISE_DATABASE.filter((ex) => matchesCategory(ex, 'Hybrid'));
-    const others = EXERCISE_DATABASE.filter((ex) => !matchesCategory(ex, 'Hybrid'));
-    list = [...hybridExercises, ...others];
   }
 
   if (!q) {

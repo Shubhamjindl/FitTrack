@@ -326,7 +326,7 @@ const WorkoutForm = () => {
         sets: 'Sets / Rounds',
         reps: 'Reps / Duration',
         weight: 'Weight (kg, optional)',
-        placeholder: 'e.g. Kettlebell Swings, Dumbbell Thrusters, Circuit Training, Burpees',
+        placeholder: 'e.g. Barbell Bench Press, Treadmill, Push-ups, Cycling',
       };
     }
     return {
