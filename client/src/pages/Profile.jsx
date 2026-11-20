@@ -298,8 +298,8 @@ const Profile = () => {
                   style={{
                     width: 58,
                     height: 58,
-                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-                    color: '#10b981',
+                    backgroundColor: 'rgba(var(--accent-rgb), 0.12)',
+                    color: 'var(--primary-green)',
                   }}
                 >
                   <LockIcon size={26} />

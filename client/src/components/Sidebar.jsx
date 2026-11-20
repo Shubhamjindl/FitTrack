@@ -73,17 +73,17 @@ const Sidebar = () => {
             {/* Mountain Layer 1 (Background) */}
             <path
               d="M0 140 L30 85 L70 115 L120 70 L170 105 L220 65 L240 80 L240 140 Z"
-              fill="rgba(16, 185, 129, 0.08)"
+              fill="rgba(var(--accent-rgb, 16, 185, 129), 0.08)"
             />
             {/* Mountain Layer 2 (Midground) */}
             <path
               d="M0 140 L45 95 L95 125 L150 80 L200 115 L240 90 L240 140 Z"
-              fill="rgba(16, 185, 129, 0.12)"
+              fill="rgba(var(--accent-rgb, 16, 185, 129), 0.14)"
             />
             {/* Mountain Ridge (Foreground) */}
             <path
               d="M0 140 L60 105 L110 130 L160 95 L210 120 L240 105 L240 140 Z"
-              fill="rgba(4, 120, 87, 0.22)"
+              fill="rgba(var(--accent-rgb, 16, 185, 129), 0.25)"
             />
             {/* Running Athlete Silhouette on the Peak */}
             <g transform="translate(142, 60) scale(0.65)" fill="rgba(255, 255, 255, 0.35)">

@@ -154,7 +154,7 @@ const Analytics = () => {
   if (loading) {
     return (
       <div className="container py-5 text-center">
-        <div className="spinner-border text-success" role="status">
+        <div className="spinner-border" style={{ color: accentColor }} role="status">
           <span className="visually-hidden">Loading Analytics...</span>
         </div>
         <p className="text-muted mt-2 small">Computing workout metrics & trends...</p>

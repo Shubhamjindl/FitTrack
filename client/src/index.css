@@ -89,6 +89,21 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
 }
 
+[data-accent="red"] .app-sidebar {
+  background: linear-gradient(180deg, #180507 0%, #2b0b0e 55%, #180507 100%) !important;
+  border-right-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+[data-accent="red"] .sidebar-watermark path:nth-child(1) {
+  fill: rgba(239, 68, 68, 0.08) !important;
+}
+[data-accent="red"] .sidebar-watermark path:nth-child(2) {
+  fill: rgba(239, 68, 68, 0.14) !important;
+}
+[data-accent="red"] .sidebar-watermark path:nth-child(3) {
+  fill: rgba(185, 28, 28, 0.25) !important;
+}
+
 [data-accent="red"] .card-pastel-mint {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%) !important;
   border-color: #fca5a5 !important;
@@ -103,6 +118,27 @@
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.1) 100%) !important;
   border-color: rgba(239, 68, 68, 0.3) !important;
   color: #fca5a5 !important;
+}
+
+/* Global Bootstrap overrides in Red Mode */
+.spinner-border.text-success,
+.spinner-border.text-emerald {
+  color: var(--primary-green) !important;
+}
+
+[data-accent="red"] .text-success {
+  color: var(--primary-green) !important;
+}
+
+[data-accent="red"] .badge.bg-light.text-success {
+  color: var(--primary-green) !important;
+  border-color: rgba(239, 68, 68, 0.25) !important;
+}
+
+[data-accent="red"] .alert-success {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+  border-color: rgba(239, 68, 68, 0.25) !important;
+  color: #f87171 !important;
 }
 
 /* Dynamic SVG strokes & fills in Red Mode */
@@ -271,9 +307,9 @@ a {
 }
 
 .btn-subtle-green {
-  background-color: var(--primary-green-subtle);
-  color: var(--primary-green-dark);
-  border: none;
+  background-color: var(--primary-green-light);
+  color: var(--primary-green);
+  border: 1px solid rgba(var(--accent-rgb), 0.22);
   font-weight: 600;
   border-radius: var(--radius-md);
   padding: 0.55rem 1.2rem;
@@ -284,8 +320,22 @@ a {
 }
 
 .btn-subtle-green:hover {
-  background-color: #a7f3d0;
-  color: #064e3b;
+  background-color: var(--primary-green);
+  color: #ffffff;
+  border-color: var(--primary-green);
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .btn-subtle-green {
+  background-color: rgba(var(--accent-rgb), 0.16);
+  color: var(--primary-green-bright);
+  border-color: rgba(var(--accent-rgb), 0.28);
+}
+
+[data-theme="dark"] .btn-subtle-green:hover {
+  background-color: var(--primary-green);
+  color: #ffffff;
+  border-color: var(--primary-green);
 }
 
 /* Card Styling */
@@ -1047,9 +1097,9 @@ a {
 }
 
 [data-theme="dark"] .alert-success {
-  background-color: rgba(16, 185, 129, 0.12);
-  border-color: rgba(16, 185, 129, 0.25);
-  color: #6ee7b7;
+  background-color: rgba(var(--accent-rgb), 0.12);
+  border-color: rgba(var(--accent-rgb), 0.25);
+  color: var(--primary-green-bright);
 }
 
 /* ==========================================================================

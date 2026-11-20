@@ -1003,7 +1003,7 @@ const Workouts = () => {
 
         {loading ? (
           <div className="py-5 text-center">
-            <div className="spinner-border text-success" role="status">
+            <div className="spinner-border" style={{ color: accentColor }} role="status">
               <span className="visually-hidden">Loading workouts...</span>
             </div>
             <p className="text-muted mt-2 small">Loading workout sessions...</p>

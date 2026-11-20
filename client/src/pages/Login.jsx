@@ -140,7 +140,7 @@ const Login = () => {
 
               <div className="text-center text-muted small">
                 Don't have an account yet?{' '}
-                <Link to="/register" className="fw-semibold text-success text-decoration-none">
+                <Link to="/register" className="fw-semibold text-emerald text-decoration-none">
                   Create an account
                 </Link>
               </div>
