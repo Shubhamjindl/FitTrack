@@ -13,7 +13,6 @@ import { useAuth } from '../context/AuthContext';
 import StatCard from '../components/StatCard';
 import RecentWorkoutCard from '../components/RecentWorkoutCard';
 import WorkoutModal from '../components/WorkoutModal';
-import HeroBannerGraphic from '../components/HeroBannerGraphic';
 import {
   DumbbellIcon,
   ClockIcon,
@@ -149,7 +148,11 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="hero-graphic-wrap">
-          <HeroBannerGraphic />
+          <img
+            src="/hero-exercise.jpg"
+            alt="Athlete performing barbell exercise"
+            className="hero-exercise-photo"
+          />
         </div>
       </div>
 
