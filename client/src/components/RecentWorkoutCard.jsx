@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../context/ThemeContext';
 import {
   DumbbellIcon,
   RunningIcon,
@@ -10,13 +11,13 @@ import {
   TrophyIcon,
 } from './Icons';
 
-const getWorkoutTypeTheme = (type = 'Strength') => {
+const getWorkoutTypeTheme = (type = 'Strength', accentColor = '#10b981', isRed = false) => {
   switch (type) {
     case 'Strength':
       return {
-        accent: '#10b981',
-        bg: 'rgba(16, 185, 129, 0.12)',
-        color: '#059669',
+        accent: accentColor,
+        bg: isRed ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)',
+        color: isRed ? '#dc2626' : '#059669',
         icon: <DumbbellIcon size={16} />,
       };
     case 'Bodyweight':
@@ -72,9 +73,9 @@ const getWorkoutTypeTheme = (type = 'Strength') => {
       };
     default:
       return {
-        accent: '#10b981',
-        bg: 'rgba(16, 185, 129, 0.12)',
-        color: '#059669',
+        accent: accentColor,
+        bg: isRed ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)',
+        color: isRed ? '#dc2626' : '#059669',
         icon: <DumbbellIcon size={16} />,
       };
   }
@@ -91,7 +92,9 @@ const formatDate = (dateString) => {
 };
 
 const RecentWorkoutCard = ({ workout, onClick }) => {
-  const theme = getWorkoutTypeTheme(workout.type);
+  const { accentColor, accent } = useTheme();
+  const isRed = accent === 'red';
+  const theme = getWorkoutTypeTheme(workout.type, accentColor, isRed);
   const exerciseCount = workout.exercises ? workout.exercises.length : 0;
 
   return (

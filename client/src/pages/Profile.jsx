@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import ProfileSummitGraphic from '../components/ProfileSummitGraphic';
 import {
   UserIcon,
@@ -7,10 +8,14 @@ import {
   CalendarIcon,
   LockIcon,
   CheckIcon,
+  PaletteIcon,
+  SunIcon,
+  MoonIcon,
 } from '../components/Icons';
 
 const Profile = () => {
   const { user, updateProfile, changePassword, isDemo: authDemo } = useAuth();
+  const { theme, setTheme, accent, setAccent } = useTheme();
   const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
 
   // Name Update form
@@ -383,6 +388,149 @@ const Profile = () => {
                 </button>
               </form>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Theme & Accent Personalization Card */}
+      <div className="card card-fittrack p-4 mt-4">
+        <div className="d-flex align-items-center mb-3" style={{ gap: '0.65rem' }}>
+          <div className="section-icon-badge flex-shrink-0">
+            <PaletteIcon size={18} />
+          </div>
+          <div>
+            <h5 className="fw-semibold text-primary-custom mb-0" style={{ fontSize: '1rem', fontWeight: 600 }}>
+              Theme & Accent Personalization
+            </h5>
+            <p className="text-muted smaller mb-0">
+              Customize your interface display mode and signature accent color
+            </p>
+          </div>
+        </div>
+
+        <div className="row g-3">
+          {/* Accent Color Selection */}
+          <div className="col-12 col-md-6">
+            <label className="form-label small fw-semibold d-block mb-2">Signature Accent Color</label>
+            <div className="d-flex gap-2.5">
+              {/* Emerald Green */}
+              <button
+                type="button"
+                onClick={() => setAccent('green')}
+                className="flex-grow-1 p-3 rounded-3 text-start border d-flex align-items-center justify-content-between"
+                style={{
+                  backgroundColor: 'var(--bg-section)',
+                  borderColor: accent === 'green' ? 'var(--primary-green)' : 'var(--border-color)',
+                  borderWidth: accent === 'green' ? 2 : 1,
+                  boxShadow: accent === 'green' ? '0 0 12px rgba(16, 185, 129, 0.2)' : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div className="d-flex align-items-center gap-2.5">
+                  <span
+                    style={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: '50%',
+                      backgroundColor: '#10b981',
+                      boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <div>
+                    <div className="fw-semibold text-primary-custom small">Emerald Green</div>
+                    <div className="text-muted smaller">Standard & Crisp</div>
+                  </div>
+                </div>
+                {accent === 'green' && <CheckIcon size={18} style={{ color: '#10b981' }} />}
+              </button>
+
+              {/* Crimson Red */}
+              <button
+                type="button"
+                onClick={() => setAccent('red')}
+                className="flex-grow-1 p-3 rounded-3 text-start border d-flex align-items-center justify-content-between"
+                style={{
+                  backgroundColor: 'var(--bg-section)',
+                  borderColor: accent === 'red' ? '#ef4444' : 'var(--border-color)',
+                  borderWidth: accent === 'red' ? 2 : 1,
+                  boxShadow: accent === 'red' ? '0 0 12px rgba(239, 68, 68, 0.25)' : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div className="d-flex align-items-center gap-2.5">
+                  <span
+                    style={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: '50%',
+                      backgroundColor: '#ef4444',
+                      boxShadow: '0 0 8px rgba(239, 68, 68, 0.5)',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <div>
+                    <div className="fw-semibold text-primary-custom small">Crimson Red</div>
+                    <div className="text-muted smaller">High Intensity</div>
+                  </div>
+                </div>
+                {accent === 'red' && <CheckIcon size={18} style={{ color: '#ef4444' }} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Display Mode Selection (Light / Dark) */}
+          <div className="col-12 col-md-6">
+            <label className="form-label small fw-semibold d-block mb-2">Display Mode</label>
+            <div className="d-flex gap-2.5">
+              <button
+                type="button"
+                onClick={() => setTheme('light')}
+                className="flex-grow-1 p-3 rounded-3 text-start border d-flex align-items-center justify-content-between"
+                style={{
+                  backgroundColor: 'var(--bg-section)',
+                  borderColor: theme === 'light' ? 'var(--primary-green)' : 'var(--border-color)',
+                  borderWidth: theme === 'light' ? 2 : 1,
+                  boxShadow: theme === 'light' ? '0 0 10px rgba(var(--accent-rgb), 0.15)' : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div className="d-flex align-items-center gap-2.5">
+                  <SunIcon size={20} className="text-muted" />
+                  <div>
+                    <div className="fw-semibold text-primary-custom small">Light Mode</div>
+                    <div className="text-muted smaller">Crisp daytime style</div>
+                  </div>
+                </div>
+                {theme === 'light' && <CheckIcon size={18} className="text-emerald" />}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setTheme('dark')}
+                className="flex-grow-1 p-3 rounded-3 text-start border d-flex align-items-center justify-content-between"
+                style={{
+                  backgroundColor: 'var(--bg-section)',
+                  borderColor: theme === 'dark' ? 'var(--primary-green)' : 'var(--border-color)',
+                  borderWidth: theme === 'dark' ? 2 : 1,
+                  boxShadow: theme === 'dark' ? '0 0 10px rgba(var(--accent-rgb), 0.15)' : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div className="d-flex align-items-center gap-2.5">
+                  <MoonIcon size={20} className="text-muted" />
+                  <div>
+                    <div className="fw-semibold text-primary-custom small">Dark Mode</div>
+                    <div className="text-muted smaller">Sleek obsidian style</div>
+                  </div>
+                </div>
+                {theme === 'dark' && <CheckIcon size={18} className="text-emerald" />}
+              </button>
+            </div>
           </div>
         </div>
       </div>

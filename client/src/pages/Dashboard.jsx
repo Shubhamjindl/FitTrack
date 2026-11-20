@@ -10,6 +10,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import StatCard from '../components/StatCard';
 import RecentWorkoutCard from '../components/RecentWorkoutCard';
 import WorkoutModal from '../components/WorkoutModal';
@@ -32,6 +33,7 @@ const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const Dashboard = () => {
   const { user, token, isDemo: authDemo } = useAuth();
+  const { accentColor, accent } = useTheme();
   const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -270,13 +272,13 @@ const Dashboard = () => {
                   <Tooltip
                     content={<CustomTooltip />}
                     isAnimationActive={false}
-                    cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }}
+                    cursor={{ fill: accent === 'red' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(16, 185, 129, 0.05)' }}
                     wrapperStyle={{ outline: 'none', pointerEvents: 'none' }}
                   />
 
                   <Bar
                     dataKey="duration"
-                    fill="#10b981"
+                    fill={accentColor}
                     radius={[6, 6, 0, 0]}
                     maxBarSize={42}
                   />
@@ -293,14 +295,14 @@ const Dashboard = () => {
             <svg className="snapshot-sparkline-bg" viewBox="0 0 140 80" fill="none">
               <path
                 d="M0 60 Q 35 20, 70 45 T 140 10"
-                stroke="#10b981"
+                stroke={accentColor}
                 strokeWidth="2.5"
                 strokeOpacity="0.45"
                 fill="none"
               />
               <path
                 d="M0 60 Q 35 20, 70 45 T 140 10 L 140 80 L 0 80 Z"
-                fill="#10b981"
+                fill={accentColor}
                 fillOpacity="0.06"
               />
             </svg>

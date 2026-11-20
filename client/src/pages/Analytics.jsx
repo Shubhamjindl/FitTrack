@@ -14,6 +14,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import StatCard from '../components/StatCard';
 import { EXERCISE_DATABASE } from '../data/exercises';
 import {
@@ -56,6 +57,7 @@ const DEFAULT_COLORS = ['#0284c7', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '
 
 const Analytics = () => {
   const { token } = useAuth();
+  const { accentColor, accent } = useTheme();
   const [data, setData] = useState(null);
   const [selectedExercise, setSelectedExercise] = useState('');
   const [exerciseProgress, setExerciseProgress] = useState([]);
@@ -262,9 +264,9 @@ const Analytics = () => {
                   <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} allowDecimals={false} />
                   <Tooltip
                     formatter={(val) => [`${val} workouts`, 'Sessions']}
-                    cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }}
+                    cursor={{ fill: accent === 'red' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(16, 185, 129, 0.05)' }}
                   />
-                  <Bar dataKey="workouts" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={42} />
+                  <Bar dataKey="workouts" fill={accentColor} radius={[4, 4, 0, 0]} maxBarSize={42} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -297,8 +299,8 @@ const Analytics = () => {
                   >
                     <defs>
                       <linearGradient id="durationGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                        <stop offset="5%" stopColor={accentColor} stopOpacity={0.25} />
+                        <stop offset="95%" stopColor={accentColor} stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148, 163, 184, 0.15)" />
@@ -306,15 +308,15 @@ const Analytics = () => {
                     <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
                     <Tooltip
                       formatter={(val) => [`${val} min`, 'Duration']}
-                      cursor={{ stroke: '#10b981', strokeWidth: 1 }}
+                      cursor={{ stroke: accentColor, strokeWidth: 1 }}
                     />
                     <Area
                       type="monotone"
                       dataKey="duration"
-                      stroke="#10b981"
+                      stroke={accentColor}
                       strokeWidth={2.5}
                       fill="url(#durationGrad)"
-                      dot={{ r: 3.5, fill: '#10b981', strokeWidth: 1.5, stroke: '#fff' }}
+                      dot={{ r: 3.5, fill: accentColor, strokeWidth: 1.5, stroke: '#fff' }}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -378,7 +380,7 @@ const Analytics = () => {
             chartTitle = 'Exercise Progression';
             chartSubtitle = 'Track endurance and repetition progress over time';
             chartUnit = ' reps';
-            chartColor = '#10b981';
+            chartColor = accentColor;
             dataKey = 'reps';
             tooltipLabel = 'Max Reps';
             domain = [0, 'dataMax + 5'];
