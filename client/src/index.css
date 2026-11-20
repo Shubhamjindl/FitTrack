@@ -1571,7 +1571,7 @@ a {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
-.smart-exercise-item:hover .exercise-posture-thumb {
+.smart-exercise-item:hover .exercise-posture-thumb-clickable {
   transform: scale(1.05);
   background-color: rgba(16, 185, 129, 0.18);
   border-color: rgba(16, 185, 129, 0.55);
