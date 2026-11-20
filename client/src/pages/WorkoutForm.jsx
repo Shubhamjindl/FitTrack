@@ -10,7 +10,6 @@ import {
   CalendarIcon,
   CheckIcon,
   LockIcon,
-  EyeIcon,
   CloseIcon,
   TargetIcon,
   ZapIcon,
@@ -353,88 +352,19 @@ const WorkoutForm = () => {
     ];
   };
 
-  // Curated movement demonstration GIFs from CDN
+  // Curated movement demonstration GIFs & static snapshot photos
   const getExerciseGifUrl = (exercise) => {
     if (!exercise) return null;
-    const name = (exercise.name || '').toLowerCase();
+    if (exercise.gifUrl) return exercise.gifUrl;
+    if (exercise.id) return `/exercises/${exercise.id}.gif`;
+    return null;
+  };
 
-    if (name.includes('bench press')) {
-      if (name.includes('incline')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/dumbbell-incline-bench-press.gif';
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/barbell-bench-press.gif';
-    }
-    if (name.includes('squat')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/barbell-full-squat.gif';
-    }
-    if (name.includes('deadlift')) {
-      if (name.includes('romanian')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/barbell-romanian-deadlift.gif';
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/barbell-deadlift.gif';
-    }
-    if (name.includes('shoulder press') || name.includes('overhead')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/delts/barbell-seated-overhead-press.gif';
-    }
-    if (name.includes('bicep curl') || name.includes('curl')) {
-      if (name.includes('incline')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/biceps/dumbbell-incline-biceps-curl.gif';
-      if (name.includes('leg curl')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/hamstrings/lever-lying-leg-curl.gif';
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/biceps/barbell-curl.gif';
-    }
-    if (name.includes('lat pulldown') || name.includes('pulldown')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/lats/cable-lat-pulldown-full-range-of-motion.gif';
-    }
-    if (name.includes('fly')) {
-      if (name.includes('cable')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/cable-standing-fly.gif';
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/dumbbell-fly.gif';
-    }
-    if (name.includes('row')) {
-      if (name.includes('bent over')) return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/upper-back/barbell-bent-over-row.gif';
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/upper-back/cable-seated-row.gif';
-    }
-    if (name.includes('lateral raise')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/delts/dumbbell-lateral-raise.gif';
-    }
-    if (name.includes('pushdown') || name.includes('triceps')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/triceps/cable-pushdown-with-rope-attachment.gif';
-    }
-    if (name.includes('leg press')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/sled-45-leg-press.gif';
-    }
-    if (name.includes('calf raise')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/calves/barbell-standing-calf-raise.gif';
-    }
-    if (name.includes('lunge')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/glutes/walking-lunge.gif';
-    }
-    if (name.includes('push-up')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/push-up.gif';
-    }
-    if (name.includes('pull-up')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/lats/pull-up.gif';
-    }
-    if (name.includes('dip')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/pectorals/chest-dip.gif';
-    }
-    if (name.includes('leg raise')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/abs/hanging-leg-raise.gif';
-    }
-    if (name.includes('plank')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/abs/weighted-front-plank.gif';
-    }
-    if (name.includes('burpee')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/burpee.gif';
-    }
-    if (name.includes('jump rope') || name.includes('rope')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/jump-rope.gif';
-    }
-    if (name.includes('mountain climber')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/mountain-climber.gif';
-    }
-    if (name.includes('treadmill') || name.includes('running')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/run-equipment.gif';
-    }
-    if (name.includes('cycling')) {
-      return 'https://cdn.jsdelivr.net/gh/JahelCuadrado/ExerciseGymGifsDB@v1.1.0/cardio/cycle-cross-trainer.gif';
-    }
-
-    return exercise.gifUrl || null;
+  const getExercisePhotoUrl = (exercise) => {
+    if (!exercise) return null;
+    if (exercise.photo) return exercise.photo;
+    if (exercise.id) return `/exercises/${exercise.id}.jpg`;
+    return null;
   };
 
   // Determine if weight is hidden based on workout category
@@ -810,8 +740,25 @@ const WorkoutForm = () => {
                                             e.preventDefault();
                                             setSelectedGuideExercise(item);
                                           }}
-                                          dangerouslySetInnerHTML={{ __html: item.svg }}
-                                        />
+                                        >
+                                          {getExercisePhotoUrl(item) ? (
+                                            <img
+                                              src={getExercisePhotoUrl(item)}
+                                              alt={item.name}
+                                              className="exercise-posture-thumb-img"
+                                              loading="lazy"
+                                              onError={(e) => {
+                                                e.target.style.display = 'none';
+                                                if (e.target.nextElementSibling) e.target.nextElementSibling.style.display = 'flex';
+                                              }}
+                                            />
+                                          ) : null}
+                                          <div
+                                            className="exercise-posture-fallback-box"
+                                            style={{ display: getExercisePhotoUrl(item) ? 'none' : 'flex' }}
+                                            dangerouslySetInnerHTML={{ __html: item.svg }}
+                                          />
+                                        </div>
                                         <div className="min-w-0 text-start flex-grow-1">
                                           <div className="text-primary-custom fw-semibold small text-truncate">
                                             {item.name}
@@ -829,19 +776,6 @@ const WorkoutForm = () => {
                                             )}
                                           </div>
                                         </div>
-                                        <button
-                                          type="button"
-                                          className="btn btn-sm p-1 text-muted border-0 flex-shrink-0 hover-emerald"
-                                          title="View Form & Posture Guide"
-                                          style={{ background: 'transparent' }}
-                                          onMouseDown={(e) => {
-                                            e.stopPropagation();
-                                            e.preventDefault();
-                                            setSelectedGuideExercise(item);
-                                          }}
-                                        >
-                                          <EyeIcon size={16} />
-                                        </button>
                                       </div>
                                     </div>
                                   ))
@@ -923,12 +857,29 @@ const WorkoutForm = () => {
                               <div
                                 className="exercise-posture-thumb exercise-posture-thumb-clickable flex-shrink-0"
                                 style={{ width: '48px', height: '48px' }}
-                                title="Click to view large Exercise Form & Posture Guide"
+                                title="Click to view full Exercise Movement & Posture Guide"
                                 onClick={() => setSelectedGuideExercise(preset)}
-                                dangerouslySetInnerHTML={{ __html: preset.svg }}
-                              />
+                              >
+                                {getExercisePhotoUrl(preset) ? (
+                                  <img
+                                    src={getExercisePhotoUrl(preset)}
+                                    alt={preset.name}
+                                    className="exercise-posture-thumb-img"
+                                    loading="lazy"
+                                    onError={(e) => {
+                                      e.target.style.display = 'none';
+                                      if (e.target.nextElementSibling) e.target.nextElementSibling.style.display = 'flex';
+                                    }}
+                                  />
+                                ) : null}
+                                <div
+                                  className="exercise-posture-fallback-box"
+                                  style={{ display: getExercisePhotoUrl(preset) ? 'none' : 'flex' }}
+                                  dangerouslySetInnerHTML={{ __html: preset.svg }}
+                                />
+                              </div>
                               <div className="flex-grow-1 min-w-0">
-                                <div className="d-flex flex-wrap align-items-center gap-1.5 mb-1">
+                                <div className="d-flex flex-wrap align-items-center gap-1.5">
                                   <span className="smaller text-muted me-1 fw-medium" style={{ fontSize: '0.76rem' }}>
                                     Target Focus:
                                   </span>
@@ -946,28 +897,7 @@ const WorkoutForm = () => {
                                       ✓ {tag} {tIdx === 0 && <span className="opacity-75" style={{ fontSize: '0.68rem' }}>(Primary)</span>}
                                     </span>
                                   ))}
-                                  {preset.equipment && (
-                                    <span
-                                      className="badge px-2 py-1 rounded-pill fw-normal text-muted"
-                                      style={{
-                                        fontSize: '0.74rem',
-                                        backgroundColor: 'var(--bg-section)',
-                                        border: '1px solid var(--border-color)',
-                                      }}
-                                    >
-                                      {preset.equipment}
-                                    </span>
-                                  )}
                                 </div>
-                                <button
-                                  type="button"
-                                  className="btn btn-link btn-sm p-0 text-decoration-none d-inline-flex align-items-center gap-1 fw-medium"
-                                  style={{ fontSize: '0.75rem', color: 'var(--primary-green)' }}
-                                  onClick={() => setSelectedGuideExercise(preset)}
-                                >
-                                  <EyeIcon size={13} />
-                                  <span>View Large Posture & Form Guide</span>
-                                </button>
                               </div>
                             </div>
                           );
@@ -1159,9 +1089,20 @@ const WorkoutForm = () => {
                         width: '100%',
                         height: '100%',
                         borderRadius: '14px',
+                        overflow: 'hidden',
+                        padding: 0,
                       }}
-                      dangerouslySetInnerHTML={{ __html: selectedGuideExercise.svg }}
-                    />
+                    >
+                      {getExercisePhotoUrl(selectedGuideExercise) ? (
+                        <img
+                          src={getExercisePhotoUrl(selectedGuideExercise)}
+                          alt={selectedGuideExercise.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '14px' }}
+                        />
+                      ) : (
+                        <div dangerouslySetInnerHTML={{ __html: selectedGuideExercise.svg }} />
+                      )}
+                    </div>
                   </div>
 
                   {/* Form & Posture Tips (Only Tips) */}

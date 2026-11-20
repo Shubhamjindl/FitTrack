@@ -24,6 +24,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/barbell-bench-press.jpg',
+    gifUrl: '/exercises/barbell-bench-press.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="8" y="38" width="48" height="6" rx="2" fill="currentColor" fill-opacity="0.18"/><line x1="16" y1="44" x2="16" y2="54"/><line x1="48" y1="44" x2="48" y2="54"/><circle cx="16" cy="32" r="4" fill="currentColor"/><line x1="20" y1="34" x2="40" y2="34" stroke-width="3.5"/><polyline points="40,34 46,44 48,54"/><polyline points="26,34 26,20 22,14"/><polyline points="32,34 32,20 36,14"/><line x1="12" y1="14" x2="46" y2="14" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -40,6 +42,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/barbell-back-squat.jpg',
+    gifUrl: '/exercises/barbell-back-squat.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="16" r="4" fill="currentColor"/><line x1="30" y1="20" x2="26" y2="36" stroke-width="3.5"/><polyline points="26,36 16,42 22,54" stroke-width="3"/><line x1="12" y1="21" x2="48" y2="21" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -56,6 +60,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/barbell-deadlift.jpg',
+    gifUrl: '/exercises/barbell-deadlift.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="34" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="26" y2="38" stroke-width="3.5"/><polyline points="26,38 20,44 24,54" stroke-width="3"/><line x1="28" y1="24" x2="26" y2="44"/><line x1="10" y1="44" x2="46" y2="44" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -72,6 +78,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/overhead-shoulder-press.jpg',
+    gifUrl: '/exercises/overhead-shoulder-press.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="22" r="4" fill="currentColor"/><line x1="32" y1="26" x2="32" y2="42" stroke-width="3.5"/><polyline points="32,42 26,56"/><polyline points="32,42 38,56"/><polyline points="32,30 24,22 22,12"/><polyline points="32,30 40,22 42,12"/><line x1="14" y1="12" x2="50" y2="12" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -88,6 +96,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/dumbbell-bicep-curl.jpg',
+    gifUrl: '/exercises/dumbbell-bicep-curl.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="16" r="4" fill="currentColor"/><line x1="32" y1="20" x2="32" y2="38" stroke-width="3"/><polyline points="32,38 28,48 26,56"/><polyline points="32,38 36,48 38,56"/><polyline points="32,24 24,28 22,20"/><circle cx="22" cy="18" r="2.5" fill="#10b981"/></svg>`,
   },
   {
@@ -104,6 +114,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/lat-pulldown.jpg',
+    gifUrl: '/exercises/lat-pulldown.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="18" y="38" width="28" height="18" rx="2" fill="currentColor" fill-opacity="0.18"/><circle cx="32" cy="22" r="4" fill="currentColor"/><line x1="32" y1="26" x2="32" y2="40" stroke-width="3"/><polyline points="32,30 22,20 18,16"/><polyline points="32,30 42,20 46,16"/><line x1="12" y1="16" x2="52" y2="16" stroke="#10b981" stroke-width="3"/><line x1="32" y1="8" x2="32" y2="16" stroke="#10b981"/></svg>`,
   },
   {
@@ -120,6 +132,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/incline-dumbbell-press.jpg',
+    gifUrl: '/exercises/incline-dumbbell-press.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="48" x2="44" y2="28" stroke="currentColor" stroke-width="3"/><circle cx="28" cy="24" r="4" fill="currentColor"/><line x1="28" y1="28" x2="38" y2="40" stroke-width="3.5"/><line x1="18" y1="18" x2="26" y2="28"/><circle cx="16" cy="16" r="2.5" fill="#10b981"/><line x1="32" y1="20" x2="40" y2="30"/><circle cx="42" cy="18" r="2.5" fill="#10b981"/></svg>`,
   },
   {
@@ -136,6 +150,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/cable-chest-flyes.jpg',
+    gifUrl: '/exercises/cable-chest-flyes.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="32" y2="40" stroke-width="3.5"/><polyline points="32,40 26,54"/><polyline points="32,40 38,54"/><path d="M12 20 Q 24 28 30 30" stroke="#10b981" stroke-width="2.5"/><path d="M52 20 Q 40 28 34 30" stroke="#10b981" stroke-width="2.5"/><circle cx="12" cy="20" r="2.5" fill="#10b981"/><circle cx="52" cy="20" r="2.5" fill="#10b981"/></svg>`,
   },
   {
@@ -152,6 +168,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/barbell-bent-over-row.jpg',
+    gifUrl: '/exercises/barbell-bent-over-row.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="22" cy="22" r="4" fill="currentColor"/><line x1="24" y1="26" x2="38" y2="34" stroke-width="3.5"/><polyline points="38,34 34,44 40,54" stroke-width="3"/><polyline points="28,28 32,38 32,46"/><line x1="16" y1="46" x2="48" y2="46" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -168,6 +186,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/seated-cable-row.jpg',
+    gifUrl: '/exercises/seated-cable-row.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="10" y="44" width="22" height="6" rx="2" fill="currentColor" fill-opacity="0.18"/><circle cx="22" cy="24" r="4" fill="currentColor"/><line x1="22" y1="28" x2="22" y2="44" stroke-width="3.5"/><polyline points="22,44 32,44 42,44"/><line x1="22" y1="32" x2="34" y2="34"/><line x1="34" y1="34" x2="52" y2="34" stroke="#10b981" stroke-width="2.5"/></svg>`,
   },
   {
@@ -184,6 +204,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/lateral-dumbbell-raise.jpg',
+    gifUrl: '/exercises/lateral-dumbbell-raise.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="32" y2="42" stroke-width="3.5"/><polyline points="32,42 26,56"/><polyline points="32,42 38,56"/><line x1="14" y1="28" x2="50" y2="28" stroke="#10b981" stroke-width="3"/><circle cx="12" cy="28" r="2.5" fill="#10b981"/><circle cx="52" cy="28" r="2.5" fill="#10b981"/></svg>`,
   },
   {
@@ -200,6 +222,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/triceps-rope-pushdown.jpg',
+    gifUrl: '/exercises/triceps-rope-pushdown.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="18" r="4" fill="currentColor"/><line x1="28" y1="22" x2="28" y2="42" stroke-width="3.5"/><polyline points="28,42 24,56"/><polyline points="28,42 32,56"/><polyline points="28,26 36,32 38,44"/><line x1="42" y1="12" x2="38" y2="44" stroke="#10b981" stroke-width="2.5"/></svg>`,
   },
   {
@@ -216,6 +240,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/leg-press.jpg',
+    gifUrl: '/exercises/leg-press.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="52" x2="48" y2="28" stroke="currentColor" stroke-width="3"/><circle cx="20" cy="40" r="4" fill="currentColor"/><polyline points="24,42 32,38 42,26" stroke-width="3.5"/><line x1="38" y1="20" x2="48" y2="34" stroke="#10b981" stroke-width="4"/></svg>`,
   },
   {
@@ -232,6 +258,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/romanian-deadlift.jpg',
+    gifUrl: '/exercises/romanian-deadlift.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="24" cy="20" r="4" fill="currentColor"/><line x1="26" y1="24" x2="38" y2="34" stroke-width="3.5"/><polyline points="38,34 38,46 38,54" stroke-width="3"/><line x1="30" y1="26" x2="36" y2="42"/><line x1="22" y1="42" x2="50" y2="42" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -248,6 +276,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/lying-leg-curl.jpg',
+    gifUrl: '/exercises/lying-leg-curl.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="10" y="38" width="44" height="6" rx="2" fill="currentColor" fill-opacity="0.18"/><circle cx="18" cy="30" r="4" fill="currentColor"/><line x1="22" y1="34" x2="38" y2="34" stroke-width="3.5"/><polyline points="38,34 46,26 44,18" stroke-width="3"/><circle cx="44" cy="18" r="3" fill="#10b981"/></svg>`,
   },
   {
@@ -264,6 +294,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/standing-calf-raise.jpg',
+    gifUrl: '/exercises/standing-calf-raise.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="16" r="4" fill="currentColor"/><line x1="32" y1="20" x2="32" y2="38" stroke-width="3.5"/><polyline points="32,38 28,48 30,54"/><polyline points="32,38 36,48 34,54"/><line x1="18" y1="56" x2="46" y2="56" stroke="currentColor" stroke-width="3"/><polyline points="28,54 32,50 34,54" stroke="#10b981" stroke-width="2.5"/></svg>`,
   },
   {
@@ -280,6 +312,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/conventional-deadlift.jpg',
+    gifUrl: '/exercises/conventional-deadlift.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="34" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="26" y2="38" stroke-width="3.5"/><polyline points="26,38 20,44 24,54" stroke-width="3"/><line x1="28" y1="24" x2="26" y2="44"/><line x1="10" y1="44" x2="46" y2="44" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -296,6 +330,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps per Leg',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/walking-lunges.jpg',
+    gifUrl: '/exercises/walking-lunges.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="14" r="4" fill="currentColor"/><line x1="32" y1="18" x2="28" y2="34" stroke-width="3.5"/><polyline points="28,34 16,42 18,54" stroke-width="3"/><polyline points="28,34 38,40 44,52" stroke-width="3"/><line x1="26" y1="26" x2="24" y2="38"/><circle cx="24" cy="38" r="2.5" fill="#10b981"/></svg>`,
   },
   {
@@ -312,6 +348,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/incline-dumbbell-curl.jpg',
+    gifUrl: '/exercises/incline-dumbbell-curl.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="14" y1="46" x2="42" y2="28" stroke="currentColor" stroke-width="3"/><circle cx="28" cy="22" r="4" fill="currentColor"/><line x1="28" y1="26" x2="36" y2="38" stroke-width="3"/><polyline points="28,28 20,34 22,26"/><circle cx="22" cy="24" r="2.5" fill="#10b981"/></svg>`,
   },
   {
@@ -328,6 +366,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/barbell-bicep-curl.jpg',
+    gifUrl: '/exercises/barbell-bicep-curl.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="16" r="4" fill="currentColor"/><line x1="32" y1="20" x2="32" y2="38" stroke-width="3"/><polyline points="32,38 28,54"/><polyline points="32,38 36,54"/><polyline points="32,24 24,28 24,20"/><polyline points="32,24 40,28 40,20"/><line x1="16" y1="20" x2="48" y2="20" stroke="#10b981" stroke-width="3"/></svg>`,
   },
   {
@@ -344,6 +384,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/dumbbell-flyes.jpg',
+    gifUrl: '/exercises/dumbbell-flyes.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="12" y="38" width="40" height="6" rx="2" fill="currentColor" fill-opacity="0.18"/><circle cx="20" cy="34" r="4" fill="currentColor"/><line x1="24" y1="34" x2="44" y2="34" stroke-width="3.5"/><path d="M16 22 Q 28 28 32 34" stroke="#10b981" stroke-width="2.5"/><path d="M48 22 Q 36 28 32 34" stroke="#10b981" stroke-width="2.5"/><circle cx="16" cy="22" r="2.5" fill="#10b981"/><circle cx="48" cy="22" r="2.5" fill="#10b981"/></svg>`,
   },
   {
@@ -360,6 +402,8 @@ export const EXERCISE_DATABASE = [
     unit: 'kg',
     repsLabel: 'Reps',
     weightLabel: 'Weight (kg)',
+    photo: '/exercises/overhead-barbell-press.jpg',
+    gifUrl: '/exercises/overhead-barbell-press.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="22" r="4" fill="currentColor"/><line x1="32" y1="26" x2="32" y2="42" stroke-width="3.5"/><polyline points="32,42 26,56"/><polyline points="32,42 38,56"/><polyline points="32,30 24,22 22,12"/><polyline points="32,30 40,22 42,12"/><line x1="14" y1="12" x2="50" y2="12" stroke="#10b981" stroke-width="3"/></svg>`,
   },
 
@@ -378,6 +422,8 @@ export const EXERCISE_DATABASE = [
     unit: 'reps',
     repsLabel: 'Reps',
     weightLabel: 'Added Wt (kg)',
+    photo: '/exercises/standard-pushups.jpg',
+    gifUrl: '/exercises/standard-pushups.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="48" cy="30" r="4" fill="currentColor"/><line x1="44" y1="32" x2="18" y2="42" stroke-width="3.5"/><polyline points="18,42 16,50"/><polyline points="40,34 38,44 42,48"/></svg>`,
   },
   {
@@ -394,6 +440,8 @@ export const EXERCISE_DATABASE = [
     unit: 'reps',
     repsLabel: 'Reps',
     weightLabel: 'Added Wt (kg)',
+    photo: '/exercises/pullups.jpg',
+    gifUrl: '/exercises/pullups.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="8" y1="12" x2="56" y2="12" stroke="currentColor" stroke-width="3"/><polyline points="20,12 24,22 28,26"/><polyline points="44,12 40,22 36,26"/><circle cx="32" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="32" y2="42" stroke-width="3"/><polyline points="32,42 30,52 34,54"/></svg>`,
   },
   {
@@ -410,6 +458,8 @@ export const EXERCISE_DATABASE = [
     unit: 'reps',
     repsLabel: 'Reps',
     weightLabel: 'Added Wt (kg)',
+    photo: '/exercises/parallel-bar-dips.jpg',
+    gifUrl: '/exercises/parallel-bar-dips.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="28" x2="22" y2="28" stroke="currentColor" stroke-width="3"/><line x1="42" y1="28" x2="52" y2="28" stroke="currentColor" stroke-width="3"/><circle cx="32" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="32" y2="38" stroke-width="3.5"/><polyline points="32,26 22,28"/><polyline points="32,26 42,28"/><polyline points="32,38 28,48 30,54"/><polyline points="32,38 36,48 34,54"/></svg>`,
   },
   {
@@ -426,6 +476,8 @@ export const EXERCISE_DATABASE = [
     unit: 'reps',
     repsLabel: 'Reps',
     weightLabel: 'Added Wt (kg)',
+    photo: '/exercises/bodyweight-squats.jpg',
+    gifUrl: '/exercises/bodyweight-squats.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="14" r="4" fill="currentColor"/><line x1="32" y1="18" x2="28" y2="34" stroke-width="3.5"/><polyline points="28,34 18,40 22,54" stroke-width="3"/><polyline points="32,22 22,26 20,32"/><polyline points="32,22 42,26 44,32"/></svg>`,
   },
   {
@@ -442,6 +494,8 @@ export const EXERCISE_DATABASE = [
     unit: 'reps',
     repsLabel: 'Reps',
     weightLabel: 'Added Wt (kg)',
+    photo: '/exercises/hanging-leg-raises.jpg',
+    gifUrl: '/exercises/hanging-leg-raises.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="12" x2="52" y2="12" stroke="currentColor" stroke-width="3"/><polyline points="24,12 28,22 30,26"/><polyline points="40,12 36,22 34,26"/><circle cx="32" cy="18" r="4" fill="currentColor"/><line x1="32" y1="22" x2="32" y2="38" stroke-width="3.5"/><line x1="32" y1="38" x2="48" y2="38" stroke="#0ea5e9" stroke-width="3.5"/></svg>`,
   },
   {
@@ -458,6 +512,8 @@ export const EXERCISE_DATABASE = [
     unit: 'sec',
     repsLabel: 'Hold (Seconds)',
     weightLabel: 'Extra (kg)',
+    photo: '/exercises/forearm-plank.jpg',
+    gifUrl: '/exercises/forearm-plank.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="46" cy="34" r="4" fill="currentColor"/><line x1="42" y1="36" x2="16" y2="38" stroke-width="3.5"/><polyline points="16,38 14,46"/><polyline points="40,38 40,46 44,46"/></svg>`,
   },
 
@@ -476,6 +532,8 @@ export const EXERCISE_DATABASE = [
     unit: 'cycles',
     repsLabel: 'Cycles / Rounds',
     weightLabel: 'N/A',
+    photo: '/exercises/surya-namaskar.jpg',
+    gifUrl: '/exercises/surya-namaskar.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="14" r="4" fill="currentColor"/><line x1="32" y1="18" x2="32" y2="38" stroke-width="3"/><polyline points="32,38 28,48 26,56"/><polyline points="32,38 36,48 38,56"/><polyline points="32,22 26,16 32,8 38,16 32,22" stroke="#8b5cf6"/></svg>`,
   },
   {
@@ -492,23 +550,27 @@ export const EXERCISE_DATABASE = [
     unit: 'sec',
     repsLabel: 'Hold (Seconds)',
     weightLabel: 'N/A',
+    photo: '/exercises/adho-mukha-svanasana.jpg',
+    gifUrl: '/exercises/adho-mukha-svanasana.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="16" cy="46" r="4" fill="currentColor"/><polyline points="18,44 32,22 48,50" stroke-width="3.5"/><line x1="16" y1="46" x2="14" y2="52"/></svg>`,
   },
   {
-    id: 'virabhadrasana-ii',
-    name: 'Warrior II Pose',
+    id: 'cat-cow-pose',
+    name: 'Cat-Cow Pose',
     category: 'Yoga',
     categoryLabel: 'Yoga & Flexibility',
-    muscles: 'Balance & Stability, Legs, Hips, Core',
+    muscles: 'Spine, Lower Back, Core, Neck',
     equipment: 'Yoga Mat',
-    mode: 'hold',
+    mode: 'reps',
     defaultSets: 3,
-    defaultReps: 30,
+    defaultReps: 10,
     defaultWeight: 0,
-    unit: 'sec',
-    repsLabel: 'Hold per side (s)',
+    unit: 'reps',
+    repsLabel: 'Breath Cycles',
     weightLabel: 'N/A',
-    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="16" r="4" fill="currentColor"/><line x1="30" y1="20" x2="30" y2="38" stroke-width="3"/><polyline points="30,38 20,44 18,54"/><polyline points="30,38 42,42 46,54"/><line x1="10" y1="24" x2="52" y2="24" stroke="#8b5cf6" stroke-width="3"/></svg>`,
+    photo: '/exercises/cat-cow-pose.jpg',
+    gifUrl: '/exercises/cat-cow-pose.gif',
+    svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M16 36 C24 42, 40 42, 48 36" stroke-width="3"/><circle cx="50" cy="30" r="4" fill="currentColor"/><line x1="20" y1="38" x2="18" y2="52" stroke-width="3"/><line x1="44" y1="38" x2="46" y2="52" stroke-width="3"/></svg>`,
   },
   {
     id: 'bhujangasana',
@@ -524,6 +586,8 @@ export const EXERCISE_DATABASE = [
     unit: 'sec',
     repsLabel: 'Hold (Seconds)',
     weightLabel: 'N/A',
+    photo: '/exercises/bhujangasana.jpg',
+    gifUrl: '/exercises/bhujangasana.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="48" cy="22" r="4" fill="currentColor"/><path d="M46,26 Q36,32 24,40 L12,46" stroke-width="3.5"/><polyline points="44,32 46,46"/><line x1="10" y1="48" x2="48" y2="48" stroke="currentColor" stroke-opacity="0.3"/></svg>`,
   },
   {
@@ -540,6 +604,8 @@ export const EXERCISE_DATABASE = [
     unit: 'sec',
     repsLabel: 'Hold (Seconds)',
     weightLabel: 'N/A',
+    photo: '/exercises/balasana.jpg',
+    gifUrl: '/exercises/balasana.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="20" cy="40" r="4" fill="currentColor"/><path d="M22,42 Q30,34 38,42 L42,48" stroke-width="3.5"/><line x1="22" y1="44" x2="12" y2="46"/><line x1="10" y1="48" x2="52" y2="48" stroke="currentColor" stroke-opacity="0.3"/></svg>`,
   },
 
@@ -558,6 +624,8 @@ export const EXERCISE_DATABASE = [
     unit: 'min',
     repsLabel: 'Duration (Minutes)',
     weightLabel: 'N/A',
+    photo: '/exercises/treadmill.jpg',
+    gifUrl: '/exercises/treadmill.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="36" cy="16" r="4" fill="currentColor"/><line x1="34" y1="20" x2="30" y2="34" stroke-width="3"/><polyline points="30,34 22,38 18,52"/><polyline points="30,34 38,40 44,48"/><polyline points="32,24 24,28 20,34"/><polyline points="32,24 40,26 44,22"/><line x1="12" y1="54" x2="52" y2="54" stroke="#f59e0b" stroke-width="3"/></svg>`,
   },
   {
@@ -574,6 +642,8 @@ export const EXERCISE_DATABASE = [
     unit: 'min',
     repsLabel: 'Duration (Minutes)',
     weightLabel: 'N/A',
+    photo: '/exercises/cycling.jpg',
+    gifUrl: '/exercises/cycling.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="20" cy="44" r="8"/><circle cx="44" cy="44" r="8"/><polyline points="20,44 32,44 26,28 40,28 44,44"/><circle cx="34" cy="18" r="3.5" fill="currentColor"/><line x1="34" y1="22" x2="28" y2="32" stroke-width="3"/><polyline points="30,22 40,24"/></svg>`,
   },
   {
@@ -590,6 +660,8 @@ export const EXERCISE_DATABASE = [
     unit: 'reps',
     repsLabel: 'Reps',
     weightLabel: 'N/A',
+    photo: '/exercises/full-body-burpees.jpg',
+    gifUrl: '/exercises/full-body-burpees.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="36" cy="14" r="4" fill="currentColor"/><line x1="36" y1="18" x2="28" y2="32" stroke-width="3"/><polyline points="28,32 18,36 14,48"/><polyline points="32,22 44,14"/></svg>`,
   },
   {
@@ -606,6 +678,8 @@ export const EXERCISE_DATABASE = [
     unit: 'sec',
     repsLabel: 'Duration (Seconds)',
     weightLabel: 'N/A',
+    photo: '/exercises/jump-rope.jpg',
+    gifUrl: '/exercises/jump-rope.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="32" cy="16" r="4" fill="currentColor"/><line x1="32" y1="20" x2="32" y2="40" stroke-width="3"/><polyline points="32,40 28,52"/><polyline points="32,40 36,52"/><path d="M22,30 Q12,48 32,56 Q52,48 42,30" stroke="#f59e0b" stroke-width="2"/></svg>`,
   },
   {
@@ -622,6 +696,8 @@ export const EXERCISE_DATABASE = [
     unit: 'sec',
     repsLabel: 'Duration (Seconds)',
     weightLabel: 'N/A',
+    photo: '/exercises/mountain-climbers.jpg',
+    gifUrl: '/exercises/mountain-climbers.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="48" cy="30" r="4" fill="currentColor"/><polyline points="44,34 32,38 18,46"/><polyline points="32,38 30,30 24,34"/></svg>`,
   },
 
@@ -640,6 +716,8 @@ export const EXERCISE_DATABASE = [
     unit: 'min',
     repsLabel: 'Duration (min)',
     weightLabel: 'N/A',
+    photo: '/exercises/badminton.jpg',
+    gifUrl: '/exercises/badminton.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="18" r="4" fill="currentColor"/><line x1="30" y1="22" x2="26" y2="38" stroke-width="3.5"/><polyline points="26,38 18,48 14,56" stroke-width="3"/><polyline points="26,38 34,46 38,54" stroke-width="3"/><line x1="28" y1="26" x2="40" y2="18"/><line x1="40" y1="18" x2="48" y2="12" stroke="#6366f1" stroke-width="2.5"/><circle cx="52" cy="8" r="4" stroke="#6366f1" stroke-width="2"/><path d="M42 28 L46 32 M44 34 L48 30" stroke="#6366f1"/></svg>`,
   },
   {
@@ -656,6 +734,8 @@ export const EXERCISE_DATABASE = [
     unit: 'min',
     repsLabel: 'Duration (min)',
     weightLabel: 'N/A',
+    photo: '/exercises/football.jpg',
+    gifUrl: '/exercises/football.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="16" r="4" fill="currentColor"/><line x1="28" y1="20" x2="32" y2="34" stroke-width="3.5"/><polyline points="32,34 22,42 18,54" stroke-width="3"/><polyline points="32,34 42,40 50,44" stroke-width="3.5"/><line x1="28" y1="24" x2="18" y2="30"/><circle cx="54" cy="46" r="5" fill="#6366f1"/><line x1="44" y1="52" x2="52" y2="52" stroke="#6366f1" stroke-dasharray="2 2"/></svg>`,
   },
   {
@@ -672,6 +752,8 @@ export const EXERCISE_DATABASE = [
     unit: 'min',
     repsLabel: 'Duration (min)',
     weightLabel: 'N/A',
+    photo: '/exercises/cricket.jpg',
+    gifUrl: '/exercises/cricket.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="28" cy="16" r="4" fill="currentColor"/><line x1="28" y1="20" x2="34" y2="34" stroke-width="3.5"/><polyline points="34,34 42,44 48,54" stroke-width="3"/><polyline points="34,34 22,44 18,54" stroke-width="3"/><line x1="28" y1="24" x2="38" y2="34"/><line x1="38" y1="34" x2="48" y2="44" stroke="#6366f1" stroke-width="4"/><circle cx="54" cy="50" r="3" fill="#6366f1"/><line x1="12" y1="34" x2="12" y2="54" stroke="currentColor" stroke-width="2"/><line x1="15" y1="34" x2="15" y2="54" stroke="currentColor" stroke-width="2"/><line x1="18" y1="34" x2="18" y2="54" stroke="currentColor" stroke-width="2"/></svg>`,
   },
   {
@@ -688,6 +770,8 @@ export const EXERCISE_DATABASE = [
     unit: 'm / laps',
     repsLabel: 'Laps / Meters',
     weightLabel: 'N/A',
+    photo: '/exercises/swimming-laps.jpg',
+    gifUrl: '/exercises/swimming-laps.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="20" cy="24" r="4" fill="currentColor"/><line x1="24" y1="26" x2="42" y2="30"/><line x1="42" y1="30" x2="52" y2="28"/><line x1="30" y1="28" x2="22" y2="36"/><path d="M12,42 Q20,38 28,42 T44,42 T60,42" stroke="#6366f1" stroke-width="2.5"/></svg>`,
   },
   {
@@ -704,6 +788,8 @@ export const EXERCISE_DATABASE = [
     unit: 'min',
     repsLabel: 'Round Duration (min)',
     weightLabel: 'N/A',
+    photo: '/exercises/boxing.jpg',
+    gifUrl: '/exercises/boxing.gif',
     svg: `<svg viewBox="0 0 64 64" class="w-10 h-10 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="26" cy="18" r="4" fill="currentColor"/><line x1="26" y1="22" x2="26" y2="38" stroke-width="3.5"/><polyline points="26,38 20,52"/><polyline points="26,38 32,52"/><polyline points="26,26 36,22 46,22" stroke-width="3"/><circle cx="48" cy="22" r="4" fill="#6366f1"/><circle cx="34" cy="30" r="3" fill="#6366f1"/></svg>`,
   },
 ];
