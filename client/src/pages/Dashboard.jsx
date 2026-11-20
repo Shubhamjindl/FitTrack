@@ -10,7 +10,6 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import StatCard from '../components/StatCard';
 import RecentWorkoutCard from '../components/RecentWorkoutCard';
 import WorkoutModal from '../components/WorkoutModal';
@@ -33,7 +32,6 @@ const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const Dashboard = () => {
   const { user, token, isDemo: authDemo } = useAuth();
-  const { accentColor, accent } = useTheme();
   const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -92,7 +90,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="container py-5 text-center">
-        <div className="spinner-border" style={{ color: accentColor }} role="status">
+        <div className="spinner-border text-success" role="status">
           <span className="visually-hidden">Loading Dashboard...</span>
         </div>
         <p className="text-muted mt-2">Loading your fitness dashboard...</p>
@@ -244,7 +242,7 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-              <div className="badge bg-light border px-2.5 py-1 small fw-semibold" style={{ color: accentColor }}>
+              <div className="badge bg-light text-success border px-2.5 py-1 small fw-semibold">
                 Last 7 Days
               </div>
             </div>
@@ -272,13 +270,13 @@ const Dashboard = () => {
                   <Tooltip
                     content={<CustomTooltip />}
                     isAnimationActive={false}
-                    cursor={{ fill: accent === 'red' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(16, 185, 129, 0.05)' }}
+                    cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }}
                     wrapperStyle={{ outline: 'none', pointerEvents: 'none' }}
                   />
 
                   <Bar
                     dataKey="duration"
-                    fill={accentColor}
+                    fill="#10b981"
                     radius={[6, 6, 0, 0]}
                     maxBarSize={42}
                   />
@@ -295,14 +293,14 @@ const Dashboard = () => {
             <svg className="snapshot-sparkline-bg" viewBox="0 0 140 80" fill="none">
               <path
                 d="M0 60 Q 35 20, 70 45 T 140 10"
-                stroke={accentColor}
+                stroke="#10b981"
                 strokeWidth="2.5"
                 strokeOpacity="0.45"
                 fill="none"
               />
               <path
                 d="M0 60 Q 35 20, 70 45 T 140 10 L 140 80 L 0 80 Z"
-                fill={accentColor}
+                fill="#10b981"
                 fillOpacity="0.06"
               />
             </svg>

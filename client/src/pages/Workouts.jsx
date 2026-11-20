@@ -11,7 +11,6 @@ import {
   LabelList,
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import StatCard from '../components/StatCard';
 import WorkoutModal from '../components/WorkoutModal';
 import RecentWorkoutCard from '../components/RecentWorkoutCard';
@@ -62,7 +61,6 @@ const formatDate = (dateString) => {
 
 const Workouts = () => {
   const { token, user, isDemo: authDemo } = useAuth();
-  const { accentColor } = useTheme();
   const isDemo = authDemo || user?.email?.toLowerCase() === 'alex.fit@example.com' || Boolean(user?.isDemo);
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -707,7 +705,7 @@ const Workouts = () => {
                       style={{
                         width: `${m.barPercent}%`,
                         height: '100%',
-                        backgroundColor: accentColor,
+                        backgroundColor: '#10b981',
                         borderRadius: 9999,
                         transition: 'width 0.4s ease',
                       }}
@@ -807,7 +805,7 @@ const Workouts = () => {
                   />
                   <Bar
                     dataKey="sessions"
-                    fill={accentColor}
+                    fill="#10b981"
                     radius={[4, 4, 0, 0]}
                     maxBarSize={34}
                   >
@@ -869,7 +867,7 @@ const Workouts = () => {
                   style={{
                     fontSize: '2.8rem',
                     lineHeight: 1,
-                    color: streakStats.isActive ? accentColor : '#71717a',
+                    color: streakStats.isActive ? '#10b981' : '#71717a',
                     letterSpacing: '-1.5px',
                   }}
                 >
@@ -1003,7 +1001,7 @@ const Workouts = () => {
 
         {loading ? (
           <div className="py-5 text-center">
-            <div className="spinner-border" style={{ color: accentColor }} role="status">
+            <div className="spinner-border text-success" role="status">
               <span className="visually-hidden">Loading workouts...</span>
             </div>
             <p className="text-muted mt-2 small">Loading workout sessions...</p>

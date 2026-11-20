@@ -173,7 +173,7 @@ const Register = () => {
 
               <div className="text-center text-muted small">
                 Already have an account?{' '}
-                <Link to="/login" className="fw-semibold text-emerald text-decoration-none">
+                <Link to="/login" className="fw-semibold text-success text-decoration-none">
                   Log in here
                 </Link>
               </div>

@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center min-vh-100 bg-main">
-        <div className="spinner-border" style={{ color: 'var(--primary-green)' }} role="status">
+        <div className="spinner-border text-success" role="status">
           <span className="visually-hidden">Loading UpToFit...</span>
         </div>
       </div>

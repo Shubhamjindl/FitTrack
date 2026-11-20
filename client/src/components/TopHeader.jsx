@@ -10,12 +10,11 @@ import {
   UserIcon,
   LogOutIcon,
   DumbbellIcon,
-  PaletteIcon,
 } from './Icons';
 
 const TopHeader = () => {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme, accent, toggleAccent, accentColor } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -101,30 +100,6 @@ const TopHeader = () => {
             </div>
           )}
         </div>
-
-        {/* Accent Color Switcher Button */}
-        <button
-          type="button"
-          onClick={toggleAccent}
-          className="btn-header-action position-relative"
-          title={`Theme Accent: ${accent === 'green' ? 'Emerald Green' : 'Crimson Red'} (Click to toggle)`}
-          aria-label={`Toggle accent between Emerald Green and Crimson Red`}
-        >
-          <PaletteIcon size={18} style={{ color: accentColor }} />
-          <span
-            style={{
-              position: 'absolute',
-              bottom: 5,
-              right: 5,
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              backgroundColor: accentColor,
-              boxShadow: `0 0 6px ${accentColor}`,
-              border: '1.5px solid var(--bg-card)',
-            }}
-          />
-        </button>
 
         {/* Theme Toggle Button */}
         <button

@@ -583,7 +583,7 @@ const WorkoutForm = () => {
   if (loading) {
     return (
       <div className="container py-5 text-center">
-        <div className="spinner-border" style={{ color: 'var(--primary-green)' }} role="status">
+        <div className="spinner-border text-success" role="status">
           <span className="visually-hidden">Loading workout...</span>
         </div>
         <p className="text-muted mt-2">Loading workout data...</p>
@@ -728,10 +728,7 @@ const WorkoutForm = () => {
               </div>
               <div className="d-flex align-items-center gap-2">
                 {!isWeightHidden && calculatedTotalVolume > 0 && (
-                  <span
-                    className="badge bg-light border py-2 px-3 fw-semibold"
-                    style={{ color: 'var(--primary-green)', borderColor: 'rgba(var(--accent-rgb), 0.25)' }}
-                  >
+                  <span className="badge bg-light text-success border py-2 px-3 fw-semibold">
                     Estimated Volume: {calculatedTotalVolume.toLocaleString()} kg
                   </span>
                 )}
@@ -941,14 +938,26 @@ const WorkoutForm = () => {
                                       className="badge px-2 py-1 rounded-pill fw-semibold"
                                       style={{
                                         fontSize: '0.74rem',
-                                        backgroundColor: 'rgba(var(--accent-rgb), 0.12)',
+                                        backgroundColor: 'rgba(16, 185, 129, 0.12)',
                                         color: 'var(--primary-green)',
-                                        border: '1px solid rgba(var(--accent-rgb), 0.25)',
+                                        border: '1px solid rgba(16, 185, 129, 0.25)',
                                       }}
                                     >
                                       ✓ {tag} {tIdx === 0 && <span className="opacity-75" style={{ fontSize: '0.68rem' }}>(Primary)</span>}
                                     </span>
                                   ))}
+                                  {preset.equipment && (
+                                    <span
+                                      className="badge px-2 py-1 rounded-pill fw-normal text-muted"
+                                      style={{
+                                        fontSize: '0.74rem',
+                                        backgroundColor: 'var(--bg-section)',
+                                        border: '1px solid var(--border-color)',
+                                      }}
+                                    >
+                                      {preset.equipment}
+                                    </span>
+                                  )}
                                 </div>
                                 <button
                                   type="button"
@@ -1092,9 +1101,9 @@ const WorkoutForm = () => {
                         className="badge px-2 py-0.5 rounded-pill fw-semibold"
                         style={{
                           fontSize: '0.72rem',
-                          backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
+                          backgroundColor: 'rgba(16, 185, 129, 0.15)',
                           color: 'var(--primary-green)',
-                          border: '1px solid rgba(var(--accent-rgb), 0.3)',
+                          border: '1px solid rgba(16, 185, 129, 0.3)',
                         }}
                       >
                         {selectedGuideExercise.categoryLabel || selectedGuideExercise.category || 'Exercise'}

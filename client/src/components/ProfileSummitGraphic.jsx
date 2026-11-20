@@ -1,18 +1,6 @@
 import React from 'react';
-import { useTheme } from '../context/ThemeContext';
 
 const ProfileSummitGraphic = () => {
-  const { accent } = useTheme();
-  const isRed = accent === 'red';
-
-  const ridge1Start = isRed ? '#f87171' : '#34d399';
-  const ridge1End = isRed ? '#dc2626' : '#059669';
-  const ridge2Start = isRed ? '#ef4444' : '#10b981';
-  const ridge2End = isRed ? '#b91c1c' : '#047857';
-  const peakStart = isRed ? '#dc2626' : '#059669';
-  const peakEnd = isRed ? '#450a0a' : '#022c22';
-  const silhouetteColor = isRed ? '#450a0a' : '#022c22';
-
   return (
     <svg
       viewBox="0 0 650 200"
@@ -23,16 +11,16 @@ const ProfileSummitGraphic = () => {
     >
       <defs>
         <linearGradient id="profRidge1" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor={ridge1Start} stopOpacity="0.22" />
-          <stop offset="100%" stopColor={ridge1End} stopOpacity="0.05" />
+          <stop offset="0%" stopColor="#34d399" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#059669" stopOpacity="0.05" />
         </linearGradient>
         <linearGradient id="profRidge2" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor={ridge2Start} stopOpacity="0.38" />
-          <stop offset="100%" stopColor={ridge2End} stopOpacity="0.12" />
+          <stop offset="0%" stopColor="#10b981" stopOpacity="0.38" />
+          <stop offset="100%" stopColor="#047857" stopOpacity="0.12" />
         </linearGradient>
         <linearGradient id="profPeakGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor={peakStart} stopOpacity="0.82" />
-          <stop offset="100%" stopColor={peakEnd} stopOpacity="0.95" />
+          <stop offset="0%" stopColor="#059669" stopOpacity="0.82" />
+          <stop offset="100%" stopColor="#022c22" stopOpacity="0.95" />
         </linearGradient>
         <linearGradient id="fadeMask" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
@@ -64,7 +52,7 @@ const ProfileSummitGraphic = () => {
         />
 
         {/* Standing Summit Athlete Silhouette (Arms on hips, triumphant pose) */}
-        <g transform="translate(554, 18) scale(0.72)" fill={silhouetteColor}>
+        <g transform="translate(554, 18) scale(0.72)" fill="#022c22">
           {/* Head */}
           <circle cx="15" cy="8" r="4.5" />
           {/* Neck */}
@@ -74,7 +62,7 @@ const ProfileSummitGraphic = () => {
           {/* Arms akimbo (hands on hips) */}
           <path
             d="M8 16 L2 24 L10 27 M22 16 L28 24 L20 27"
-            stroke={silhouetteColor}
+            stroke="#022c22"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -83,7 +71,7 @@ const ProfileSummitGraphic = () => {
           {/* Athletic Legs planted firmly on summit */}
           <path
             d="M11 32 L8 46 L7 57 M19 32 L22 46 L23 57"
-            stroke={silhouetteColor}
+            stroke="#022c22"
             strokeWidth="3.2"
             strokeLinecap="round"
             strokeLinejoin="round"

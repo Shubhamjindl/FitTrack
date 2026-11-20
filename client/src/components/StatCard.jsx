@@ -11,9 +11,9 @@ const StatCard = ({
   // Theme color maps for clean icon circular badge
   const themeMap = {
     mint: {
-      bg: 'rgba(var(--accent-rgb, 16, 185, 129), 0.12)',
-      color: 'var(--primary-green, #10b981)',
-      border: 'rgba(var(--accent-rgb, 16, 185, 129), 0.2)',
+      bg: 'var(--stat-mint-bg, rgba(16, 185, 129, 0.12))',
+      color: '#10b981',
+      border: 'rgba(16, 185, 129, 0.2)',
     },
     blue: {
       bg: 'var(--stat-blue-bg, rgba(2, 132, 199, 0.12))',
