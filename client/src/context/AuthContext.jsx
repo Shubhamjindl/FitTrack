@@ -17,7 +17,7 @@ const parseJsonResponse = async (response) => {
         data = JSON.parse(text);
       }
     }
-  } catch (err) {
+  } catch {
     // Ignore JSON parse errors here, as we handle !response.ok below
   }
 

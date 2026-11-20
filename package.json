@@ -8,7 +8,10 @@
     "client": "npm run dev --prefix client",
     "client:build": "npm run build --prefix client",
     "seed": "node server/seed.js",
-    "test:api": "node server/test-api.js"
+    "test": "npm run test:all",
+    "test:api": "node server/test-api.js",
+    "test:security": "node server/test-demo-security.js",
+    "test:all": "node server/test-api.js && node server/test-demo-security.js"
   },
   "keywords": [
     "mern",

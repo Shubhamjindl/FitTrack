@@ -5,17 +5,14 @@ import { useAuth } from '../context/AuthContext';
 import {
   PlusIcon,
   TrashIcon,
-  DumbbellIcon,
   ClockIcon,
   CalendarIcon,
   CheckIcon,
   LockIcon,
   CloseIcon,
-  TargetIcon,
   ZapIcon,
 } from '../components/Icons';
 import {
-  EXERCISE_DATABASE,
   getExercisesByCategory,
   searchExercises,
   findPresetExercise,
@@ -232,11 +229,6 @@ const WorkoutForm = () => {
       next[index] = { ...next[index], [field]: value };
       return next;
     });
-  };
-
-  // Check if an exercise is preset in the library
-  const isPresetExercise = (exerciseName) => {
-    return Boolean(findPresetExercise(exerciseName));
   };
 
   // Dynamic Autocomplete suggestions (Presets + Saved Custom Exercises)

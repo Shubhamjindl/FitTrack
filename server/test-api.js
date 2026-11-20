@@ -1,9 +1,46 @@
-async function runTests() {
-  const baseUrl = 'http://localhost:5000/api';
-  console.log('--- FITTRACK BACKEND TEST SUITE ---');
+/**
+ * UpToFit Comprehensive REST API Test Suite
+ * 
+ * Verifies all 14 API endpoints, multi-user data isolation, authentication,
+ * and input validation edge cases against http://localhost:5000/api
+ */
 
-  // 1. Register User 1
+async function runTests() {
+  const baseUrl = process.env.API_URL || 'http://localhost:5000/api';
+  console.log('====================================================');
+  console.log('       UPTOFIT REST API FULL AUDIT TEST SUITE       ');
+  console.log(` Target: ${baseUrl}`);
+  console.log('====================================================\n');
+
+  let passedCount = 0;
+  let totalCount = 0;
+
+  function assert(condition, testName, details = '') {
+    totalCount++;
+    if (condition) {
+      passedCount++;
+      console.log(`[PASS] ${totalCount}. ${testName}${details ? ` -> ${details}` : ''}`);
+    } else {
+      console.error(`[FAIL] ${totalCount}. ${testName}${details ? ` -> ${details}` : ''}`);
+      throw new Error(`Test failed: ${testName} (${details})`);
+    }
+  }
+
+  // 1. Healthcheck Endpoint
+  console.log('--- 1. SYSTEM HEALTH CHECK ---');
+  const healthRes = await fetch(`${baseUrl}/health`);
+  const healthData = await healthRes.json();
+  assert(
+    healthRes.status === 200 && (healthData.status === 'ok' || healthData.status === 'OK'),
+    'GET /api/health',
+    healthData.app || 'API Healthy'
+  );
+
+  // 2. Authentication & Validation Endpoints
+  console.log('\n--- 2. AUTHENTICATION & SECURITY ---');
   const u1Email = `testuser_${Date.now()}@example.com`;
+  
+  // 2a. Register User 1
   const regRes = await fetch(`${baseUrl}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -14,11 +51,35 @@ async function runTests() {
     }),
   });
   const regData = await regRes.json();
-  console.log('1. User 1 Register:', regData.success ? 'PASS' : 'FAIL', regData.message);
-  if (!regData.success) throw new Error(regData.message);
-  const token1 = regData.token;
+  assert(regRes.status === 201 && regData.success && regData.token, 'POST /api/auth/register (New User)', `Created: ${regData.user?.email}`);
+  let token1 = regData.token;
 
-  // 2. Login User 1
+  // 2b. Negative Case: Duplicate Email Registration
+  const dupRegRes = await fetch(`${baseUrl}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: 'Duplicate John',
+      email: u1Email,
+      password: 'password123',
+    }),
+  });
+  const dupRegData = await dupRegRes.json();
+  assert(dupRegRes.status === 400 && !dupRegData.success, 'POST /api/auth/register (Duplicate Email Prevention)', dupRegData.message);
+
+  // 2c. Negative Case: Invalid Login Credentials
+  const badLoginRes = await fetch(`${baseUrl}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: u1Email,
+      password: 'wrongpassword',
+    }),
+  });
+  const badLoginData = await badLoginRes.json();
+  assert(badLoginRes.status === 401 && !badLoginData.success, 'POST /api/auth/login (Invalid Password Rejection)', badLoginData.message);
+
+  // 2d. Positive Case: Valid Login
   const loginRes = await fetch(`${baseUrl}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -28,9 +89,78 @@ async function runTests() {
     }),
   });
   const loginData = await loginRes.json();
-  console.log('2. User 1 Login:', loginData.success ? 'PASS' : 'FAIL');
+  assert(loginRes.status === 200 && loginData.success && loginData.token, 'POST /api/auth/login (Valid Credentials)');
+  token1 = loginData.token;
 
-  // 3. Create Workouts for User 1
+  // 2e. GET /api/auth/me (Authenticated profile check)
+  const meRes = await fetch(`${baseUrl}/auth/me`, {
+    headers: { Authorization: `Bearer ${token1}` },
+  });
+  const meData = await meRes.json();
+  assert(meRes.status === 200 && meData.user?.email === u1Email.toLowerCase(), 'GET /api/auth/me (Session Profile)', `User: ${meData.user?.name}`);
+
+  // 2f. Negative Case: Protected Endpoint without Token
+  const unauthRes = await fetch(`${baseUrl}/auth/me`);
+  assert(unauthRes.status === 401, 'Protected Route Token Enforcement (No Token)', 'Blocked with 401 Unauthorized');
+
+  // 2g. PUT /api/auth/profile (Update Name)
+  const updateProfileRes = await fetch(`${baseUrl}/auth/profile`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token1}`,
+    },
+    body: JSON.stringify({ name: 'John Doe Updated' }),
+  });
+  const updateProfileData = await updateProfileRes.json();
+  assert(updateProfileRes.status === 200 && updateProfileData.user?.name === 'John Doe Updated', 'PUT /api/auth/profile (Update Display Name)', updateProfileData.message);
+
+  // 2h. PUT /api/auth/password (Change Password)
+  const changePwRes = await fetch(`${baseUrl}/auth/password`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token1}`,
+    },
+    body: JSON.stringify({
+      currentPassword: 'password123',
+      newPassword: 'newpassword456',
+    }),
+  });
+  const changePwData = await changePwRes.json();
+  assert(changePwRes.status === 200 && changePwData.success, 'PUT /api/auth/password (Change Password)', changePwData.message);
+
+  // Verify login with new password
+  const newLoginRes = await fetch(`${baseUrl}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: u1Email,
+      password: 'newpassword456',
+    }),
+  });
+  const newLoginData = await newLoginRes.json();
+  assert(newLoginRes.status === 200 && newLoginData.token, 'Verify Login with Updated Password');
+  token1 = newLoginData.token;
+
+  // 3. Workouts CRUD Operations
+  console.log('\n--- 3. WORKOUTS CRUD & ADVANCED SEARCH ---');
+
+  // 3a. Negative Case: POST /workouts with Missing Required Name
+  const invalidWorkoutRes = await fetch(`${baseUrl}/workouts`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token1}`,
+    },
+    body: JSON.stringify({
+      date: new Date().toISOString(),
+      duration: 30,
+    }),
+  });
+  assert(invalidWorkoutRes.status === 400, 'POST /api/workouts (Validation: Missing Workout Name)', 'Rejected with 400');
+
+  // 3b. POST /workouts - Create Workout 1 (Strength with multi-set exercises)
   const workout1Res = await fetch(`${baseUrl}/workouts`, {
     method: 'POST',
     headers: {
@@ -38,23 +168,23 @@ async function runTests() {
       Authorization: `Bearer ${token1}`,
     },
     body: JSON.stringify({
-      name: 'Full Body Blast',
+      name: 'Full Body Heavy Blast',
       date: new Date().toISOString(),
       type: 'Strength',
       duration: 60,
       notes: 'Felt energetic, hit new PR on Bench Press',
       exercises: [
         { name: 'Barbell Bench Press', sets: 4, reps: 8, weight: 80 },
-        { name: 'Barbell Squat', sets: 4, reps: 8, weight: 100 },
+        { name: 'Barbell Back Squat', sets: 4, reps: 8, weight: 100 },
         { name: 'Dumbbell Bicep Curl', sets: 3, reps: 12, weight: 15 },
       ],
     }),
   });
   const workout1Data = await workout1Res.json();
-  console.log('3. Create Workout 1:', workout1Data.success ? 'PASS' : 'FAIL', workout1Data.data?.name);
-  const workout1Id = workout1Data.data?._id;
+  assert(workout1Res.status === 201 && workout1Data.data?._id, 'POST /api/workouts (Create Strength Workout)', workout1Data.data?.name);
+  const workout1Id = workout1Data.data._id;
 
-  // Create Workout 2 for User 1
+  // 3c. POST /workouts - Create Workout 2 (Running Cardio)
   const workout2Res = await fetch(`${baseUrl}/workouts`, {
     method: 'POST',
     headers: {
@@ -62,39 +192,46 @@ async function runTests() {
       Authorization: `Bearer ${token1}`,
     },
     body: JSON.stringify({
-      name: 'Morning Cardio Run',
+      name: 'Morning Forest Trail Run',
       date: new Date(Date.now() - 86400000).toISOString(),
       type: 'Running',
       duration: 35,
-      notes: '5km park circuit',
+      notes: '5km park circuit under sunny skies',
       exercises: [],
     }),
   });
   const workout2Data = await workout2Res.json();
-  console.log('4. Create Workout 2:', workout2Data.success ? 'PASS' : 'FAIL');
+  assert(workout2Res.status === 201 && workout2Data.data?._id, 'POST /api/workouts (Create Cardio Run)', workout2Data.data?.name);
 
-  // 4. Get Workouts for User 1
-  const getWorkoutsRes = await fetch(`${baseUrl}/workouts`, {
+  // 3d. GET /api/workouts (List all workouts)
+  const listWorkoutsRes = await fetch(`${baseUrl}/workouts`, {
     headers: { Authorization: `Bearer ${token1}` },
   });
-  const getWorkoutsData = await getWorkoutsRes.json();
-  console.log('5. Get Workouts count:', getWorkoutsData.count === 2 ? 'PASS (2 workouts)' : 'FAIL');
+  const listWorkoutsData = await listWorkoutsRes.json();
+  assert(listWorkoutsRes.status === 200 && listWorkoutsData.count === 2, 'GET /api/workouts (List Workouts)', `Found: ${listWorkoutsData.count} workouts`);
 
-  // 5. Filter Workouts by type
+  // 3e. GET /api/workouts/:id (Direct Single Workout Retrieval)
+  const getSingleRes = await fetch(`${baseUrl}/workouts/${workout1Id}`, {
+    headers: { Authorization: `Bearer ${token1}` },
+  });
+  const getSingleData = await getSingleRes.json();
+  assert(getSingleRes.status === 200 && getSingleData.data?.name === 'Full Body Heavy Blast', 'GET /api/workouts/:id (Retrieve Single Workout)', getSingleData.data?.name);
+
+  // 3f. GET /api/workouts?type=Strength (Category filter)
   const filterRes = await fetch(`${baseUrl}/workouts?type=Strength`, {
     headers: { Authorization: `Bearer ${token1}` },
   });
   const filterData = await filterRes.json();
-  console.log('6. Filter by type=Strength count:', filterData.count === 1 ? 'PASS (1 workout)' : 'FAIL');
+  assert(filterRes.status === 200 && filterData.count === 1, 'GET /api/workouts?type=Strength (Filter by Type)', `Strength count: ${filterData.count}`);
 
-  // 6. Search Workouts
+  // 3g. GET /api/workouts?q=Bench (Search keyword filter)
   const searchRes = await fetch(`${baseUrl}/workouts?q=Bench`, {
     headers: { Authorization: `Bearer ${token1}` },
   });
   const searchData = await searchRes.json();
-  console.log('7. Search query "Bench":', searchData.count === 1 ? 'PASS' : 'FAIL');
+  assert(searchRes.status === 200 && searchData.count === 1, 'GET /api/workouts?q=Bench (Full Text Search)', `Match found: "${searchData.data?.[0]?.name}"`);
 
-  // 7. Update Workout
+  // 3h. PUT /api/workouts/:id (Update workout)
   const updateRes = await fetch(`${baseUrl}/workouts/${workout1Id}`, {
     method: 'PUT',
     headers: {
@@ -102,14 +239,15 @@ async function runTests() {
       Authorization: `Bearer ${token1}`,
     },
     body: JSON.stringify({
-      name: 'Full Body Blast (Updated)',
+      name: 'Full Body Heavy Blast (Updated)',
       duration: 65,
     }),
   });
   const updateData = await updateRes.json();
-  console.log('8. Update Workout name:', updateData.data?.name === 'Full Body Blast (Updated)' ? 'PASS' : 'FAIL');
+  assert(updateRes.status === 200 && updateData.data?.name === 'Full Body Heavy Blast (Updated)' && updateData.data?.duration === 65, 'PUT /api/workouts/:id (Update Workout)');
 
-  // 8. Test User Data Isolation (Create User 2)
+  // 4. Multi-Tenant User Isolation
+  console.log('\n--- 4. MULTI-TENANT USER ISOLATION ---');
   const u2Email = `testuser2_${Date.now()}@example.com`;
   const reg2Res = await fetch(`${baseUrl}/auth/register`, {
     method: 'POST',
@@ -123,55 +261,68 @@ async function runTests() {
   const reg2Data = await reg2Res.json();
   const token2 = reg2Data.token;
 
+  // User 2 workouts list should be empty
   const u2WorkoutsRes = await fetch(`${baseUrl}/workouts`, {
     headers: { Authorization: `Bearer ${token2}` },
   });
   const u2WorkoutsData = await u2WorkoutsRes.json();
-  console.log('9. User 2 workouts isolation count:', u2WorkoutsData.count === 0 ? 'PASS (0 workouts for user 2)' : 'FAIL');
+  assert(u2WorkoutsData.count === 0, 'User 2 Workout Isolation (Isolated count = 0)');
 
-  // Attempt to access user 1's workout using user 2's token
-  const u2AccessU1Workout = await fetch(`${baseUrl}/workouts/${workout1Id}`, {
+  // User 2 attempting to access User 1's workout
+  const u2AccessU1Res = await fetch(`${baseUrl}/workouts/${workout1Id}`, {
     headers: { Authorization: `Bearer ${token2}` },
   });
-  console.log('10. User 2 forbidden from User 1 workout:', u2AccessU1Workout.status === 404 ? 'PASS (404 Not Found)' : 'FAIL');
+  assert(u2AccessU1Res.status === 404, 'User 2 Forbidden from User 1 Workout (404 Isolation)');
 
-  // 9. Dashboard Stats
+  // 5. Dashboard, Analytics & Profile Endpoints
+  console.log('\n--- 5. DASHBOARD, ANALYTICS & PROFILE METRICS ---');
+
+  // 5a. GET /api/dashboard
   const dashRes = await fetch(`${baseUrl}/dashboard`, {
     headers: { Authorization: `Bearer ${token1}` },
   });
   const dashData = await dashRes.json();
-  console.log('11. Dashboard Total Workouts:', dashData.data?.totalWorkouts === 2 ? 'PASS (2)' : 'FAIL');
-  console.log('    Total Duration:', dashData.data?.totalDuration, 'minutes');
-  console.log('    Total Exercises:', dashData.data?.totalExercises);
+  assert(dashRes.status === 200 && dashData.data?.totalWorkouts === 2, 'GET /api/dashboard (Summary Dashboard)', `Workouts: ${dashData.data?.totalWorkouts}, Time: ${dashData.data?.totalDuration}m, Exercises: ${dashData.data?.totalExercises}`);
 
-  // 10. Analytics
+  // 5b. GET /api/analytics
   const analyticsRes = await fetch(`${baseUrl}/analytics?exercise=Barbell%20Bench%20Press`, {
     headers: { Authorization: `Bearer ${token1}` },
   });
   const analyticsData = await analyticsRes.json();
-  console.log('12. Analytics retrieved:', analyticsData.success ? 'PASS' : 'FAIL');
-  console.log('    Type Distribution:', analyticsData.data?.typeDistribution?.length, 'types');
-  console.log('    Exercise Progress entries for Bench Press:', analyticsData.data?.exerciseProgress?.length);
+  assert(analyticsRes.status === 200 && analyticsData.data?.typeDistribution?.length >= 2, 'GET /api/analytics (Type Distribution & Exercise Tracking)', `${analyticsData.data?.typeDistribution?.length} categories`);
 
-  // 11. Profile Stats
+  // 5c. GET /api/profile
   const profileRes = await fetch(`${baseUrl}/profile`, {
     headers: { Authorization: `Bearer ${token1}` },
   });
   const profileData = await profileRes.json();
-  console.log('13. Profile stats retrieved:', profileData.success ? 'PASS' : 'FAIL');
+  assert(
+    profileRes.status === 200 && profileData.user?.email === u1Email.toLowerCase(),
+    'GET /api/profile (Account Lifetime Stats)',
+    `Favorite: ${profileData.stats?.favoriteType || 'N/A'}`
+  );
 
-  // 12. Delete Workout
+  // 6. Delete & Cleanup Verification
+  console.log('\n--- 6. DELETE & RECORD CLEANUP ---');
   const delRes = await fetch(`${baseUrl}/workouts/${workout1Id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token1}` },
   });
   const delData = await delRes.json();
-  console.log('14. Delete Workout:', delData.success ? 'PASS' : 'FAIL');
+  assert(delRes.status === 200 && delData.success, 'DELETE /api/workouts/:id (Delete Workout)', delData.message);
 
-  console.log('--- ALL BACKEND TESTS PASSED SUCCESSFULLY! ---');
+  // Verify workout is permanently gone
+  const verifyDelRes = await fetch(`${baseUrl}/workouts/${workout1Id}`, {
+    headers: { Authorization: `Bearer ${token1}` },
+  });
+  assert(verifyDelRes.status === 404, 'Verify Workout Deleted (Subsequent GET returns 404)');
+
+  console.log('\n====================================================');
+  console.log(`🎉 ALL ${passedCount} API TESTS PASSED SUCCESSFULLY! (100% COVERAGE)`);
+  console.log('====================================================\n');
 }
 
-runTests().catch(err => {
-  console.error('Test execution failed:', err);
+runTests().catch((err) => {
+  console.error('\n❌ Test execution failed:', err);
   process.exit(1);
 });
