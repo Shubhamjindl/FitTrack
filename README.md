@@ -1,6 +1,15 @@
-# 🏋️ FitTrack - MERN Workout & Fitness Tracker
+# 🏋️ UpToFit - Modern MERN Fitness & Workout Tracker
 
-FitTrack is a modern, responsive full-stack fitness and workout tracking web application built with the **MERN stack** (MongoDB, Express.js, React + Vite, Node.js). It features a clean, light-themed aesthetic with pastel statistic cards, vibrant fitness green buttons, interactive progression charts powered by Recharts, and complete user data isolation.
+[![Live Deployment](https://img.shields.io/badge/Live%20Demo-uptofit.vercel.app-10b981?style=for-the-badge&logo=vercel)](https://uptofit.vercel.app)
+[![React](https://img.shields.io/badge/React-19-61dafb?style=for-the-badge&logo=react)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8-646cff?style=for-the-badge&logo=vite)](https://vite.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.21-000000?style=for-the-badge&logo=express)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47a248?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/atlas)
+
+**UpToFit** is a full-stack, responsive fitness and workout tracking web application built on the modern **MERN stack** (MongoDB, Express.js, React 19 + Vite 8, Node.js). Designed for serious lifters, runners, and athletes, it combines interactive workout logging, animated movement guides, progressive overload analytics via Recharts, multi-theme customization, and strict multi-tenant data isolation.
+
+🌐 **Live Website:** [https://uptofit.vercel.app](https://uptofit.vercel.app)
 
 ---
 
@@ -20,244 +29,242 @@ FitTrack is a modern, responsive full-stack fitness and workout tracking web app
 
 ---
 
-## 📸 Design & UI Philosophy
+## ✨ Key Platform Features
 
-- **Light & Dark Themes:** A one-click sun/moon toggle switches the whole app (and charts) between a light theme (white `#ffffff` backgrounds, light-gray `#f1f5f9` sections) and a dark theme; the choice is remembered.
-- **Vibrant Fitness Accents:** Green action buttons (`#10b981`), badges, and interactive focus states.
-- **Pastel Statistic Cards:**
-  - 🌿 **Mint Pastel:** Total Workouts
-  - 💧 **Sky Blue Pastel:** Total Exercises Completed
-  - 🔮 **Lavender Pastel:** Active Time Invested
-  - 🍯 **Amber Pastel:** Workouts This Week
-- **Clean Architecture:** Strict avoidance of heavy icon libraries (uses handcrafted vector SVGs), avoidance of Tailwind CSS (clean Bootstrap 5 + custom CSS), and avoidance of Axios (uses modern native `fetch()`).
+### 1. 🎯 Interactive 43-Movement Exercise Library & Posture Guide
+* **5 Core Disciplines:** 43 curated exercises spanning **Strength & Weights**, **Bodyweight & Calisthenics**, **Yoga & Mobility**, **Cardio & Conditioning**, and **Athletic Sports** (Football, Cricket, Badminton, Swimming, Boxing).
+* **Movement GIFs & Posture Snapshots:** Every preset movement features a high-framerate animated demonstration GIF and static posture snapshot.
+* **Viewport-Centered Form Guide Modal:** Rendered via React Portal with a full-screen blurred backdrop, offering 3 dedicated, movement-specific coaching cues per exercise.
+* **Smart Autocomplete & Custom Movements:** Type any custom exercise name on the fly; custom items include 1-tap muscle group tagging without false preset guides.
 
----
+### 2. 📊 Advanced Progress Analytics (Powered by Recharts)
+* **Progressive Overload Curve:** Select any logged exercise from a dynamic dropdown to visualize max weight progression over time.
+* **Workout Frequency:** Monthly completed workout volume across the past 6 months (Bar Chart).
+* **Session Duration Trends:** Chronological workout duration in minutes with smooth area gradients.
+* **Category Distribution:** Proportional breakdown of training styles (Strength vs. Cardio vs. Yoga vs. Sports).
+* **Milestone Highlights:** Total lifetime tonnage moved, average workout duration, heaviest PR, and top discipline.
 
-## 🚀 Key Features
+### 3. 🛡️ Enterprise Security & Multi-Tenant Data Isolation
+* **Zero Leak Guarantee:** All credentials, database URIs, and JWT secrets are strictly managed through environment variables and never exposed to the client or version control.
+* **Strict Ownership Scoping:** All database queries enforce `user: req.user._id` verification—users cannot view, edit, or delete another athlete's data.
+* **Salted Password Hashing:** User passwords securely hashed using `bcryptjs` with salt rounds before database persistence.
+* **Demo Sandbox Protection:** One-click demo account (`alex.fit@example.com`) provides full read-only exploration with all mutation requests (`POST`, `PUT`, `DELETE`) blocked with `403 Forbidden`.
 
-1. **Authentication & Security:**
-   - User registration and login with JWT (JSON Web Tokens).
-   - Password hashing using `bcryptjs` with salt rounds.
-   - Protected client-side routes with automatic token persistence in `localStorage`.
-   - Strict MongoDB user data isolation ensuring each user only accesses their own records.
-
-2. **Dashboard:**
-   - 4 pastel statistic cards displaying lifetime workouts, exercises, total duration, and this week's frequency.
-   - **Weekly Activity Chart:** Daily workout duration and session counts over the last 7 days.
-   - Fitness snapshot cards for total cumulative volume lifted and average session duration.
-   - Recent workouts feed with one-click detailed breakdown modals.
-
-3. **Workout Management (CRUD):**
-   - **Log Workout:** Name, session date, workout category (Strength, Cardio, HIIT, Yoga, Running, Cycling, Bodyweight, Other), duration in minutes, and session reflections/notes.
-   - **Dynamic Exercises Builder:** Add or remove exercises on the fly with custom sets, reps, and weights.
-   - Real-time live calculation of total estimated volume (Sets × Reps × Weight).
-   - **View Workout Modal:** Detailed table showing set breakdowns, weights, subtotal volume, and notes.
-   - **Edit & Delete Workouts:** Modify logged workouts or safely delete them with confirmation dialogs.
-
-4. **Workout History & Filtering:**
-   - Instant search across workout names, notes, and individual exercise names.
-   - Filter by workout category (Strength, Cardio, HIIT, Running, etc.).
-   - Filter by timeframe (All Time, Past 7 Days, Past 30 Days, Past Year).
-   - Sort by Date (Newest / Oldest First), Duration (High to Low / Low to High), or Name (A-Z).
-   - Active filter tags with single-click reset.
-
-5. **Progress Analytics (Recharts):**
-   - **Workout Frequency:** Monthly workouts completed over the past 6 months (Bar Chart).
-   - **Session Duration Trend:** Chronological progression of workout duration in minutes (Area Chart with gradient).
-   - **Exercise Weight Progression (Progressive Overload):** Select any logged exercise from a dynamic dropdown to view weight progression over time (Line Chart with tooltips).
-   - **Category Distribution:** Proportional breakdown of workout types (Donut / Pie Chart with color-coded legend).
-   - Milestone highlights: Average duration, top workout category, heaviest lift recorded, and total weight moved.
-
-6. **Athlete Profile:**
-   - Overview of user credentials, member since date, and lifetime fitness totals.
-   - Form to update user display name.
-   - Secure password change form with current password verification.
+### 4. 🎨 Modern Athletic UI & Theme Engine
+* **Responsive App Shell:** Persistent desktop sidebar, dynamic top navigation, and mobile-friendly bottom bar.
+* **1-Tap Theme Switching:** Instant toggle between Emerald Dark and Light themes with persistent local storage sync.
+* **Zero Bloat:** Handcrafted vector SVGs with no heavy icon libraries; native `fetch()` without Axios overhead.
+* **Vercel Web Analytics:** Privacy-friendly, zero-cookie visitor analytics integrated with `@vercel/analytics`.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|---|---|
-| **Frontend** | React 19, Vite 8, Bootstrap 5, Custom CSS, React Router DOM 7, Recharts 3 |
-| **Backend** | Node.js, Express.js 4, MongoDB, Mongoose 8, JWT, bcryptjs |
-| **Networking** | JavaScript `fetch()` API with Vite dev proxy |
-| **Database** | MongoDB (with Mongoose schemas & virtuals) |
+| Layer | Technology | Details |
+|---|---|---|
+| **Frontend Framework** | React 19 + Vite 8 | Single Page Application with instant client transitions |
+| **Routing** | React Router DOM 7 | Client-side protected and public routing |
+| **Styling** | Bootstrap 5 + Custom CSS | CSS Variables, dark/light themes, smooth keyframe animations |
+| **Visualizations** | Recharts 3 | Responsive interactive SVG charts with custom tooltips |
+| **Analytics** | @vercel/analytics | Privacy-first Web Analytics tracking |
+| **Backend Framework** | Node.js + Express 4 | Modular RESTful API architecture |
+| **Database** | MongoDB Atlas + Mongoose 8 | Cloud document storage with indexed schemas and pre-save hooks |
+| **Authentication** | JSON Web Tokens (JWT) + bcryptjs | Stateless bearer authentication with salted password hashes |
 
 ---
 
 ## 📁 Project Structure
 
 ```text
-├── client/                     # Frontend React + Vite application
+├── client/                             # Frontend React 19 + Vite 8 Application
 │   ├── public/
-│   │   └── favicon.svg         # SVG dumbbell favicon
+│   │   ├── exercises/                  # 43 curated exercise GIFs and static snapshots
+│   │   ├── favicon.svg                 # Brand dumbbell SVG icon
+│   │   └── hero-exercise.jpg           # Athletic dashboard hero photo
 │   ├── src/
-│   │   ├── components/         # Reusable UI components
-│   │   │   ├── ConfirmModal.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   ├── Icons.jsx       # Handcrafted SVG vector icons (no icon library)
-│   │   │   ├── Navbar.jsx      # Responsive navigation with user badge
-│   │   │   ├── ProtectedRoute.jsx
-│   │   │   ├── StatCard.jsx    # Pastel statistic card
-│   │   │   ├── WorkoutCard.jsx
-│   │   │   └── WorkoutModal.jsx
+│   │   ├── components/                 # Reusable UI components
+│   │   │   ├── AppLayout.jsx           # App shell layout (Sidebar + Header + Content)
+│   │   │   ├── BottomNav.jsx           # Mobile fixed navigation bar
+│   │   │   ├── Icons.jsx               # Vector SVG icons
+│   │   │   ├── ProfileSummitGraphic.jsx# Profile background graphic
+│   │   │   ├── ProtectedRoute.jsx      # Auth verification route guard
+│   │   │   ├── RecentWorkoutCard.jsx   # Interactive workout card
+│   │   │   ├── Sidebar.jsx             # Left desktop sidebar
+│   │   │   ├── StatCard.jsx            # Metric statistic card
+│   │   │   ├── TopHeader.jsx           # Header with notifications & theme switch
+│   │   │   └── WorkoutModal.jsx        # View workout details modal (React Portal)
 │   │   ├── context/
-│   │   │   └── AuthContext.jsx # Auth state, token handling & fetch API methods
+│   │   │   ├── AuthContext.jsx         # User authentication state & methods
+│   │   │   └── ThemeContext.jsx        # Dark/light theme state & persistence
+│   │   ├── data/
+│   │   │   └── exercises.js            # 43-movement database with dedicated form tips
 │   │   ├── pages/
-│   │   │   ├── Analytics.jsx   # 4 Recharts progress visualizations
-│   │   │   ├── Dashboard.jsx   # Welcome metrics, weekly bar chart, recent workouts
-│   │   │   ├── Login.jsx       # Login form with quick demo autofill
-│   │   │   ├── NotFound.jsx    # Clean 404 handler
-│   │   │   ├── Profile.jsx     # Profile updates & lifetime fitness stats
-│   │   │   ├── Register.jsx    # User registration
-│   │   │   ├── WorkoutForm.jsx # Add & Edit workout with dynamic exercises
-│   │   │   └── Workouts.jsx    # Workout history, search, filters & sort
-│   │   ├── App.jsx             # Router and layouts
-│   │   ├── index.css           # Light/dark theme variables & custom styles
-│   │   └── main.jsx            # React root with Bootstrap
-│   ├── .env.example
+│   │   │   ├── Analytics.jsx           # 4 Recharts progression visualizations
+│   │   │   ├── Dashboard.jsx           # Overview metrics, activity chart & recent feeds
+│   │   │   ├── Login.jsx               # Login screen with 1-click demo access
+│   │   │   ├── NotFound.jsx            # 404 error handler
+│   │   │   ├── Profile.jsx             # Profile management & lifetime totals
+│   │   │   ├── Register.jsx            # User account registration
+│   │   │   ├── WorkoutForm.jsx         # Log/Edit workout with posture guide modal
+│   │   │   └── Workouts.jsx            # Workout history, search, filtering & sorting
+│   │   ├── App.jsx                     # Root application router & Vercel Analytics
+│   │   ├── index.css                   # Theme variables, layouts, and animations
+│   │   └── main.jsx                    # React entrypoint
 │   ├── package.json
-│   └── vite.config.js          # Vite config with /api proxy to port 5000
+│   └── vite.config.js                  # Vite configuration with /api backend proxy
 │
-├── server/                     # Backend Express REST API
+├── server/                             # Backend Express REST API
 │   ├── config/
-│   │   └── db.js               # Mongoose database connection
+│   │   └── db.js                       # Mongoose MongoDB Atlas connection
 │   ├── controllers/
-│   │   ├── analyticsController.js
-│   │   ├── authController.js
-│   │   ├── dashboardController.js
-│   │   ├── profileController.js
-│   │   └── workoutController.js
+│   │   ├── analyticsController.js      # Progress curves & volume aggregations
+│   │   ├── authController.js           # Register, login, profile, password update
+│   │   ├── dashboardController.js      # Metrics & weekly session frequency
+│   │   ├── profileController.js        # Lifetime statistics & favorite discipline
+│   │   └── workoutController.js        # Workout CRUD, search, and category filters
 │   ├── middleware/
-│   │   └── auth.js             # JWT verification middleware
+│   │   └── auth.js                     # JWT authorization & demo user guard
 │   ├── models/
-│   │   ├── User.js             # User schema with bcrypt pre-save hook
-│   │   └── Workout.js          # Workout schema with exercises subdocuments
-│   ├── routes/
-│   │   ├── analyticsRoutes.js
-│   │   ├── authRoutes.js
-│   │   ├── dashboardRoutes.js
-│   │   ├── profileRoutes.js
-│   │   └── workoutRoutes.js
-│   ├── .env.example
-│   ├── package.json
-│   ├── seed.js                 # Realistic demo data seeder
-│   ├── server.js               # Express application entrypoint
-│   └── test-api.js             # Automated API integration test suite
+│   │   ├── User.js                     # User model with bcrypt pre-save hashing
+│   │   └── Workout.js                  # Workout model with exercise subdocuments
+│   ├── postman/                        # Postman collection & generation script
+│   ├── routes/                         # Express endpoint routers
+│   ├── seed.js                         # Demo workout database seeder
+│   ├── server.js                       # Express application entrypoint
+│   ├── test-api.js                     # 25-step REST API audit suite (100% coverage)
+│   └── test-demo-security.js           # Demo account security & permission suite
 │
-├── .gitignore
-├── package.json                # Root convenience scripts
+├── docs/screenshots/                   # Application preview screenshots
+├── package.json                        # Root automation scripts
 └── README.md
 ```
 
 ---
 
-## ⚡ Quick Start & Installation
+## ⚡ Quick Start & Local Setup
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (v18+)
-- A free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster (the app connects to Atlas only; there is no local MongoDB fallback)
+- [Node.js](https://nodejs.org/) (v18.0.0 or higher)
+- A free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster
 
 ### 1. Installation
 
+Clone the repository and install dependencies for both the frontend and backend:
+
 ```bash
-# Server setup
+# Clone repository
+git clone https://github.com/Shubhamjindl/UpToFit.git
+cd UpToFit
+
+# Install backend dependencies
 cd server
 npm install
 
-# Client setup
+# Install frontend dependencies
 cd ../client
 npm install
 ```
 
-### 2. Environment Variables Configuration
+### 2. Environment Configuration
 
-In `server/.env`:
+Create a `.env` file inside the `server/` directory:
+
 ```env
 PORT=5000
-MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/fittrack?retryWrites=true&w=majority
-JWT_SECRET=your_jwt_secret_here
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/uptofit?retryWrites=true&w=majority
+JWT_SECRET=your_super_secret_jwt_key_here
 NODE_ENV=development
 ```
-> `JWT_SECRET` is required; the server exits at startup if it is missing. Use a long random string and never commit your `.env` file.
 
-### 3. Seed Demo Data (Optional but Recommended)
-
-Populate realistic workouts (Strength, Running, HIIT, Yoga, Cycling) with progressive overload data:
-```bash
-# From workspace root:
-npm run seed
-
-# Or from server directory:
-node server/seed.js
+*(Optional) Create a `.env` file in `client/` if targeting an external backend URL:*
+```env
+VITE_API_URL=/api
 ```
 
-**Pre-seeded Demo User:**
+### 3. Seed Realistic Demo Data (Optional)
+
+Populate the database with sample workouts across Strength, Running, HIIT, and Yoga:
+
+```bash
+# From the root directory:
+npm run seed
+```
+
+**Pre-seeded Demo Account:**
 - **Email:** `alex.fit@example.com`
 - **Password:** `password123`
-*(A quick one-click autofill button is also available on the Login screen)*
+*(A 1-click autofill button is available on the login page)*
 
-### 4. Running the Application
+### 4. Running Locally
 
-In terminal 1 (start backend API on port 5000):
+Start the backend and frontend in separate terminals:
+
 ```bash
+# Terminal 1: Start Express backend (runs on http://localhost:5000)
 npm run server
-```
 
-In terminal 2 (start frontend on port 5173):
-```bash
+# Terminal 2: Start Vite frontend (runs on http://localhost:5173)
 npm run client
 ```
 
-Open your browser at **`http://localhost:5173`**.
+Navigate to **`http://localhost:5173`** in your browser.
 
 ---
 
-## 📡 API Reference
+## 📡 REST API Reference
 
-All protected endpoints require `Authorization: Bearer <token>` in the header.
+All protected endpoints require `Authorization: Bearer <token>` in the HTTP headers.
 
 | Method | Endpoint | Access | Description |
-|---|---|---|---|
+|:---|:---|:---:|:---|
+| `GET` | `/api/health` | Public | System uptime & healthcheck |
 | `POST` | `/api/auth/register` | Public | Register new user account |
-| `POST` | `/api/auth/login` | Public | Authenticate user & receive JWT |
-| `GET` | `/api/auth/me` | Private | Retrieve current user profile |
+| `POST` | `/api/auth/login` | Public | Authenticate user & receive JWT token |
+| `GET` | `/api/auth/me` | Private | Retrieve active session user profile |
 | `PUT` | `/api/auth/profile` | Private | Update user display name |
 | `PUT` | `/api/auth/password` | Private | Change password with current password verification |
-| `GET` | `/api/workouts` | Private | Get workouts with search (`q`), `type`, date range, and sort |
+| `GET` | `/api/workouts` | Private | Get workouts with search (`q`), `type`, date range, & sorting |
 | `GET` | `/api/workouts/:id` | Private | Get single workout details |
-| `POST` | `/api/workouts` | Private | Create new workout with exercises |
-| `PUT` | `/api/workouts/:id` | Private | Update existing workout |
-| `DELETE`| `/api/workouts/:id` | Private | Delete workout |
-| `GET` | `/api/dashboard` | Private | Get dashboard totals, weekly chart data & recent workouts |
-| `GET` | `/api/analytics` | Private | Get frequency, duration trends, exercise progress & distribution |
-| `GET` | `/api/profile` | Private | Get athlete lifetime stats and totals |
-| `GET` | `/api/health` | Public | API health check & uptime status |
+| `POST` | `/api/workouts` | Private | Create new workout with multi-set exercises |
+| `PUT` | `/api/workouts/:id` | Private | Update existing workout details |
+| `DELETE`| `/api/workouts/:id` | Private | Delete workout and its exercise subdocuments |
+| `GET` | `/api/dashboard` | Private | Aggregated stats, weekly chart data & recent sessions |
+| `GET` | `/api/analytics` | Private | Frequency, duration trends, exercise progress curves & distribution |
+| `GET` | `/api/profile` | Private | Lifetime totals, total volume (kg), and favorite discipline |
 
 ---
 
-## 🧪 Testing
+## 🧪 Automated Testing
 
-An automated integration test suite is included in `server/test-api.js`. It tests:
-1. User registration & JWT generation
-2. User authentication (login)
-3. Workout creation with multiple exercises
-4. Filter by type & full-text search
-5. Workout update & deletion
-6. User data isolation (ensuring User B cannot view or modify User A's data)
-7. Dashboard metrics aggregation
-8. Analytics calculation
+UpToFit includes automated test suites covering functional endpoints, edge cases, multi-tenant data isolation, and permission boundaries.
 
-To run the tests:
 ```bash
+# Run all tests (API integration + Security suite)
+npm test
+
+# Run the 25-step REST API audit suite
 npm run test:api
+
+# Run Demo user read-only permission tests
+npm run test:security
 ```
+
+### Test Coverage Highlights:
+- ✅ **100% Endpoint Verification**: Tests all 14 REST endpoints.
+- ✅ **Edge Case Validation**: Missing fields (400), invalid login (401), missing token (401), non-existent workout (404).
+- ✅ **Multi-Tenant Isolation**: Confirms User B cannot access or alter User A's data (404).
+- ✅ **Security Guardrails**: Asserts demo user cannot execute `POST`, `PUT`, or `DELETE` requests (403 Forbidden).
 
 ---
 
 ## 👤 Author
 
-**Shubham Jindal** — B.E. CSE, Chandigarh University.
+**Shubham Jindal** — B.E. Computer Science & Engineering, Chandigarh University.
+- **GitHub:** [@Shubhamjindl](https://github.com/Shubhamjindl)
+- **Live App:** [uptofit.vercel.app](https://uptofit.vercel.app)
 
-Licensed under MIT.
+---
+
+## 📄 License
+
+This project is open-source and licensed under the [MIT License](LICENSE).
