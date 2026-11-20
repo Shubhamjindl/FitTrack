@@ -13,22 +13,6 @@
 
 ---
 
-## 🖼️ Screenshots
-
-| Dashboard | Workout History |
-|---|---|
-| ![Dashboard](docs/screenshots/dashboard.jpg) | ![Workout History](docs/screenshots/workouts.jpg) |
-
-| Log Workout | Progress Analytics |
-|---|---|
-| ![Log Workout](docs/screenshots/add-workout.jpg) | ![Progress Analytics](docs/screenshots/analytics.jpg) |
-
-| Login | Athlete Profile (dark theme) |
-|---|---|
-| ![Login](docs/screenshots/login.jpg) | ![Profile](docs/screenshots/profile.jpg) |
-
----
-
 ## ✨ Key Platform Features
 
 ### 1. 🎯 Interactive 43-Movement Exercise Library & Posture Guide
@@ -134,7 +118,6 @@
 │   ├── test-api.js                     # 25-step REST API audit suite (100% coverage)
 │   └── test-demo-security.js           # Demo account security & permission suite
 │
-├── docs/screenshots/                   # Application preview screenshots
 ├── package.json                        # Root automation scripts
 └── README.md
 ```
